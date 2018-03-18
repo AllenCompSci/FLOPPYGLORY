@@ -1,0 +1,19 @@
+//Michael Crookston
+//Problem #29
+//Due Date
+//Period 6
+//Mr. Baker
+//Libraries Section
+#include<iostream.h>
+#include<iomanip.h>
+#include<conio.h>
+#include<apstring.h>
+#include<fstream.h>
+//Constants
+//Prototypes
+//Global Variables
+//Program
+void main ()
+{
+
+}

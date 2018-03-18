@@ -1,0 +1,93 @@
+//Rebecca Russell
+//6th
+//Mr.Baker
+//Program: 10 names, points, and dates
+#include<iostream.h>
+#include<conio.h>
+#include<apstring.h>
+#include<iomanip.h>
+#include<stdio.h>
+#include<stdlib.h>
+#include<apvector.h>
+//Constant
+//Structs
+struct Info
+{apstring Names;
+double Points;
+apstring Dates;
+};
+//Variable
+int I;
+int I2;
+Info A;
+apstring Trash;
+apvector <Info> Hold(10);
+//Prototype
+void output (int);
+void main ()
+{
+clrscr();
+for (I=0; I<10; I++)
+{cout<<"Name: ";
+ getline(cin, Hold[I].Names);
+ cout<<"Score(ex.3): ";
+ cin>>Hold[I].Points;
+ getline(cin, Trash);
+ cout<<"Date(12-3-99): ";
+ getline(cin, Hold[I].Dates);
+ I;
+}
+output (0);
+clrscr();
+
+gotoxy(1,1);
+cout<<"Name";
+gotoxy(30,1);
+cout<<"Score";
+gotoxy(40,1);
+cout<<"Date";
+
+for (I=0; I<10; I++)
+	{gotoxy(1, I+3);
+	 cout<<Hold[I].Names;
+	 gotoxy(30, I+3);
+	 cout<<Hold[I].Points;
+	 gotoxy(45, I+3);
+	 cout<<Hold[I].Dates<<endl;
+	}
+getch();
+}
+
+void output (int I)
+{if (I<9)
+ {for(I2=I; I2<10; I2++)
+	 if (Hold[I].Points < Hold[I2].Points)
+		 {A = Hold[I];
+			Hold[I] = Hold[I2];
+			Hold[I2] = A;
+		 }
+		output (I+1);
+	}
+};
+
+
+/*
+void output (int I)
+{int K;
+ int I;
+ int I2;
+ for(I2=0; I2<10; I2++)
+	Hold4[I2]=true;
+ for(K=32767; K>0; K--)
+	for(I=0; I<10; I++)
+	 {if (K==Hold[I].Points)
+		 if(Hold4[I]==true)
+			Hold4[I]=false;
+			cout<<"Name: "<<Hold[I].Names<<endl;
+			cout<<"Score: "<<Hold[I].Points<<endl;
+			cout<<"Date: "<<Hold[I].Dates<<endl;
+			getch();
+
+}  } */
+
+

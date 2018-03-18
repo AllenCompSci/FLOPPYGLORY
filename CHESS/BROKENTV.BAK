@@ -1,0 +1,56 @@
+// Sean Murray
+// Due Date
+// Program
+// Mr. Baker - 3rd pd.
+
+// Libraries
+#include <graphics.h>
+#include <conio.h>
+#include <iostream.h>
+#include <iomanip.h>
+#include <fstream.h>
+#include <stdlib.h>
+
+#include <apstring.h>
+#include <apvector.h>
+#include <apmatrix.h>
+
+//Structures
+
+//Constants
+
+//Global Variables
+	int grdriver, grmode, errorcode;
+	int X, Y, Color;
+
+//Prototypes
+	void gr_start(int&, int&, int&);
+
+void main ()
+{
+	clrscr();
+	randomize();
+	gr_start(grdriver, grmode, errorcode);
+	while(!kbhit())
+	{
+		X = random(640) + 1;
+		Y = random(480) + 1;
+		Color = random(16);
+		putpixel(X, Y, Color);
+	}
+}
+
+void gr_start(int & grdriver, int & grmode, int & errorcode)
+{
+	grdriver = VGA;
+	grmode = VGAHI;
+	initgraph(&grdriver, &grmode, "C:\\TC\\BGI");
+	errorcode = graphresult();
+	if(errorcode != grOk)
+	{
+		clrscr();
+		cout << "Error: " << errorcode;
+		getch();
+		exit(1);
+	}
+};

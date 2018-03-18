@@ -1,0 +1,48 @@
+// Sean Murray
+// Due Date
+// Prob 21
+// Mr. Baker - 3rd pd.
+
+// Libraries
+#include <conio.h>
+#include <iostream.h>
+#include <iomanip.h>
+#include <apstring.h>
+#include <apvector.h>
+#include <apmatrix.h>
+#include <stdlib.h>
+
+//Constants
+
+//Variables
+	apvector <apstring> Names (20);
+	int I, J, MaxLength;
+
+void main ()
+{
+	I = 0;
+	do
+	{
+		clrscr();
+		gotoxy(1,1);
+		cout << "Put in a name (or ZZZ to quit.  Limit 20 names):";
+		gotoxy(1,22);
+		cout << "You're on name #"<<I + 1<<".";
+		gotoxy(1,2);
+		getline(cin, Names[I]);
+		I++;
+	} while (Names[I - 1] != "ZZZ" && I < 20);
+	clrscr();
+	cout << "Your list of Names:"<<endl;
+
+	for (I = 0;I < 20;I++)  						 // this loop checks the arrays for the
+		if (Names[I].length() > MaxLength) // longest length.
+			MaxLength = Names[I].length();
+
+	for (I = 0;I <= MaxLength;I++)  // these loops run through and check what is
+		for (J = 0;J < 20;J++) 			  // equal to the longest length, and if it is
+			if (Names[J].length() == I) // it is slapped on the screen!
+				cout << Names[J]<<endl;	  // haha, one array ;P
+	getch();
+
+}

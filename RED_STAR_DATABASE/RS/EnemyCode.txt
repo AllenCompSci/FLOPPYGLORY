@@ -1,0 +1,91 @@
+//ADD X and Y position coordinates in the enemy array to work with collision detection. Also add Collide to array
+void path (apvector <Edat> &Enemy)
+{random(Level+1)=X
+switch(random(Level+1))
+	{case 0:random(Level+1)=X 
+		getimage(Enemy.Pic[X]);
+		
+		for(Ex=320;Ex<640,Ex++)
+		{Ey=0;
+			Enemy.Pic[X].draw(Ex,Ey); 
+		Ey+=(Ex%6)/(10*Enemy[X].Type);
+			bar(Ex,Ey,0);
+		if(Enemy.Collide)
+			Score();
+			erase();//?
+			else if(Ex%5==0)
+				enemyfire();//mod from playerfire function
+			else if(Ex==640)
+				cleardevice() or erase();//how to erase enemy??????????			
+		break;
+			
+	case 1:	random(Level+1)=X
+		getimage(Enemy.Pic[X]);
+		
+		for(Ex=320;Ex<0,Ex--)
+		{Ey=0;
+			Enemy.Pic[X].draw(Ex,Ey); 
+		Ey+=(Ex%6)/(10*Enemy[X].Type);
+			bar(Ex,Ey,0);
+		if(Enemy.Collide)
+			Score();
+			erase();//?
+			else if(Ex%5==0)
+				enemyfire();//mod from playerfire function
+			else if(Ex==0)
+				cleardevice() or erase();//how to erase enemy??????????			
+		break;
+
+	case 2:	random(Level+1)=X
+		getimage(Enemy.Pic[X]);
+		
+		for(Ex=0;Ex<640,Ex++)
+		{Ey=0;
+			Enemy.Pic[X].draw(Ex,Ey); 
+		Ey+=(Ex%6)/(10*Enemy[X].Type);
+			bar(Ex,Ey,0);
+		if(Enemy.Collide)
+			Score();
+			erase();//?
+			else if(Ex%5==0)
+				enemyfire();//mod from playerfire function
+			else if(Ex==640)
+				cleardevice() or erase();//how to erase enemy??????????			
+		break;
+	case 3:	random(Level+1)=X
+		getimage(Enemy.Pic[X]);
+		
+		for(Ex=640;Ex<0,Ex--)
+		{Ey=0;
+			Enemy.Pic[X].draw(Ex,Ey); 
+		Ey+=(Ex%6)/(10*Enemy[X].Type);
+			bar(Ex,Ey,0);
+		if(Enemy.Collide)
+			Score();
+			erase();//?
+			else if(Ex%5==0)
+				enemyfire();//mod from playerfire function
+			else if(Ex==0)
+				cleardevice() or erase();//how to erase enemy??????????			
+		break;
+	case 4:	random(Level+1)=X
+		getimage(Enemy.Pic[X]);
+		
+		for(Ex=640;Ex<0,Ex--)
+		{Ey=0;
+			Enemy.Pic[X].draw(Ex,Ey); 
+		Ey+=(Ex%6)/(10*Enemy[X].Type);
+			bar(Ex,Ey,0);
+		if(Enemy.Collide)
+			Score();
+			erase();//?
+			else if(Ex%5==0)
+				enemyfire();//mod from playerfire function
+			else if(Ex==0)
+				cleardevice() or erase();//how to erase enemy??????????			
+		break;
+	case 5:
+	};
+
+
+};

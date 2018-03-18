@@ -1,0 +1,205 @@
+//Rebecca Russell
+//6th
+//Mr. Baker
+//Program:Cross Word Puzzle
+#include<iostream.h>
+#include<conio.h>
+#include<apstring.h>
+#include<iomanip.h>
+#include<apvector.h>
+//Constant
+//Variable
+int W;
+int L;
+int S;
+int S1;
+int Col;
+int Row;
+apvector <apstring> Words (20);
+apvector <apstring> Puzzle (20);
+bool Key [20][20];
+//Prototype
+void words ();
+void puzzle (int&, int&, int&);
+void brt2toplft ();
+void toprt2blft ();
+void blft2toprt ();
+void toplft2brt ();
+void bot2top ();
+void r2l ();
+void t2b ();
+void l2r ();
+
+void main ()
+{randomize();
+clrscr();
+do
+{
+puzzle (S, S1, W);
+for (Col=0; Col<S; Col++)
+	Puzzle[Col]="";
+
+for (Col=0; Col<S; Col++)
+	{for (Row=0; Row<S1; Row++)
+	{Puzzle[Col]=Puzzle[Col]+char(random(26)+65);
+	 Key[Col][Row]=false;
+	 cout<<Puzzle[Col][Row]<<" ";}
+	 cout<<endl;
+	}
+
+getch();
+};
+
+
+void words ()
+{for (I=0; I<20; I++)
+ do
+ {do
+	{L=0;
+	 cout<<"How many letter long will each word be(2-8)?"<<endl;
+	 cin<<L;
+	}
+	while((L<2)&&(L<*)
+	cout<<"Please enter a "<<L<<"letter word in ALL capital letters. Word "<<I+1<<" of 20."<<endl;
+	cin>>Words[I];
+	clrscr();
+ }
+ while(Words[I].length()!=L);
+}
+
+void puzzle (int& S, int& S1, int& W)
+{do
+ {cout<<"Enter the size of the puzzle's length (2-20): "<<endl;
+	cin>>S; }
+ while((S<2)||(S>20));
+
+ do
+ {cout<<"Enter the size of the puzzle's width (2-20): "<<endl;
+	cin>>S1; }
+ while((S<2)||(S>20));
+
+ do
+ {cout<<"How many words would you like to be in the puzzle (1-20)?"<<endl;
+	cin>>W; }
+ while((W<1)&&(W>20));
+}
+
+
+void brt2toplft ()
+{do
+{X=random(16)+4;
+ Y=random(16)+4;
+ Flag=true;
+for (I=0; I<5; I++)
+ if (Key[X-I][Y-I])
+	Flag=false;
+}
+while(!Flag);
+for (I=0; I<5; I++)
+ {Puzzle[X-I][Y-I]=Words[Wn][I];
+	Key[X-I][Y-I]=true;
+}}
+
+void toprt2blft()
+{do
+{X=random(16);
+ Y=random(16)+4;
+ Flag=true;
+for (I=0; I<5; I++)
+ if (Key[X+I][Y-I])
+	Flag=false;
+}
+while(!Flag);
+ for (I=0; I<5; I++)
+ {Puzzle[X+I][Y-I]=Words[Wn][I];
+	 Key[X+I][Y-I]=true;
+}}
+
+void blft2toprt ()
+{do
+{X=random(16)+4;
+ Y=random(16);
+ Flag=true;
+for (I=0; I<5; I++)
+ if (Key[X-I][Y+I])
+	Flag=false;
+}
+while(!Flag);
+for (I=0; I<5; I++)
+{Puzzle[X-I][Y+I]=Words[Wn][I];
+ Key[X-I][Y+I]=true;
+}}
+
+void toplft2brt ()
+{do
+{X=random(16);
+ Y=random(16);
+ Flag=true;
+for (I=0; I<5; I++)
+ if (Key[X+I][Y+I])
+	Flag=false;}
+while(!Flag);
+for (I=0; I<5; I++)
+{Puzzle[X+I][Y+I]=Words[Wn][I];
+ Key[X+I][Y+I]=true;
+}}
+
+void bot2top ()
+{do
+{X=random(16)+4;
+ Y=random(20);
+ Flag=true;
+for (I=0; I<5; I++)
+ if (Key[X-I][Y])
+	Flag=false;
+}
+while(!Flag);
+for (I=0; I<5; I++)
+{Puzzle[X-I][Y]=Words[Wn][I];
+ Key[X-I][Y]=true;
+}}
+
+void r2l ()
+{do
+{X=random(20);
+ Y=random(16)+4;
+ Flag=true;
+for (I=0; I<5; I++)
+ if (Key[X][Y-I])
+	Flag=false;
+}
+while(!Flag);
+for (I=0; I<5; I++)
+{Puzzle[X][Y-I]=Words[Wn][I];
+ Key[X][Y-I]=true;
+}}
+
+void t2b ()
+{do
+{X=random(16);
+ Y=random(20);
+ Flag=true;
+for (I=0; I<5; I++)
+ if (Key[X+I][Y])
+	Flag=false;
+}
+while(!Flag);
+for (I=0; I<5; I++)
+{Puzzle[X+I][Y]=Words[Wn][I];
+ Key[X+I][Y]=true;
+}}
+
+void l2r ();
+{do
+{X=random(20);
+ Y=random(16);
+ Flag=true;
+for (I=0; I<5; I++)
+ if (Key[X][Y+I])
+	Flag=false;
+}
+while(!Flag);
+for (I=0; I<5; I++)
+{Puzzle[X][Y+I]=Words[Wn][I];
+ Key[X][Y+I]=true;
+}}

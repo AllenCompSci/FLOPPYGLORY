@@ -1,0 +1,425 @@
+/*Justin Santilli
+WWII Turret Shooter
+Period 1
+*/
+
+//library Section
+#include <iostream.h>
+#include <iomanip.h>
+#include <conio.h>
+#include <apstring.h>
+#include <apvector.h>
+#include <apmatrix.h>
+#include <fstream.h>
+#include <graphics.h>
+#include <dos.h>
+#include <stdlib.h>
+#include <alloc.h>
+#include "gmouse.h"
+#include "bitmap.h"
+//struct section
+//const section
+//global var section
+int grdriver, grmode, errorcode;
+char Again;
+unsigned Size;
+int Planes,I,J,M;
+int Case;
+int Kills;
+apstring Killstr;
+int X1,Y1,X2,Y2;
+image SideR;//japanese plane flying to the right of the screen
+image RightX;//japanese plane flying to right shot down
+image SideL;//japanese plane flying to the left
+image LeftX;//japanese plane shot down to the left
+image Cockpit;//Cockpit
+image Cross;//Crosshair
+image Gleft;//german plane to the left
+image Gright;//german plane to the right
+image Gleftx;//german shot down left
+image Grightx;//german shot down right
+image Right;//diagonal right
+image Forest;//forest bkgrd
+image Ocean;//Ocean bkgrd
+image Menu;//main menu
+int Height;//randomizes the height of the planes
+void far *A,*B,*C,*D,*P,*Q,*R,*S,*T,*U;//floating points for plane images
+//prototype section
+void intchange(int, apstring&);
+void gr_start(int &, int &, int &);
+void main()
+{randomize();
+gr_start(grdriver,grmode,errorcode);
+Gleft.open("A:\\gleft.bmp");
+Gleft.draw(0,0,TRANSPARENT,15);
+Size=imagesize(0,0,150,55);
+A=farmalloc(Size);
+getimage(0,0,150,55,A);
+cleardevice();
+Gright.open("A:\\Gright.bmp");
+Gright.draw(0,0,TRANSPARENT,15);
+Size=imagesize(0,0,150,55);
+B=farmalloc(Size);
+getimage(0,0,150,55,B);
+cleardevice();
+Gleftx.open("A:\\gleftx.bmp");
+Gleftx.draw(0,0,TRANSPARENT,15);
+Size=imagesize(0,0,150,151);
+C=farmalloc(Size);
+getimage(0,0,150,151,C);
+cleardevice();
+Grightx.open("A:\\Grightx.bmp");
+Grightx.draw(0,0,TRANSPARENT,15);
+Size=imagesize(0,0,150,151);
+D=farmalloc(Size);
+getimage(0,0,150,151,D);
+cleardevice();
+SideR.open("A:\\SideR.bmp");
+SideR.draw(0,0,TRANSPARENT,15);
+Size=imagesize(0,0,150,44);
+P=farmalloc(Size);
+getimage(0,0,150,44,P);
+cleardevice();
+RightX.open("A:\\rightX.bmp");
+RightX.draw(0,0,TRANSPARENT,15);
+Size=imagesize(0,0,150,151);
+R=farmalloc(Size);
+getimage(0,0,150,151,R);
+cleardevice();
+LeftX.open("A:\\leftX.bmp");
+LeftX.draw(0,0,TRANSPARENT,15);
+Size=imagesize(0,0,152,145);
+S=farmalloc(Size);
+getimage(0,0,152,145,S);
+cleardevice();
+SideL.open("A:\\SideL.bmp");
+SideL.draw(0,0,TRANSPARENT,15);
+Size=imagesize(0,0,150,44);
+Q=farmalloc(Size);
+getimage(0,0,150,44,Q);
+cleardevice();
+Cross.open("A:\\cross.bmp");
+Cross.draw(0,0);
+Size=imagesize(0,0,56,62);
+T=farmalloc(Size);
+getimage(0,0,56,62,T);
+cleardevice();
+Right.open("A:\\rights.bmp");
+Right.draw(0,0,TRANSPARENT,15);
+Size=imagesize(0,0,158,154);
+U=farmalloc(Size);
+getimage(0,0,158,154,U);
+cleardevice();
+cleardevice();
+Gleft.close();
+Gright.close();
+Gleftx.close();
+Grightx.close();
+SideR.close();
+LeftX.close();
+RightX.close();
+SideL.close();
+Cross.close();
+Right.close();
+do{
+Menu.open("A:\\name.bmp");
+Menu.draw(0,0);
+ShowMouse();
+do{
+ if(GetMouseX()>=244&&GetMouseX()<=382&&GetMouseY()>=307&&GetMouseY()<=344)
+	if(GetMouseButton()==true)
+	Case=1;
+
+ if(GetMouseX()>=130&&GetMouseX()<=520&&GetMouseY()>=360&&GetMouseY()<=400)
+	if(GetMouseButton()==true)
+	 Case=2;
+ if(GetMouseX()>=251&&GetMouseX()<=365&&GetMouseY()>=416&&GetMouseY()<=450)
+	if(GetMouseButton()==true)
+	 Case=3;
+	}while(GetMouseButton()==false);
+HideMouse();
+switch(Case)
+{case 1:
+cleardevice();
+	setcolor(15);
+	outtextxy(265,200,"LEVEL 1");
+	outtextxy(175,230,"Mission: Destroy 20 enemy planes!");
+	outtextxy(205,375,"Press enter to begin");
+	getch();
+	Forest.open("A:\\forest.bmp");
+	Forest.draw(0,0);
+	Forest.close();
+	Cockpit.open("A:\\cockpit.bmp");
+	Cockpit.draw(0,0,TRANSPARENT,15);
+	Kills=0;
+do{
+intchange(Kills,Killstr);
+setfillstyle(1,0);
+bar(374,456,400,467);
+setcolor(15);
+outtextxy(374,456,Killstr.c_str());
+I=0;
+Planes=random(2)+1;
+if(Kills>=20)
+Planes=random(6)+3;
+if(Kills>=60)
+Planes
+	 switch(Planes)
+{
+case 1:
+ {Height=random(200)+50;
+ do{
+		I+=30;
+		putimage(I,Height,B,XOR_PUT);
+		delay(15);
+		putimage(I,Height,B,XOR_PUT);
+ X1=GetMouseX();
+ Y1=GetMouseY()+5;
+ putimage(X1,Y1,T,XOR_PUT);
+ delay(10);
+ putimage(X1,Y1,T,XOR_PUT);
+
+
+	if(GetMouseButton()!=0)
+	{setcolor(11);
+	line(X1-5,Y1,160,300);
+	line(X1+5,Y1,480,300);
+	setcolor(0);
+	delay(10);
+	line(X1-5,Y1,160,300);
+	line(X1+5,Y1,480,300);
+	if(GetMouseX()-5>=I&&GetMouseX()+5<=I+80&&GetMouseY()>=Height&&GetMouseY()<=Height+28)
+	 {for(J=0;J<5;J++)
+		{putimage(I,Height,D,XOR_PUT);
+		 delay(15);
+		 putimage(I,Height,D,XOR_PUT);
+		}
+		Kills+=1;
+		I=640;
+	 }
+	}
+	}while(I<640);
+	}
+	 break;
+case 2:
+	{Height=random(200)+50;
+	do{
+	I+=30;
+		putimage(640-I,Height,A,XOR_PUT);
+		delay(15);
+		putimage(640-I,Height,A,XOR_PUT);
+ X1=GetMouseX();
+ Y1=GetMouseY()+5;
+ putimage(X1,Y1,T,XOR_PUT);
+ delay(10);
+ putimage(X1,Y1,T,XOR_PUT);
+
+
+	if(GetMouseButton()!=0)
+	{setcolor(11);
+	line(X1-5,Y1,160,300);
+	line(X1+5,Y1,480,300);
+	setcolor(0);
+	delay(10);
+	line(X1-5,Y1,160,300);
+	line(X1+5,Y1,480,300);
+	if(GetMouseX()-5>=640-I&&GetMouseX()+5<=720-I&&GetMouseY()>=Height&&GetMouseY()<=Height+28)
+	 {for(J=0;J<5;J++)
+		{putimage(640-I,80,C,XOR_PUT);
+		 delay(15);
+		 putimage(640-I,80,C,XOR_PUT);
+		}
+		Kills+=1;
+		I=640;
+	 }
+	}
+	}while(I<640);
+	}
+		break;
+
+case 3:
+	{Height=(100)+50;
+	do{
+	I+=35;
+		putimage(I,Height,U,XOR_PUT);
+		delay(15);
+		putimage(I,Height,U,XOR_PUT);
+ X1=GetMouseX();
+ Y1=GetMouseY()+5;
+ putimage(X1,Y1,T,XOR_PUT);
+ delay(10);
+ putimage(X1,Y1,T,XOR_PUT);
+
+
+	if(GetMouseButton()!=0)
+	{setcolor(11);
+	line(X1-5,Y1,160,300);
+	line(X1+5,Y1,480,300);
+	setcolor(0);
+	delay(10);
+	line(X1-5,Y1,160,300);
+	line(X1+5,Y1,480,300);
+	if(GetMouseX()-5>=I&&GetMouseX()+5<=I+95&&GetMouseY()>=Height&&GetMouseY()<=Height+93)
+	 {for(J=0;J<5;J++)
+		{putimage(I,Height,R,XOR_PUT);
+		 delay(15);
+		 putimage(I,Height,R,XOR_PUT);
+		}
+		Kills+=1;
+		I=640;
+	 }
+	}
+	}while(I<640);
+	}
+		break;
+	case 4:
+			 {Height=random(200)+50;
+ do{
+		I+=30;
+		putimage(I,Height,P,XOR_PUT);
+		delay(15);
+		putimage(I,Height,P,XOR_PUT);
+ X1=GetMouseX();
+ Y1=GetMouseY()+5;
+ putimage(X1,Y1,T,XOR_PUT);
+ delay(10);
+ putimage(X1,Y1,T,XOR_PUT);
+
+
+	if(GetMouseButton()!=0)
+	{setcolor(11);
+	line(X1-5,Y1,160,300);
+	line(X1+5,Y1,480,300);
+	setcolor(0);
+	delay(10);
+	line(X1-5,Y1,160,300);
+	line(X1+5,Y1,480,300);
+	if(GetMouseX()-5>=I&&GetMouseX()+5<=I+80&&GetMouseY()>=Height&&GetMouseY()<=Height+22)
+	 {for(J=0;J<5;J++)
+		{putimage(I,Height,R,XOR_PUT);
+		 delay(15);
+		 putimage(I,Height,R,XOR_PUT);
+		}
+		Kills+=1;
+		I=640;
+	 }
+	}
+	}while(I<640);
+	}
+	break;
+ case 5:
+			{Height=random(200)+50;
+	do{
+	I+=30;
+		putimage(640-I,Height,Q,XOR_PUT);
+		delay(15);
+		putimage(640-I,Height,Q,XOR_PUT);
+ X1=GetMouseX();
+ Y1=GetMouseY()+5;
+ putimage(X1,Y1,T,XOR_PUT);
+ delay(10);
+ putimage(X1,Y1,T,XOR_PUT);
+
+
+	if(GetMouseButton()!=0)
+	{setcolor(11);
+	line(X1-5,Y1,160,300);
+	line(X1+5,Y1,480,300);
+	setcolor(0);
+	delay(10);
+	line(X1-5,Y1,160,300);
+	line(X1+5,Y1,480,300);
+	if(GetMouseX()-5>=640-I&&GetMouseX()+5<=720-I&&GetMouseY()>=Height&&GetMouseY()<=Height+22)
+	 {for(J=0;J<5;J++)
+		{putimage(640-I,80,S,XOR_PUT);
+		 delay(15);
+		 putimage(640-I,80,S,XOR_PUT);
+		}
+		Kills+=1;
+		I=640;
+	 }
+	}
+	}while(I<640);
+	}
+		break;
+	}//Switch End
+
+	if(Kills==20)
+	{cleardevice();
+	 setcolor(15);
+	 outtextxy(265,200,"LEVEL 2");
+	 outtextxy(125,230,"Mission: Destroy 40 enemy planes!");
+	 outtextxy(205,375,"Press enter to begin");
+	 getch();
+	 Ocean.open("A:\\Ocean.bmp");
+	 Ocean.draw(0,0);
+	 Ocean.close();
+	 Cockpit.draw(0,0,TRANSPARENT,15);
+	 Kills=21;
+	}
+
+	if(Kills==60)
+	{cleardevice();
+	setcolor(15);
+	outtextxy(265,200,"FINAL LEVEL");
+	outtextxy(125,230,"Mission:Destroy 120 enemy planes!");
+	outtextxy(205,375,"Press enter to begin");
+	getch();
+	Africa.open("A:\\africa.bmp");
+	Africa.draw(0,0);
+	Africa.close();
+	Cockpit.draw(0,0,TRANSPARENT,15);
+	Kills=61
+	}
+	}while(Kills==120);
+	outtextxy(200,240,"CONGRATULATIONS!");
+	break;
+	case 2:
+	outtextxy(0,0,"INSTRUCTIONS");
+	outtextxy(0,50,"Use the Mouse to move the crosshair");
+	outtextxy(0,100, "Use the right or left mouse button to fire");
+	outtextxy(0,150, "Shoot the enemy planes and vehicles");
+	outtextxy(0,200, "Meet the kill quota for each level to advance");
+	break;
+
+	case 3:
+	outtextxy(250,300,"Thank you for playing");
+	outtextxy(300,300,"Press enter to quit");
+	getch();
+	break;
+ }//Main Switch End
+ }while(Case!=3);
+ }//End
+void gr_start(int& grdriver , int& grmode , int& errorcode)
+{grdriver=VGA;
+grmode=VGAHI;
+initgraph(& grdriver, & grmode, "C:\\TC\\BGI");
+errorcode=graphresult();
+if(errorcode!=grOk)
+{clrscr();
+cout<<"Error code # "<<errorcode<<endl;
+cout<<"Press return to continue"<<endl;
+getch();
+exit(1);
+}
+};//gr_start
+void intchange (int Kills, apstring &Killstr)
+{
+int H,O,T;
+if(Kills==100)
+	Killstr="1000";
+	else if(Kills==0)
+			Killstr="0";
+		else
+		 {H=Kills;
+			T=H%100;
+			H-=T;
+			O=T%10;
+			T-=O;
+			T/=10;
+			H/=100;
+			Killstr=char(48+H);
+			Killstr=Killstr+char(48+T);
+			Killstr=Killstr+char(48+O);
+			}
+ };//intchange

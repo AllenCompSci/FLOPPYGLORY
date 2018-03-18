@@ -1,0 +1,19 @@
+//Michael Crookston
+//Prob#00
+//8/16/00
+//Period 6
+//Mr. Baker
+//Libraries Section
+#include<iostream.h>
+#include<iomanip.h>
+#include<conio.h>
+//Constants
+//Variables
+//Program
+void main ()
+{
+ cout <<"Michael Crookston "<<"1301 Lombardy Way "<<"972-390-8721 ";
+ cout <<"Press Return to continue.";
+ getch();
+
+}

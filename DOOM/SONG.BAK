@@ -1,0 +1,58 @@
+Program song;
+(*El CHoDA
+Baker 6th, *)
+
+uses
+    Crt;
+procedure verse1
+begin
+writeln ('I like traffic lights');
+writeln ('I like traffic lights');
+writeln ('I like traffic lights');
+writeln ('But only when thier green');
+writeln ('I like traffic lights');
+writeln ('I like traffic lights');
+writeln ('I like traffic lights');
+writeln ('but not when they are red');
+end;
+procedure chours
+begin
+writeln ('he likes traffic lights');
+writeln ('he likes traffic lights');
+writeln ('he likes traffic lights');
+writeln ('but only when thier green');
+writeln ('he likes traffic lights');
+writeln ('he likes traffic lights');
+writeln ('he likes traffic lights');
+writeln ('but not when they are red');
+end;
+procedure verse2
+writeln ('I like traffic lights');
+writeln ('I like traffic lights');
+writeln ('I like traffic lights');
+writeln ('Eventhough my name''s not mertile');
+writeln ('I like traffic lights');
+writeln ('I like traffic lights');
+writeln ('I like traffic lights');
+writeln ('but only when they are the color of a turtle');
+end;
+procdure verse3
+writeln ('I like traffic lights');
+writeln ('I like traffic lights');
+writeln ('I like traffic lights');
+writeln ('Eventhough my name is mortamier');
+writeln ('I like traffic lights');
+writeln ('I like traffic lights');
+writeln ('I like traffic lights');
+writeln ('Of god');
+end;
+begin (*main*)
+clrscr;
+verse1
+chours
+verse2
+chours
+verse3
+readln;
+End. (*main*)
+

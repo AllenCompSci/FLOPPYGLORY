@@ -1,0 +1,28 @@
+RED STAR: USERS MANUAL
+
+Note: A complete description of the game is also available on in the Instructions section.
+
+Introduction
+	The RSA Class fighter is a top of the line, self-adapting craft to various situations, from the depths of space to gaseous planets to asteroid fields and further. RSA Class pilots are given solo missions so that no other parameters apart from mission success may influence their decision making abilities and situational awareness.
+
+	During a routine test run of your particular fighter craft, you ended up being caught in a solar storm, which carried you several hundred astronomical units into Deep Space, a point where all galaxies and stars look alike because you are so far away from them all. However, galaxies and stars aren’t the only things out there…
+
+Controls 
+Left = Left Arrow Key		Right = Right Arrow Key
+Up = Up Arrow Key		Down = Down Arrow Key
+Shoot = Space Bar
+
+Targets
+Only smugglers and pirates exist this far out in Deep Space. While some may be poorly equipped, basic fighter craft looking for space trash, others may operate highly advanced, powerful assault craft. Others still may have collection barges of various kinds. Be wary, because any collectors out this far will be heavily armed. Our knowledge of all of these craft is incomplete; you’ll have to figure out how to best deal with opponents yourself.
+
+Power-Ups 
+When you initially regain consciousness, your fighter craft is still equipped with your basic cannon. There is one small problem: your targeting system is inoperative. To destroy targets, you’re going to have to line them up by eye. By gathering dropped colored orbs that will fall from enemy craft, you can further upgrade your weaponry. Be warned: picking up a power up of a different color than your current weapon will change your weapon to the first level of the weapon you picked up. 
+
+Red= Cannon 		Blue = Laser 		Purple = Arc
+
+Tips
+	Some enemies may be more susceptible to other kinds of weaponry; exchanging a high level type weapon for a low one could make your life easier.
+
+	If you encounter a larger opponent, you can still maneuver over/under them. Space is three dimensional. Keep in mind that they can still hit you as you pass over them. 
+
+	Your craft is capable of taking 3 hits. After that, the hull will not have enough structural integrity to maintain external pressure and the whole craft will burst apart under the strain.

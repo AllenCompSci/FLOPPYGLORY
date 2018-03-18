@@ -1,0 +1,90 @@
+//Michael Crookston
+//Problem #33
+//Due Date
+//Period 6
+//Mr. Baker
+//Libraries Section
+#include<iostream.h>
+#include<iomanip.h>
+#include<conio.h>
+#include<apstring.h>
+#include<fstream.h>
+#include<apvector.h>
+//Constants
+//Prototypes
+//Global Variables
+ifstream Planets;
+int A,I,Line5d[9],Line5m[9],Line8[9],Line11[9],Line12[9];
+apstring Name[9],Line10[9];
+double Line1[9],Line2[9],Line3[9],Line4d[9],Line4h[9],Line4m[9],Line4s[9];
+double Line6[9],Line7[9],Line9[9];
+char Again;
+//Program
+void main ()
+{clrscr();
+Planets.open("planets.txt");
+for(A=0;A<9;A++)
+	{getline(Planets,Name[A]);
+	getline(Planets,Line10[A]);
+	Planets>>Line1[A];
+	Planets>>Line2[A];
+	Planets>>Line3[A];
+	Planets>>Line4d[A];
+	Planets>>Line4h[A];
+	Planets>>Line4m[A];
+	Planets>>Line4s[A];
+	Planets>>Line5d[A];
+	Planets>>Line5m[A];
+	Planets>>Line6[A];
+	Planets>>Line7[A];
+	Planets>>Line8[A];
+	Planets>>Line9[A];
+	Planets>>Line11[A];
+	Planets>>Line12[A];}
+Planets.close();
+do
+{do
+{clrscr();
+cout<<"1. Mercury"<<endl<<"2. Venus"<<endl<<"3. Earth"<<endl;
+cout<<"4. Mars"<<endl<<"5. Jupiter"<<endl<<"6. Saturn"<<endl;
+cout<<"7. Uranus"<<endl<<"8. Neptune"<<endl<<"9. Pluto"<<endl;
+cout<<endl<<"Pick a planet:  ";
+cin>>I;}
+while(I>9 || I<1);
+clrscr();
+cout<<"Planet Name:                      "<<Name[I-1]<<endl;
+cout<<"Mean Distance from Sun  (km):     "<<Line1[I-1]<<endl;
+cout<<"Mean Distance from Sun (mile):    "<<Line2[I-1]<<endl;
+cout<<"Period of Revolution:             ";
+if(I>3)
+	cout<<Line3[I-1]<<" yrs"<<endl;
+else
+	cout<<Line3[I-1]<<" days"<<endl;
+cout<<"Rotation Period:                  ";
+if(Line4d[I-1]!=0)
+	cout<<Line4d[I-1]<<" days";
+if(Line4h[I-1]!=0)
+	cout<<Line4h[I-1]<<" hrs";
+if(Line4m[I-1]!=0)
+	cout<<Line4m[I-1]<<" mins";
+if(Line4s[I-1]!=0)
+	cout<<Line4s[I-1]<<" secs";
+cout<<endl<<"Inclination of Axis:            ";
+if(I==1)
+	cout<<"Near 0 degrees"<<endl;
+else
+	cout<<Line5d[I-1]<<" degrees "<<Line5m[I-1]<<" minutes"<<endl;
+cout<<"Inclination of Orbit to Ecliptic:  "<<Line6[I-1]<<" degrees"<<endl;
+cout<<"Eccentricity of Orbit:             "<<Line7[I-1]<<endl;
+cout<<"Equatorial diameter  (km):         "<<Line8[I-1]<<endl;
+cout<<"Equatorial diameter (mile):        "<<Line9[I-1]<<endl;
+cout<<"Atmosphere (main components):      "<<Line10[I-1]<<endl;
+cout<<"Satellites:                        "<<Line11[I-1]<<endl;
+cout<<"Rings:                             "<<Line12[I-1]<<endl;
+getch();
+clrscr();
+cout<<"Would you like to see more planet info (Y/N):  ";
+cin>>Again;
+}
+while(Again=='y' || Again=='Y');
+}

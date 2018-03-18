@@ -1,0 +1,49 @@
+// Sean Murray
+// Due Date
+// Program
+// Mr. Baker - 3rd pd.
+
+// Libraries
+#include <dos.h>
+#include <alloc.h>
+#include <graphics.h>
+#include <conio.h>
+#include <iostream.h>
+#include <iomanip.h>
+#include <fstream.h>
+#include <stdlib.h>
+
+#include <apstring.h>
+#include <apvector.h>
+#include <apmatrix.h>
+
+//Structures
+
+//Constants
+
+//Global Variables
+	int grdriver, grmode, errorcode;
+
+//Prototypes
+	void gr_start(int&, int&, int&);
+
+void main ()
+{
+	clrscr();
+	//gr_start(grdriver, grmode, errorcode);
+}
+
+void gr_start(int & grdriver, int & grmode, int & errorcode)
+{
+	grdriver = VGA;
+	grmode = VGAHI;
+	initgraph(&grdriver, &grmode, "C:\\TC\\BGI");
+	errorcode = graphresult();
+	if(errorcode != grOk)
+	{
+		clrscr();
+		cout << "Error: " << errorcode;
+		getch();
+		exit(1);
+	}
+};

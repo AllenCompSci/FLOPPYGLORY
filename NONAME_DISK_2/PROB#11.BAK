@@ -1,0 +1,40 @@
+//Jeremy Higgins
+//Due Date
+//Mr. Baker
+//Block 1
+#include<iostream.h>
+#include<iomanip.h>
+#include<conio.h>
+#include<apstring.h>
+//const
+const
+const
+const
+const
+const
+//var
+int Weight;
+apstring Planet;
+void main()
+{clrscr();
+cout<<"Enter Weight";
+cin>>Weight;
+cout<<"Select Planet";
+cin>>Planet;
+switch
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+getch();
+}

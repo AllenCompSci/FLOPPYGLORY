@@ -1,0 +1,173 @@
+// Sean Murray
+// Due Date
+// Prob 25
+// Mr. Baker - 3rd pd.
+
+// Libraries
+#include <conio.h>
+#include <iostream.h>
+#include <iomanip.h>
+#include <stdlib.h>
+
+#include <apstring.h>
+#include <apvector.h>
+#include <apmatrix.h>
+
+//Constants
+
+//Variables
+apvector <apstring> Words (20);
+char Puzzle [20][20];
+int I, J, K, Direction, X, Y, Xdir, Ydir, Letter, Bypass, Bypass2;
+
+void main ()
+{
+
+	//Initialization stuff
+
+	clrscr();
+	randomize();
+	for (I = 0;I < 20;I++)
+		for (J = 0;J < 20;J++)
+			Puzzle[I][J] = '±';
+
+	//Section 1: Gets all 5 letter words.
+
+	for (I = 0;I < 20;I++)
+	{
+		cout << "Enter a 5 letter word (Word #"<<I+1<<"): ";
+		do
+			cin >> Words[I];
+		while (Words[I].length() != 5);
+	}
+	clrscr();
+
+	//Section 2: Puts the words into a 20 x 20 matrix
+
+	for (I = 0;I < 20;I++)
+	{
+		do
+		{
+			Bypass = 0;
+			Bypass2 = 0;
+			Direction = random(8);
+			switch(Direction)
+			{
+				case 0: //up
+					Xdir = 0;
+					Ydir = -1;
+					X = random(20);
+					do
+						Y = random(20);
+					while (Y < 5);
+					break;
+
+				case 1: //down
+					Xdir = 0;
+					Ydir = 1;
+					X = random(20);
+					do
+						Y = random(20);
+					while (Y > 15);
+					break;
+
+				case 2: //left
+					Xdir = -1;
+					Ydir = 0;
+					Y = random(20);
+					do
+						X = random(20);
+					while (X < 5);
+					break;
+
+				case 3: //right
+					Xdir = 1;
+					Ydir = 0;
+					Y = random(20);
+					do
+						X = random(20);
+					while (X > 15);
+					break;
+
+				case 4: //left up
+					Xdir = -1;
+					Ydir = -1;
+					do {
+						X = random(20);
+						Y = random(20);
+					} while (X < 5 || Y < 5);
+					break;
+
+				case 5: //left down
+					Xdir = -1;
+					Ydir = 1;
+					do {
+						X = random(20);
+						Y = random(20);
+					} while (X < 5 || Y > 15);
+					break;
+
+				case 6: //right up
+					Xdir = 1;
+					Ydir = -1;
+					do {
+						X = random(20);
+						Y = random(20);
+					} while (X > 15 || Y < 5);
+					break;
+
+				case 7: //right down
+					Xdir = 1;
+					Ydir = 1;
+					do {
+						X = random(20);
+						Y = random(20);
+					} while (X > 15 || Y > 15);
+					break;
+			}
+
+			//This here checks for empty spaces for letters and possible
+			//overlapping of the letters.  It'll overlap in any direction...!
+
+			for(J = 0;J < 5 && Bypass2 == 0;J++)
+				if (Puzzle[X + (Xdir * J)][Y + (Ydir * J)] != '±')
+					if(Puzzle[X + (Xdir * J)][Y + (Ydir * J)] != Words[I][J])
+						Bypass2 = 1;
+
+			//Simply puts them in the matrix for later use!
+
+			if (Bypass2 == 0)
+				for(J = 0;J < 5;J++)
+				{
+					Puzzle[X + (Xdir * J)][Y + (Ydir * J)] = Words[I][J];
+					Bypass = 1;
+				}
+
+		} while (Bypass == 0);
+	}
+
+	// Section 3: Fills all the blanks cells in the matrix.
+
+	for (I = 0;I < 20;I++)
+		for (J = 0;J < 20;J++)
+			if (Puzzle[I][J] == '±')
+			{
+				Letter = random(2);
+				if (Letter == 0)
+					Puzzle[I][J] = char(random(26) + 65);
+				else
+					Puzzle[I][J] = char(random(26) + 97);
+			}
+
+	// Section 4: Puts it on the screen!
+
+	cout << "Your word search" << endl << endl;
+	for (I = 0;I < 20;I++)
+	{
+		for (J = 0;J < 20;J++)
+			cout << Puzzle[I][J] << " ";
+		cout << endl;
+	}
+
+	getch();
+}

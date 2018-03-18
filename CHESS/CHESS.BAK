@@ -1,0 +1,2701 @@
+// Sean Murray & Nathie DeBoer
+// Due Date
+// Chess
+// Mr.Baker - 3rd period
+
+// Libraries
+
+#include <alloc.h>
+#include <conio.h>
+#include <dos.h>
+#include <fstream.h>
+#include <graphics.h>
+#include <iomanip.h>
+#include <iostream.h>
+#include <stdlib.h>
+
+#include <apmatrix.h>
+#include <apstring.h>
+#include <apvector.h>
+
+//Structures
+
+struct Piece_Data
+{
+	bool On_Board;
+	int X, Y;
+	apstring Type;
+};
+
+struct Pieces
+{
+	apvector <Piece_Data> Pawns;
+	apvector <Piece_Data> Rooks;
+	apvector <Piece_Data> Knights;
+	apvector <Piece_Data> Bishops;
+	Piece_Data Queen, King;
+};
+
+//Constants
+
+//Global Variables
+
+bool Player_Turn; // Stores which player's turn it is
+int grdriver, grmode, errorcode;
+int Menu_Choice;
+bool Color_Choice;
+Pieces White, Black; // Store data for all pieces
+
+//Prototypes
+
+void gr_start(int&, int&, int&);
+void draw_board();
+void title_screen();
+int main_menu();
+void start_game(int &, bool &);
+void cycle_pieces(bool &, bool);
+void play_game(bool &);
+bool move_check(int, int, int, bool);
+
+void draw_pawn(bool, int, int);
+void draw_rook(bool, int, int);
+void draw_bishop(bool, int, int);
+void draw_knight(bool, int, int);
+void draw_queen(bool, int, int);
+void draw_king(bool, int, int);
+void draw_removed_pieces(bool);
+
+void main()
+{
+	randomize();
+	clrscr();
+
+	// Resize structures to the correct size
+
+	White.Pawns.resize(8);
+	White.Rooks.resize(2);
+	White.Knights.resize(2);
+	White.Bishops.resize(2);
+	Black.Pawns.resize(8);
+	Black.Rooks.resize(2);
+	Black.Knights.resize(2);
+	Black.Bishops.resize(2);
+
+	gr_start(grdriver, grmode, errorcode);
+
+	title_screen();
+
+	Menu_Choice = main_menu();
+
+	switch(Menu_Choice)
+	{
+		case 0:
+			start_game(Color_Choice, Player_Turn);
+			Player_Turn = 1;
+			play_game(Player_Turn);
+			break;
+		case 1:
+			closegraph();
+	}
+}
+
+void gr_start(int &grdriver, int &grmode, int &errorcode)
+{
+	grdriver = VGA;
+	grmode = VGAHI;
+	initgraph(&grdriver, &grmode, "C:\\TC\\BGI");
+	errorcode = graphresult();
+	if(errorcode != grOk)
+	{
+		clrscr();
+		cout << "Error: " << errorcode;
+		getch();
+		exit(1);
+	}
+};
+
+void draw_board()
+{
+	// This function draws the board without pieces on it.
+
+	int I, A; // Counting variables
+
+	setcolor(15);
+	rectangle(0, 0, 400, 400);
+	for(I = 50; I <= 400; I += 50)
+	{
+		line(I, 0, I, 400);
+		line(0, I, 400, I);
+	}
+	setfillstyle(1, 7);
+	for(I = 0; I <= 300; I += 100)
+		for(A = 0; A <= 300; A += 100)
+		{
+			bar(I+1, A+1, I+49, A+49);
+			bar(I+51, A+51, I+99, A+99);
+		}
+	setfillstyle(1, 0);
+	for(I = 0; I <= 300; I += 100)
+		for(A = 0; A <= 300; A += 100)
+		{
+			bar(I+51, A+1, I+99, A+49);
+			bar(I+1, A+51, I+49, A+99);
+		}
+};
+
+void title_screen()
+{
+	// This function draws the title screen.
+
+	settextstyle(4, 0, 9);
+	outtextxy(75, 50, "Chess");
+	settextstyle(3, 0, 1);
+	outtextxy(400, 450, "Press any key to continue.");
+	getch();
+	cleardevice();
+};
+
+int main_menu()
+{
+	// This function is the main menu.  It currently has 2 choices, New Game
+	// and Exit.  They're self-explanitory.
+
+	int Key_Press; // Stores the numerical value of user key pressed
+	int I; // Stores user's menu choice
+
+	setcolor(random(16));
+	rectangle(220, 150, 420, 200);
+	setcolor(15);
+	settextstyle(4, 0, 5);
+	outtextxy(225, 150, "New Game");
+	outtextxy(285, 250, "Exit");
+
+	Key_Press = 0;
+	I = 0;
+
+	while(Key_Press != 13)
+	{
+		setcolor(random(16));
+		if(I == 0)
+			rectangle(220, 150, 420, 200);
+		else
+			rectangle(220, 250, 420, 300);
+
+		if(kbhit())
+		{
+			Key_Press = char(getche());
+
+			if(Key_Press == 80 && I == 0)
+			{
+				setcolor(0);
+				rectangle(220, 150, 420, 200);
+				setcolor(random(16));
+				rectangle(220, 250, 420, 300);
+				I++;
+			}
+
+			if(Key_Press == 72 && I == 1)
+			{
+				setcolor(0);
+				rectangle(220, 250, 420, 300);
+				setcolor(random(16));
+				rectangle(220, 150, 420, 200);
+				I--;
+			}
+		}
+	}
+
+	return I;
+};
+
+void start_game(int &Color_Choice, bool &Player_Turn)
+{
+	// This function grabs the player data and sets up the board.
+
+	int I; // Counting variable
+	int Key_Press; // Stores numerical value of user key pressed
+
+	cleardevice();
+	setcolor(15);
+	settextstyle(3, 0, 2);
+	outtextxy(175, 150, "What color will player 1 be?");
+	setcolor(2);
+	outtextxy(280, 200, "White");
+	outtextxy(282, 250, "Black");
+	outtextxy(268, 300, "Random");
+	Color_Choice = 0;
+	Key_Press = 0;
+
+	while(Key_Press != 13)
+	{
+		setcolor(random(16));
+		if(Color_Choice == 0)
+			rectangle(275, 200, 335, 225);
+		else
+			if(Color_Choice == 1)
+				rectangle(275, 250, 335, 275);
+		else
+			rectangle(263, 300, 348, 327);
+
+		if(kbhit())
+		{
+			Key_Press = char(getche());
+			if(Key_Press == 80)
+				if(Color_Choice == 0)
+				{
+					Color_Choice++;
+					setcolor(0);
+					rectangle(275, 200, 335, 225);
+					setcolor(random(16));
+					rectangle(275, 250, 335, 275);
+				}
+				else
+					if(Color_Choice == 1)
+					{
+						Color_Choice++;
+						setcolor(0);
+						rectangle(275, 250, 335, 275);
+						setcolor(random(16));
+						rectangle(263, 300, 348, 327);
+					}
+
+			if(Key_Press == 72)
+				if(Color_Choice == 1)
+				{
+					Color_Choice--;
+					setcolor(0);
+					rectangle(275, 250, 335, 275);
+					setcolor(random(16));
+					rectangle(275, 200, 335, 225);
+				}
+				else
+					if(Color_Choice == 2)
+					{
+						Color_Choice--;
+						setcolor(0);
+						rectangle(263, 300, 348, 327);
+						setcolor(random(16));
+						rectangle(275, 250, 335, 275);
+					}
+		}
+	}
+
+	if(Color_Choice < 2)
+		Player_Turn = Color_Choice;
+	else
+		Player_Turn = random(2);
+
+	cleardevice();
+	draw_board();
+	draw_knight(0, 2, 1);
+	draw_knight(0, 7, 1);
+	draw_knight(1, 2, 8);
+	draw_knight(1, 7, 8);
+	draw_rook(0, 1, 1);
+	draw_rook(0, 8, 1);
+	draw_rook(1, 1, 8);
+	draw_rook(1, 8, 8);
+	draw_bishop(0, 3, 1);
+	draw_bishop(0, 6, 1);
+	draw_bishop(1, 3, 8);
+	draw_bishop(1, 6, 8);
+	draw_queen(1, 4, 8);
+	draw_queen(0, 4, 1);
+	draw_king(1, 5, 8);
+	draw_king(0, 5, 1);
+
+	for(I = 1; I < 9; I++)
+	{
+		draw_pawn(0, I, 2);
+		draw_pawn(1, I, 7);
+	}
+
+	for(I = 2; I < 10; I++)
+	{
+		White.Pawns[I-2].X = I-1;
+		White.Pawns[I-2].Y = 7;
+	}
+	White.Rooks[0].X = 1;
+	White.Rooks[0].Y = 8;
+	White.Rooks[1].X = 8;
+	White.Rooks[1].Y = 8;
+	White.Knights[0].X = 2;
+	White.Knights[0].Y = 8;
+	White.Knights[1].X = 7;
+	White.Knights[1].Y = 8;
+	White.Bishops[0].X = 3;
+	White.Bishops[0].Y = 8;
+	White.Bishops[1].X = 6;
+	White.Bishops[1].Y = 8;
+	White.Queen.X = 4;
+	White.Queen.Y = 8;
+	White.King.X = 5;
+	White.King.Y = 8;
+
+	for(I = 2; I < 10; I++)
+	{
+		Black.Pawns[I - 2].X = I-1;
+		Black.Pawns[I - 2].Y = 2;
+	}
+	Black.Rooks[0].X = 1;
+	Black.Rooks[0].Y = 1;
+	Black.Rooks[1].X = 8;
+	Black.Rooks[1].Y = 1;
+	Black.Knights[0].X = 2;
+	Black.Knights[0].Y = 1;
+	Black.Knights[1].X = 7;
+	Black.Knights[1].Y = 1;
+	Black.Bishops[0].X = 3;
+	Black.Bishops[0].Y = 1;
+	Black.Bishops[1].X = 6;
+	Black.Bishops[1].Y = 1;
+	Black.Queen.X = 4;
+	Black.Queen.Y = 1;
+	Black.King.X = 5;
+	Black.King.Y = 1;
+
+	for (I = 0; I < 8; I++)
+	{
+		White.Pawns[I].On_Board = 1;
+		Black.Pawns[I].On_Board = 1;
+	}
+
+	for (I = 0; I < 2; I++)
+	{
+		White.Rooks[I].On_Board = 1;
+		White.Bishops[I].On_Board = 1;
+		White.Knights[I].On_Board = 1;
+
+		Black.Rooks[I].On_Board = 1;
+		Black.Bishops[I].On_Board = 1;
+		Black.Knights[I].On_Board = 1;
+	}
+
+	Black.Queen.On_Board = 1;
+	White.Queen.On_Board = 1;
+	Black.King.On_Board = 1;
+	White.King.On_Board = 1;
+};
+
+void draw_knight(bool Color, int X, int Y)
+{
+	// This function draws a knight.
+
+	int BCol; // Stores line color
+
+	if(Color)
+	{
+		setcolor(8);
+		setfillstyle(1,15);
+		BCol = 8;
+	}
+	else
+	{
+		setcolor(15);
+		setfillstyle(1,8);
+		BCol = 15;
+	}
+
+	X = (X*50)-10;
+	Y = (Y*50)-10;
+
+	line(X, Y, X-30, Y);
+	line(X, Y, X, Y-3);
+	line(X-30, Y, X-30, Y-3);
+	line(X-5, Y-20, X+5, Y-25);
+	line(X-8, Y-27, X+4, Y-30);
+	line(X+4, Y-30, X+5, Y-25);
+	line(X-20, Y-30, X-17, Y-38);
+	line(X-14, Y-30, X-17, Y-38);
+	line(X+4, Y-26, X, Y-25);
+	arc(X-15, Y-20, 50, 180, 10);
+	arc(X-20, Y-20, 130, 270, 5);
+	arc(X-30, Y-14, 270, 360, 10);
+	arc(X, Y-14, 180, 270, 10);
+	arc(X-10, Y-20, 270, 360, 5);
+	circle(X-11, Y-26, 1);
+	floodfill(X-15, Y-5, BCol);
+	floodfill(X-18, Y-32, BCol);
+};
+
+void draw_pawn(bool Color, int X, int Y)
+{
+	// This function draws a pawn.
+
+	int BCol; // Stores line color
+
+	if(Color)
+	{
+		setcolor(8);
+		setfillstyle(1,15);
+		BCol = 8;
+	}
+	else
+	{
+		setcolor(15);
+		setfillstyle(1,8);
+		BCol = 15;
+	}
+
+	X = (X*50)-10;
+	Y = (Y*50)-10;
+
+	line(X, Y, X-30, Y);
+	line(X, Y, X, Y-3);
+	line(X-30, Y, X-30, Y-3);
+	line(X, Y-3, X-3, Y-3);
+	line(X-27, Y-3, X-30, Y-3);
+	arc(X-30, Y-15, 270, 360, 12);
+	arc(X, Y-15, 180, 270, 12);
+	circle(X-15, Y-22, 7);
+	floodfill(X-15, Y-10, BCol);
+	floodfill(X-15, Y-22, BCol);
+};
+
+void draw_rook(bool Color, int X, int Y)
+{
+	// This function draws a rook.
+
+	int BCol; // Stores line color
+
+	if(Color)
+	{
+		setcolor(8);
+		setfillstyle(1,15);
+		BCol = 8;
+	}
+	else
+	{
+		setcolor(15);
+		setfillstyle(1,8);
+		BCol = 15;
+	}
+
+	X = (X*50)-10;
+	Y = (Y*50)-10;
+
+	line(X, Y, X-30, Y);
+	line(X, Y, X, Y-3);
+	line(X-30, Y, X-30, Y-3);
+	line(X-30, Y-3, X-27, Y-3);
+	line(X, Y-3, X-3, Y-3);
+	line(X-3, Y-3, X-3, Y-20);
+	line(X-27, Y-3, X-27, Y-20);
+	line(X-27, Y-20, X-30, Y-20);
+	line(X-3, Y-20, X, Y-20);
+	line(X, Y-20, X, Y-30);
+	line(X-30, Y-20, X-30, Y-30);
+	line(X-30, Y-30, X-24, Y-30);
+	line(X-24, Y-30, X-24, Y-24);
+	line(X-24, Y-24, X-18, Y-24);
+	line(X-18, Y-24, X-18, Y-30);
+	line(X-18, Y-30, X-12, Y-30);
+	line(X-12, Y-30, X-12, Y-24);
+	line(X-12, Y-24, X-6, Y-24);
+	line(X-6, Y-24, X-6, Y-30);
+	line(X-6, Y-30, X, Y-30);
+	floodfill(X-15, Y-15, BCol);
+};
+
+void draw_bishop(bool Color, int X, int Y)
+{
+	// This function draws a bishop.
+
+	int BCol; // Stores line color
+
+	if(Color)
+	{
+		setcolor(8);
+		setfillstyle(1,15);
+		BCol = 8;
+	}
+	else
+	{
+		setcolor(15);
+		setfillstyle(1,8);
+		BCol = 15;
+	}
+
+	X = (X*50)-10;
+	Y = (Y*50)-10;
+
+	line(X, Y, X-30, Y);
+	line(X, Y, X, Y-3);
+	line(X-30, Y, X-30, Y-3);
+	line(X, Y-3, X-3, Y-3);
+	line(X-27, Y-3, X-30, Y-3);
+	arc(X-30, Y-15, 270, 360, 12);
+	arc(X, Y-15, 180, 270, 12);
+	arc(X-15, Y-22, 270, 0, 7);
+	arc(X-15, Y-22, 180, 270, 7);
+	line(X-22, Y-22, X-15, Y-32);
+	line(X-8, Y-22, X-15, Y-32);
+	line(X-18, Y-20, X-15, Y-32);
+	floodfill(X-15, Y-10, BCol);
+	floodfill(X-15, Y-22, BCol);
+};
+void draw_king(bool Color,int X, int Y)
+{
+	// This function draws a king.
+
+	int BCol; // Stores line color
+
+	if(Color)
+	{
+		setcolor(8);
+		setfillstyle(1,15);
+		BCol = 8;
+	}
+	else
+	{
+		setcolor(15);
+		setfillstyle(1,8);
+		BCol = 15;
+	}
+
+	X = (X*50)-10;
+	Y = (Y*50)-10;
+
+	line(X, Y, X-30, Y);
+	line(X, Y, X, Y-3);
+	line(X-30, Y, X-30, Y-3);
+	line(X, Y-3, X-3, Y-3);
+	line(X-27, Y-3, X-30, Y-3);
+	arc(X-30, Y-13, 270, 360, 10);
+	arc(X, Y-13, 180, 270, 10);
+	circle(X-15, Y-17, 7);
+	line(X-14, Y-24, X-14, Y-30);
+	line(X-16, Y-24, X-16, Y-30);
+	line(X-16, Y-30, X-18, Y-30);
+	line(X-12, Y-30, X-14, Y-30);
+	line(X-18, Y-30, X-18, Y-32);
+	line(X-12, Y-30, X-12, Y-32);
+	line(X-18, Y-32, X-16, Y-32);
+	line(X-12, Y-32, X-14, Y-32);
+	line(X-16, Y-32, X-16, Y-35);
+	line(X-14, Y-32, X-14, Y-35);
+	line(X-14, Y-35, X-15, Y-35);
+	putpixel(X-13, Y-19, BCol);
+	putpixel(X-17, Y-19, BCol);
+	arc(X-15, Y-21, 230, 310, 7);
+	floodfill(X-15, Y-5, BCol);
+	floodfill(X-15, Y-22, BCol);
+	floodfill(X-15, Y-30, BCol);
+};
+
+void draw_queen(bool Color, int X, int Y)
+{
+	// This function draws a queen.
+
+	int BCol; // Stores line color
+
+	if(Color)
+	{
+		setcolor(8);
+		setfillstyle(1,15);
+		BCol = 8;
+	}
+	else
+	{
+		setcolor(15);
+		setfillstyle(1,8);
+		BCol = 15;
+	}
+
+	X = (X*50)-10;
+	Y = (Y*50)-10;
+
+	line(X, Y, X-30, Y);
+	line(X, Y, X, Y-3);
+	line(X-30, Y, X-30, Y-3);
+	line(X, Y-3, X-3, Y-3);
+	line(X-27, Y-3, X-30, Y-3);
+	arc(X-30, Y-13, 270, 360, 10);
+	arc(X, Y-13, 180, 270, 10);
+	circle(X-15, Y-17, 7);
+	arc(X-18, Y-30, 180, 270, 7);
+	arc(X-12, Y-30, 270, 360, 7);
+	arc(X-21, Y-30, 180, 0,3);
+	arc(X-15, Y-30, 180, 0,3);
+	arc(X-9, Y-30, 180, 0, 3);
+	floodfill(X-15, Y-5, BCol);
+	floodfill(X-15, Y-22, BCol);
+	floodfill(X-15, Y-26, BCol);
+};
+
+void play_game(bool &Player_Turn)
+{
+	cycle_pieces(Player_Turn, Color_Choice);
+};
+
+void cycle_pieces(bool &Player_Turn, bool Color_Choice)
+{
+	bool BGColor; // Helps keep the board the right colors
+	//bool Not_Piece; // Keeps user from selecting an invalid piece or square
+	bool Valid; // Stores whether move is valid or not
+	int Key_Press; // Stores numerical value of user key pressed
+	int X, Y, X2, Y2; // Store location of the cursor
+	int I; // Counting variable
+
+	Key_Press = 0;
+	if (Player_Turn)
+	{
+		X = 1;
+		Y = 301;
+	}
+	else
+	{
+		X = 1;
+		Y = 51;
+	}
+
+	Valid = 0;
+	setcolor(15);
+	if(Color_Choice == 0)
+	{
+		outtextxy(450, 375, "Player 1");
+		outtextxy(450, 0, "Player 2");
+	}
+	else
+	{
+		outtextxy(450, 0, "Player 1");
+		outtextxy(450, 375, "Player 2");
+	}
+
+	if (Player_Turn)
+		BGColor = 1;
+	else
+		BGColor = 0;
+
+	setcolor(random(16));
+	rectangle(X, Y, X+48, Y+48);
+	rectangle(X+1, Y+1, X+47, Y+47);
+
+	while(Key_Press != 13)
+	{
+		setcolor(random(16));
+		rectangle(X, Y, X+48, Y+48);
+		rectangle(X+1, Y+1, X+47, Y+47);
+		if (Player_Turn)
+			rectangle(445, 378, 532, 402);
+		else
+			rectangle(445, 3, 532, 27);
+
+		if(kbhit())
+		{
+			Key_Press = char(getche());
+
+			if(Key_Press == 77 || Key_Press == 75)
+				if((Key_Press == 77 && X < 351) || (Key_Press == 75 && X > 1))
+				{
+					if(BGColor)
+					{
+						setcolor(7);
+						BGColor--;
+					}
+					else
+					{
+						setcolor(0);
+						BGColor++;
+					}
+					rectangle(X, Y, X+48, Y+48);
+					rectangle(X+1, Y+1, X+47, Y+47);
+					if(Key_Press == 77)
+						X += 50;
+					else
+						X -= 50;
+				}
+
+			if(Key_Press == 80 || Key_Press == 72)
+				if((Key_Press == 72 && Y > 1) || (Key_Press == 80 && Y < 351))
+				{
+					if(BGColor)
+					{
+						setcolor(7);
+						BGColor--;
+					}
+					else
+					{
+						setcolor(0);
+						BGColor++;
+					}
+					rectangle(X, Y, X+48, Y+48);
+					rectangle(X+1, Y+1, X+47, Y+47);
+					if(Key_Press == 80)
+						Y += 50;
+					else
+						Y -= 50;
+				}
+
+			if(Key_Press == 13)
+			{
+				X2 = (X+50)/50;
+				Y2 = (Y+50)/50;
+				Valid = move_check(X2, Y2, BGColor, Player_Turn);
+				if (!Valid)
+					cycle_pieces(Player_Turn, Color_Choice);
+				if (Player_Turn)
+					Player_Turn--;
+				else
+					Player_Turn++;
+				cycle_pieces(Player_Turn, Color_Choice);
+			}
+
+			if(Key_Press == 27)
+				exit(1);
+		}
+	}
+};
+
+bool move_check(int X, int Y, int BGColor, bool Player_Turn)
+{
+	bool Not_Piece; // Keeps user from selecting an invalid piece or square.
+	bool Valid; // Stores whether move is valid or not.
+	int I, J, K, A; // Counting variables.
+	int XMove, YMove; // Store coordinates of place being moved to.
+	int Key_Press; // Stores numerical value of user key pressed.
+	int XYBGColor; // Color for the square where the piece is.
+	bool Bypass, Break, Found_Piece; // Helps check for moving pieces.
+	int Add_To, XAdd, YAdd; // Adds to variables in a 'for' loop.
+	int Done_Move; // Helps Move the Queen.
+
+	XYBGColor = BGColor;
+	Key_Press = 0;
+	XMove = (X*50)-49;
+	YMove = (Y*50)-49;
+	Valid = 0;
+
+	setcolor(random(16));
+	rectangle(XMove, YMove, XMove+48, YMove+48);
+	rectangle(XMove+1, YMove+1, XMove+47, YMove+47);
+
+	while(Key_Press != 13)
+	{
+		setcolor(random(16));
+		rectangle(XMove, YMove, XMove + 48, YMove + 48);
+		rectangle(XMove + 1, YMove + 1, XMove + 47, YMove + 47);
+		if (Player_Turn)
+			rectangle(445, 378, 532, 402);
+		else
+			rectangle(445, 3, 532, 27);
+
+		if(kbhit())
+		{
+			Key_Press = char(getche());
+
+			if(Key_Press == 77 || Key_Press == 75)
+				if((Key_Press == 77 && XMove < 351) || (Key_Press == 75 && XMove > 1))
+				{
+					if(BGColor)
+					{
+						setcolor(7);
+						BGColor--;
+					}
+					else
+					{
+						setcolor(0);
+						BGColor++;
+					}
+					rectangle(XMove, YMove, XMove+48, YMove+48);
+					rectangle(XMove+1, YMove+1, XMove+47, YMove+47);
+					if(Key_Press == 77)
+						XMove += 50;
+					else
+						XMove -= 50;
+				}
+
+			if(Key_Press == 80 || Key_Press == 72)
+				if((Key_Press == 72 && YMove > 1) || (Key_Press == 80 && YMove < 351))
+				{
+					if(BGColor)
+					{
+						setcolor(7);
+						BGColor--;
+					}
+					else
+					{
+						setcolor(0);
+						BGColor++;
+					}
+					rectangle(XMove, YMove, XMove+48, YMove+48);
+					rectangle(XMove+1, YMove+1, XMove+47, YMove+47);
+					if(Key_Press == 80)
+						YMove += 50;
+					else
+						YMove -= 50;
+				}
+
+			if(Key_Press == 13)
+			{
+				XMove = (XMove+50)/50;
+				YMove = (YMove+50)/50;
+			}
+
+			if(Key_Press == 27)
+				exit(1);
+		}
+	}
+
+	if(Player_Turn)
+	{
+		// MOVE A WHITE PAWN!  Argh...so many if statements...
+		for(I = 0; I < 8; I++)
+			if(White.Pawns[I].X == X && White.Pawns[I].Y == Y)
+			{
+				Bypass = 1;
+				Found_Piece = 0;
+				for(J = 0; J < 8 && Bypass;J++)
+				{
+					if (White.Pawns[J].X == XMove && White.Pawns[J].Y == YMove)
+						Bypass = 0;
+					else if (Black.Pawns[J].X == XMove && Black.Pawns[J].Y == YMove)
+						Bypass = 0;
+					else if (Y-2 == YMove)
+					{
+						if (White.Pawns[J].X == XMove && White.Pawns[J].Y == YMove + 1)
+							Bypass = 0;
+						else if (Black.Pawns[J].X == XMove && Black.Pawns[J].Y == YMove + 1)
+							Bypass = 0;
+					}
+				}
+
+				for(J = 0; J < 2 && Bypass;J++)
+				{
+					if (White.Rooks[J].X == XMove && White.Rooks[J].Y == YMove)
+						Bypass = 0;
+					else if (Black.Rooks[J].X == XMove && Black.Rooks[J].Y == YMove)
+						Bypass = 0;
+					else if (White.Bishops[J].X == XMove && White.Bishops[J].Y == YMove)
+						Bypass = 0;
+					else if (Black.Bishops[J].X == XMove && Black.Bishops[J].Y == YMove)
+						Bypass = 0;
+					else if (White.Knights[J].X == XMove && White.Knights[J].Y == YMove)
+						Bypass = 0;
+					else if (Black.Knights[J].X == XMove && Black.Knights[J].Y == YMove)
+						Bypass = 0;
+					else if (Y-2 == YMove)
+					{
+						if (White.Rooks[J].X == XMove && White.Rooks[J].Y == YMove + 1)
+							Bypass = 0;
+						else if (Black.Rooks[J].X == XMove && Black.Rooks[J].Y == YMove + 1)
+							Bypass = 0;
+						else if (White.Bishops[J].X == XMove && White.Bishops[J].Y == YMove + 1)
+							Bypass = 0;
+						else if (Black.Bishops[J].X == XMove && Black.Bishops[J].Y == YMove + 1)
+							Bypass = 0;
+						else if (White.Knights[J].X == XMove && White.Knights[J].Y == YMove + 1)
+							Bypass = 0;
+						else if (Black.Knights[J].X == XMove && Black.Knights[J].Y == YMove + 1)
+							Bypass = 0;
+					}
+				}
+
+				if (White.King.X == XMove && White.King.Y == YMove)
+					Bypass = 0;
+				else if (Black.King.X == XMove && Black.King.Y == YMove)
+					Bypass = 0;
+				else if (White.Queen.X == XMove && White.Queen.Y == YMove)
+					Bypass = 0;
+				else if (Black.Queen.X == XMove && Black.Queen.Y == YMove)
+					Bypass = 0;
+				else if (Y-2 == YMove)
+				{
+					if (White.King.X == XMove && White.King.Y == YMove + 1)
+						Bypass = 0;
+					else if (Black.King.X == XMove && Black.King.Y == YMove + 1)
+						Bypass = 0;
+					else if (White.Queen.X == XMove && White.Queen.Y == YMove + 1)
+						Bypass = 0;
+					else if (Black.Queen.X == XMove && Black.Queen.Y == YMove + 1)
+						Bypass = 0;
+				}
+
+				else if (XMove - 1 == X || XMove + 1 == X)
+				{
+					for (J = 0; J < 8 && !Found_Piece; J++)
+						if (Black.Pawns[J].X == XMove && Black.Pawns[J].Y == YMove)
+						{
+							Found_Piece = 1;
+							Black.Pawns[J].On_Board = 0;
+							Black.Pawns[J].X = 0;
+							Black.Pawns[J].Y = 0;
+							draw_removed_pieces(0);
+						}
+					for (J = 0; J < 2 && !Found_Piece; J++)
+					{
+						if (Black.Rooks[J].X == XMove && Black.Rooks[J].Y == YMove)
+						{
+							Found_Piece = 1;
+							Black.Rooks[J].On_Board = 0;
+							Black.Rooks[J].X = 0;
+							Black.Rooks[J].Y = 0;
+							draw_removed_pieces(0);
+						}
+						if (Black.Knights[J].X == XMove && Black.Knights[J].Y == YMove)
+						{
+							Found_Piece = 1;
+							Black.Knights[J].On_Board = 0;
+							Black.Knights[J].X = 0;
+							Black.Knights[J].Y = 0;
+							draw_removed_pieces(0);
+						}
+						if (Black.Bishops[J].X == XMove && Black.Bishops[J].Y == YMove)
+						{
+							Found_Piece = 1;
+							Black.Bishops[J].On_Board = 0;
+							Black.Bishops[J].X = 0;
+							Black.Bishops[J].Y = 0;
+							draw_removed_pieces(0);
+						}
+					}
+					if (Black.Queen.X == XMove && Black.Queen.Y == YMove)
+					{
+						Found_Piece = 1;
+						Black.Queen.On_Board = 0;
+						Black.Queen.X = 0;
+						Black.Queen.Y = 0;
+						draw_removed_pieces(0);
+					}
+				}
+
+				if (X == XMove || Found_Piece)
+					if ((Y == 7 && Y-2 == YMove) || (Y-1 == YMove))
+						if ((Bypass || Found_Piece) && YMove < Y)
+						{
+							X = (X*50) - 49;
+							Y = (Y*50) - 49;
+							if (XYBGColor)
+								setfillstyle(1, 7);
+							else
+								setfillstyle(1, 0);
+
+							bar(X, Y, X+48, Y+48);
+
+							if (BGColor)
+								setfillstyle(1, 7);
+							else
+								setfillstyle(1, 0);
+
+							bar(XMove*50 - 49, YMove*50 - 49, XMove*50 - 1, YMove*50 - 1);
+							draw_pawn(1, XMove, YMove);
+
+							White.Pawns[I].X = XMove;
+							White.Pawns[I].Y = YMove;
+							Valid = 1;
+						}
+						else
+							Valid = 0;
+					else
+						Valid = 0;
+				else
+					Valid = 0;
+			}
+
+		for(I = 0; I < 2; I++)
+		{
+			// MOVE A WHITE ROOK!
+			if(White.Rooks[I].X == X && White.Rooks[I].Y == Y)
+			{
+				Bypass = 1;
+				if (XMove < X || YMove < Y)
+					Add_To = -1;
+				else
+					Add_To = 1;
+
+				if (X == XMove && Y == YMove)
+					Bypass = 0;
+				if (X != XMove && Y != YMove)
+					Bypass = 0;
+
+				if (XMove != X)
+				{
+					for (J = X+Add_To; J != XMove && Bypass; J += Add_To)
+					{
+						for(K = 0; K < 8 && Bypass; K++)
+						{
+							if (White.Pawns[K].X == J && White.Pawns[K].Y == Y)
+								Bypass = 0;
+							if (Black.Pawns[K].X == J && Black.Pawns[K].Y == Y)
+								Bypass = 0;
+						}
+						for(K = 0; K < 2 && Bypass; K++)
+						{
+							if (White.Rooks[K].X == J && White.Rooks[K].Y == Y)
+								Bypass = 0;
+							if (Black.Rooks[K].X == J && Black.Rooks[K].Y == Y)
+								Bypass = 0;
+							if (White.Bishops[K].X == J && White.Bishops[K].Y == Y)
+								Bypass = 0;
+							if (Black.Bishops[K].X == J && Black.Bishops[K].Y == Y)
+								Bypass = 0;
+							if (White.Knights[K].X == J && White.Knights[K].Y == Y)
+								Bypass = 0;
+							if (Black.Knights[K].X == J && Black.Knights[K].Y == Y)
+								Bypass = 0;
+						}
+						if (White.Queen.X == J && White.Queen.Y == Y)
+							Bypass = 0;
+						if (Black.Queen.X == J && Black.Queen.Y == Y)
+							Bypass = 0;
+					}
+				}
+
+				if (YMove != Y)
+				{
+					for (J = Y+Add_To; J != YMove && Bypass; J += Add_To)
+					{
+						for(K = 0; K < 8 && Bypass; K++)
+						{
+							if (White.Pawns[K].Y == J && White.Pawns[K].X == X)
+								Bypass = 0;
+							if (Black.Pawns[K].Y == J && Black.Pawns[K].X == X)
+								Bypass = 0;
+						}
+						for(K = 0; K < 2 && Bypass; K++)
+						{
+							if (White.Rooks[K].Y == J && White.Rooks[K].X == X)
+								Bypass = 0;
+							if (Black.Rooks[K].Y == J && Black.Rooks[K].X == X)
+								Bypass = 0;
+							if (White.Bishops[K].Y == J && White.Bishops[K].X == X)
+								Bypass = 0;
+							if (Black.Bishops[K].Y == J && Black.Bishops[K].X == X)
+								Bypass = 0;
+							if (White.Knights[K].Y == J && White.Knights[K].X == X)
+								Bypass = 0;
+							if (Black.Knights[K].Y == J && Black.Knights[K].X == X)
+								Bypass = 0;
+						}
+					}
+					if (White.Queen.Y == J && White.Queen.X == X)
+						Bypass = 0;
+					if (Black.Queen.Y == J && Black.Queen.X == X)
+						Bypass = 0;
+				}
+				if (Bypass)
+				{
+					for (J = 0; J < 8; J++)
+						if (Black.Pawns[J].X == XMove && Black.Pawns[J].Y == YMove)
+						{
+							Black.Pawns[J].X = 0;
+							Black.Pawns[J].Y = 0;
+							Black.Pawns[J].On_Board = 0;
+							draw_removed_pieces(0);
+						}
+					for (J = 0; J < 2; J++)
+					{
+						if (Black.Knights[J].X == XMove && Black.Knights[J].Y == YMove)
+						{
+							Black.Knights[J].X = 0;
+							Black.Knights[J].Y = 0;
+							Black.Knights[J].On_Board = 0;
+							draw_removed_pieces(0);
+						}
+						if (Black.Bishops[J].X == XMove && Black.Bishops[J].Y == YMove)
+						{
+							Black.Bishops[J].X = 0;
+							Black.Bishops[J].Y = 0;
+							Black.Bishops[J].On_Board = 0;
+							draw_removed_pieces(0);
+						}
+						if (Black.Rooks[J].X == XMove && Black.Rooks[J].Y == YMove)
+						{
+							Black.Rooks[J].X = 0;
+							Black.Rooks[J].Y = 0;
+							Black.Rooks[J].On_Board = 0;
+							draw_removed_pieces(0);
+						}
+					}
+					if (Black.Queen.X == XMove && Black.Queen.Y == YMove)
+					{
+						Black.Queen.X = 0;
+						Black.Queen.Y = 0;
+						Black.Queen.On_Board = 0;
+						draw_removed_pieces(0);
+					}
+				}
+				if (Bypass)
+				{
+					X = (X*50) - 49;
+					Y = (Y*50) - 49;
+
+					if (BGColor)
+						setfillstyle(1, 7);
+					else
+						setfillstyle(1, 0);
+					bar(XMove*50-49, YMove*50-49, XMove*50-1, YMove*50-1);
+
+					if (XYBGColor)
+						setfillstyle(1, 7);
+					else
+						setfillstyle(1, 0);
+					bar(X, Y, X+48, Y+48);
+					draw_rook(1, XMove, YMove);
+
+					White.Rooks[I].X = XMove;
+					White.Rooks[I].Y = YMove;
+					Valid = 1;
+				}
+				else
+					Valid = 0;
+			}
+
+			//MOVE A WHITE BISHOP!
+			else if(White.Bishops[I].X == X && White.Bishops[I].Y == Y)
+			{
+				Break = 0;
+				Bypass = 1;
+				if (YMove < Y) YAdd = -1;
+				else 					 YAdd = 1;
+				if (XMove < X) XAdd = -1;
+				else 					 XAdd = 1;
+				K = Y+YAdd;
+				A = Y+YAdd;
+
+				for (J = X+XAdd; J<9 && J>0 && A<9 && A>0 && Break == 0;J+=XAdd)
+				{
+					if (XMove == J && YMove == A)
+						Break = 1;
+					A+=YAdd;
+				}
+
+				for (J = X+XAdd;J != XMove && K != YMove && J<9 && J>0 && A<9 && A>0
+				&& Break == 1;J+=XAdd)
+				{
+					for (A = 0; A < 8; A++)
+					{
+						if (Black.Pawns[A].X == J && Black.Pawns[A].Y == K)
+							Break = 0;
+						if (White.Pawns[A].X == J && White.Pawns[A].Y == K)
+							Break = 0;
+					}
+					for (A = 0; A < 2; A++)
+					{
+						if (Black.Rooks[A].X == J && Black.Rooks[A].Y == K)
+							Break = 0;
+						if (White.Rooks[A].X == J && White.Rooks[A].Y == K)
+							Break = 0;
+						if (Black.Bishops[A].X == J && Black.Bishops[A].Y == K)
+							Break = 0;
+						if (White.Bishops[A].X == J && White.Bishops[A].Y == K)
+							Break = 0;
+						if (Black.Knights[A].X == J && Black.Knights[A].Y == K)
+							Break = 0;
+						if (White.Knights[A].X == J && White.Knights[A].Y == K)
+							Break = 0;
+					}
+					if (Black.Queen.X == J && Black.Queen.Y == K)
+						Break = 0;
+					else if (White.Queen.X == J && White.Queen.Y == K)
+						Break = 0;
+					else if (Black.King.X == J && Black.King.Y == K)
+						Break = 0;
+					else if (White.King.X == J && White.King.Y == K)
+						Break = 0;
+
+					K+= YAdd;
+				}
+				for (J = 0; J < 8; J++)
+				{
+					if (Black.Pawns[J].X == XMove && Black.Pawns[J].Y == YMove)
+					{
+						Black.Pawns[J].X = 0;
+						Black.Pawns[J].Y = 0;
+						Black.Pawns[J].On_Board = 0;
+					}
+					if (White.Pawns[J].X == XMove && White.Pawns[J].Y == YMove)
+						Break = 0;
+				}
+				for (J = 0; J < 2; J++)
+				{
+					if (Black.Rooks[J].X == XMove && Black.Rooks[J].Y == YMove)
+					{
+						Black.Rooks[J].X = 0;
+						Black.Rooks[J].Y = 0;
+						Black.Rooks[J].On_Board = 0;
+					}
+					if (Black.Knights[J].X == XMove && Black.Knights[J].Y == YMove)
+					{
+						Black.Knights[J].X = 0;
+						Black.Knights[J].Y = 0;
+						Black.Knights[J].On_Board = 0;
+					}
+					if (Black.Bishops[J].X == XMove && Black.Bishops[J].Y == YMove)
+					{
+						Black.Bishops[J].X = 0;
+						Black.Bishops[J].Y = 0;
+						Black.Bishops[J].On_Board = 0;
+					}
+					if (White.Rooks[J].X == XMove && White.Rooks[J].Y == YMove)
+						Break = 0;
+					if (White.Knights[J].X == XMove && White.Knights[J].Y == YMove)
+						Break = 0;
+					if (White.Bishops[J].X == XMove && White.Bishops[J].Y == YMove)
+						Break = 0;
+				}
+				if (Black.Queen.X == XMove && Black.Queen.Y == YMove)
+				{
+					Black.Queen.X = 0;
+					Black.Queen.Y = 0;
+					Black.Queen.On_Board = 0;
+				}
+				if (White.Queen.X == XMove && White.Queen.Y == YMove)
+					Break = 0;
+
+				if (!Break)
+				{
+					Bypass = 0;
+				}
+				if (Bypass)
+				{
+					X = (X*50) - 49;
+					Y = (Y*50) - 49;
+					if (BGColor)
+						setfillstyle(1, 7);
+					else
+						setfillstyle(1, 0);
+					bar(XMove*50-49, YMove*50-49, XMove*50-1, YMove*50-1);
+					if (XYBGColor)
+						setfillstyle(1, 7);
+					else
+						setfillstyle(1, 0);
+
+					bar(X, Y, X+48, Y+48);
+					draw_bishop(1, XMove, YMove);
+					White.Bishops[I].X = XMove;
+					White.Bishops[I].Y = YMove;
+					Valid = 1;
+				}
+				else
+					Valid = 0;
+			}
+
+			//MOVE A WHITE KNIGHT
+			else if(White.Knights[I].X == X && White.Knights[I].Y == Y)
+			{
+				Bypass = 0;
+				if (X - 2 == XMove && (Y + 1 == YMove || Y - 1 == YMove))
+					Bypass = 1;
+				if (X + 2 == XMove && (Y + 1 == YMove || Y - 1 == YMove))
+					Bypass = 1;
+				if (Y - 2 == YMove && (X + 1 == XMove || X - 1 == XMove))
+					Bypass = 1;
+				if (Y + 2 == YMove && (X + 1 == XMove || X - 1 == XMove))
+					Bypass = 1;
+
+				if (Bypass)
+				{
+					for (J = 0; J < 8; J++)
+					{
+						if (White.Pawns[J].X == XMove && White.Pawns[J].Y == YMove)
+							Bypass = 0;
+						else if (Black.Pawns[J].X == XMove && Black.Pawns[J].Y == YMove)
+						{
+							Black.Pawns[J].X = 0;
+							Black.Pawns[J].Y = 0;
+							Black.Pawns[J].On_Board = 0;
+							draw_removed_pieces(0);
+						}
+					}
+					for (J = 0; J < 2; J++)
+					{
+						if (White.Rooks[J].X == XMove && White.Rooks[J].Y == YMove)
+							Bypass = 0;
+						else if (White.Bishops[J].X==XMove && White.Bishops[J].Y==YMove)
+							Bypass = 0;
+						else if (White.Knights[J].X==XMove && White.Knights[J].Y==YMove)
+							Bypass = 0;
+						else if (Black.Rooks[J].X==XMove && Black.Rooks[J].Y==YMove)
+						{
+							Black.Rooks[J].X = 0;
+							Black.Rooks[J].Y = 0;
+							Black.Rooks[J].On_Board = 0;
+						}
+						else if (Black.Bishops[J].X==XMove && Black.Bishops[J].Y==YMove)
+						{
+							Black.Bishops[J].X = 0;
+							Black.Bishops[J].Y = 0;
+							Black.Bishops[J].On_Board = 0;
+						}
+						else if (Black.Knights[J].X==XMove && Black.Knights[J].Y==YMove)
+						{
+							Black.Knights[J].X = 0;
+							Black.Knights[J].Y = 0;
+							Black.Knights[J].On_Board = 0;
+						}
+					}
+					if (White.Queen.X == XMove && White.Queen.Y == YMove)
+						Bypass = 0;
+					else if (White.King.X == XMove && White.King.Y == YMove)
+						Bypass = 0;
+					else if (Black.Queen.X == XMove && Black.Queen.Y == YMove)
+					{
+						Black.Queen.X = 0;
+						Black.Queen.Y = 0;
+						Black.Queen.On_Board = 0;
+					}
+				}
+
+				if (Bypass)
+				{
+					X = (X*50) - 49;
+					Y = (Y*50) - 49;
+					if (BGColor)
+						setfillstyle(1, 7);
+					else
+						setfillstyle(1, 0);
+					bar(XMove*50-49, YMove*50-49, XMove*50-1, YMove*50-1);
+					if (XYBGColor)
+						setfillstyle(1, 7);
+					else
+						setfillstyle(1, 0);
+
+					bar(X, Y, X+48, Y+48);
+					draw_knight(1, XMove, YMove);
+					White.Knights[I].X = XMove;
+					White.Knights[I].Y = YMove;
+					Valid = 1;
+				}
+				else
+					Valid = 0;
+			}
+		}
+
+		//MOVE A WHITE QUEEN
+		if(White.Queen.X == X && White.Queen.Y == Y)
+		{
+			Break = 0;
+			Bypass = 1;
+			Done_Move = 0;
+
+			if (XMove < X || YMove < Y)
+				Add_To = -1;
+			else
+				Add_To = 1;
+			if (X == XMove && Y == YMove)
+				Bypass = 0;
+			if (X != XMove && Y != YMove)
+				Bypass = 0;
+
+			if (XMove != X && Y == YMove)
+			{
+				for (J = X+Add_To; J != XMove && Bypass; J += Add_To)
+				{
+					for(K = 0; K < 8 && Bypass; K++)
+					{
+						if (White.Pawns[K].X == J && White.Pawns[K].Y == Y)
+							Bypass = 0;
+						if (Black.Pawns[K].X == J && Black.Pawns[K].Y == Y)
+							Bypass = 0;
+						}
+						for(K = 0; K < 2 && Bypass; K++)
+						{
+							if (White.Rooks[K].X == J && White.Rooks[K].Y == Y)
+								Bypass = 0;
+							if (Black.Rooks[K].X == J && Black.Rooks[K].Y == Y)
+								Bypass = 0;
+							if (White.Bishops[K].X == J && White.Bishops[K].Y == Y)
+								Bypass = 0;
+							if (Black.Bishops[K].X == J && Black.Bishops[K].Y == Y)
+								Bypass = 0;
+							if (White.Knights[K].X == J && White.Knights[K].Y == Y)
+								Bypass = 0;
+							if (Black.Knights[K].X == J && Black.Knights[K].Y == Y)
+								Bypass = 0;
+						}
+						if (Black.Queen.X == J && Black.Queen.Y == Y)
+							Bypass = 0;
+					}
+				}
+
+			if (YMove != Y && X == XMove)
+			{
+				for (J = Y+Add_To; J != YMove && Bypass; J += Add_To)
+				{
+					for(K = 0; K < 8 && Bypass; K++)
+					{
+						if (White.Pawns[K].Y == J && White.Pawns[K].X == X)
+							Bypass = 0;
+						if (Black.Pawns[K].Y == J && Black.Pawns[K].X == X)
+							Bypass = 0;
+					}
+					for(K = 0; K < 2 && Bypass; K++)
+					{
+						if (White.Rooks[K].Y == J && White.Rooks[K].X == X)
+							Bypass = 0;
+						if (Black.Rooks[K].Y == J && Black.Rooks[K].X == X)
+							Bypass = 0;
+						if (White.Bishops[K].Y == J && White.Bishops[K].X == X)
+							Bypass = 0;
+						if (Black.Bishops[K].Y == J && Black.Bishops[K].X == X)
+							Bypass = 0;
+						if (White.Knights[K].Y == J && White.Knights[K].X == X)
+							Bypass = 0;
+						if (Black.Knights[K].Y == J && Black.Knights[K].X == X)
+							Bypass = 0;
+					}
+				}
+				if (Black.Queen.Y == J && Black.Queen.X == X)
+					Bypass = 0;
+			}
+
+			if (Bypass)
+			{
+				Done_Move = 1;
+				for (J = 0; J < 8; J++)
+					if (Black.Pawns[J].X == XMove && Black.Pawns[J].Y == YMove)
+					{
+						Black.Pawns[J].X = 0;
+						Black.Pawns[J].Y = 0;
+						Black.Pawns[J].On_Board = 0;
+						draw_removed_pieces(0);
+					}
+				for (J = 0; J < 2; J++)
+				{
+					if (Black.Knights[J].X == XMove && Black.Knights[J].Y == YMove)
+					{
+						Black.Knights[J].X = 0;
+						Black.Knights[J].Y = 0;
+						Black.Knights[J].On_Board = 0;
+						draw_removed_pieces(0);
+					}
+					if (Black.Bishops[J].X == XMove && Black.Bishops[J].Y == YMove)
+					{
+						Black.Bishops[J].X = 0;
+						Black.Bishops[J].Y = 0;
+						Black.Bishops[J].On_Board = 0;
+						draw_removed_pieces(0);
+					}
+					if (Black.Rooks[J].X == XMove && Black.Rooks[J].Y == YMove)
+					{
+						Black.Rooks[J].X = 0;
+						Black.Rooks[J].Y = 0;
+						Black.Rooks[J].On_Board = 0;
+						draw_removed_pieces(0);
+					}
+				}
+				if (Black.Queen.X == XMove && Black.Queen.Y == YMove)
+				{
+					Black.Queen.X = 0;
+					Black.Queen.Y = 0;
+					Black.Queen.On_Board = 0;
+					draw_removed_pieces(0);
+				}
+			}
+			if (Done_Move)
+			{
+				for (J = 0; J < 8; J++)
+					if (White.Pawns[J].X == XMove && White.Pawns[J].Y == YMove)
+						Bypass = 0;
+				for (J = 0; J < 2; J++)
+				{
+					if (White.Rooks[J].X == XMove && White.Rooks[J].Y == YMove)
+						Bypass = 0;
+					if (White.Bishops[J].X == XMove && White.Bishops[J].Y == YMove)
+						Bypass = 0;
+					if (White.Knights[J].X == XMove && White.Knights[J].Y == YMove)
+						Bypass = 0;
+				}
+				if (White.King.X == XMove && White.King.Y == YMove)
+					Bypass = 0;
+			}
+			if (!Done_Move)
+			{
+				if (YMove < Y) YAdd = -1;
+				else 					 YAdd = 1;
+				if (XMove < X) XAdd = -1;
+				else 					 XAdd = 1;
+				K = Y+YAdd;
+				A = Y+YAdd;
+
+				if (XMove < X || YMove < Y)
+					Add_To = -1;
+				else
+					Add_To = 1;
+				for (J = X+XAdd; J<9 && J>0 && A<9 && A>0 && Break == 0;J+=XAdd)
+				{
+					if (XMove == J && YMove == A)
+						Break = 1;
+					A+=YAdd;
+				}
+
+				for (J = X+XAdd;J != XMove && K != YMove && J<9 && J>0 && A<9 && A>0
+				&& Break == 1;J+=XAdd)
+				{
+					for (A = 0; A < 8; A++)
+					{
+						if (Black.Pawns[A].X == J && Black.Pawns[A].Y == K)
+							Break = 0;
+						if (White.Pawns[A].X == J && White.Pawns[A].Y == K)
+							Break = 0;
+					}
+					for (A = 0; A < 2; A++)
+					{
+						if (Black.Rooks[A].X == J && Black.Rooks[A].Y == K)
+							Break = 0;
+						if (White.Rooks[A].X == J && White.Rooks[A].Y == K)
+							Break = 0;
+						if (Black.Bishops[A].X == J && Black.Bishops[A].Y == K)
+							Break = 0;
+						if (White.Bishops[A].X == J && White.Bishops[A].Y == K)
+							Break = 0;
+						if (Black.Knights[A].X == J && Black.Knights[A].Y == K)
+							Break = 0;
+						if (White.Knights[A].X == J && White.Knights[A].Y == K)
+							Break = 0;
+					}
+					if (Black.Queen.X == J && White.Queen.Y == K)
+						Break = 0;
+					else if (Black.King.X == J && Black.King.Y == K)
+						Break = 0;
+					else if (White.King.X == J && White.King.Y == K)
+						Break = 0;
+					K+= YAdd;
+				}
+				for (J = 0; J < 8; J++)
+				{
+					if (Black.Pawns[J].X == XMove && Black.Pawns[J].Y == YMove)
+					{
+						Black.Pawns[J].X = 0;
+						Black.Pawns[J].Y = 0;
+						Black.Pawns[J].On_Board = 0;
+					}
+					if (White.Pawns[J].X == XMove && White.Pawns[J].Y == YMove)
+						Break = 0;
+				}
+				for (J = 0; J < 2; J++)
+				{
+					if (Black.Rooks[J].X == XMove && Black.Rooks[J].Y == YMove)
+					{
+						Black.Rooks[J].X = 0;
+						Black.Rooks[J].Y = 0;
+						Black.Rooks[J].On_Board = 0;
+					}
+					if (Black.Knights[J].X == XMove && Black.Knights[J].Y == YMove)
+					{
+						Black.Knights[J].X = 0;
+						Black.Knights[J].Y = 0;
+						Black.Knights[J].On_Board = 0;
+					}
+					if (Black.Bishops[J].X == XMove && Black.Bishops[J].Y == YMove)
+					{
+						Black.Bishops[J].X = 0;
+						Black.Bishops[J].Y = 0;
+						Black.Bishops[J].On_Board = 0;
+					}
+					if (White.Rooks[J].X == XMove && White.Rooks[J].Y == YMove)
+						Break = 0;
+					if (White.Knights[J].X == XMove && White.Knights[J].Y == YMove)
+						Break = 0;
+					if (White.Bishops[J].X == XMove && White.Bishops[J].Y == YMove)
+						Break = 0;
+				}
+				if (Black.Queen.X == XMove && Black.Queen.Y == YMove)
+				{
+					White.Queen.X = 0;
+					White.Queen.Y = 0;
+					White.Queen.On_Board = 0;
+				}
+				if (!Break)
+					Bypass = 0;
+				else
+					Bypass = 1;
+			}
+
+			if (Bypass)
+			{
+				X = (X*50) - 49;
+				Y = (Y*50) - 49;
+				if (BGColor)
+					setfillstyle(1, 7);
+				else
+					setfillstyle(1, 0);
+				bar(XMove*50-49, YMove*50-49, XMove*50-1, YMove*50-1);
+				if (XYBGColor)
+					setfillstyle(1, 7);
+				else
+					setfillstyle(1, 0);
+
+				bar(X, Y, X+48, Y+48);
+				draw_queen(1, XMove, YMove);
+				White.Queen.X = XMove;
+				White.Queen.Y = YMove;
+				Valid = 1;
+			}
+			else
+				Valid = 0;
+		}
+
+		//MOVE A WHITE KING
+		else if(White.King.X == X && White.King.Y == Y)
+		{
+			Bypass = 1;
+			Break = 0;
+			if (X == XMove && Y == YMove)
+				Bypass = 0;
+			if (XMove - X != 0 && XMove - X != 1 && XMove - X != -1)
+				Bypass = 0;
+			if (YMove - Y != 0 && YMove - Y != 1 && YMove - Y != -1)
+				Bypass = 0;
+
+			for(J = 0; J < 8 && Bypass;J++)
+			{
+				if (White.Pawns[J].X == XMove && White.Pawns[J].Y == YMove)
+					Bypass = 0;
+				if (Black.Pawns[J].X == XMove && Black.Pawns[J].Y == YMove)
+				{
+					Black.Pawns[J].X = 0;
+					Black.Pawns[J].Y = 0;
+					Black.Pawns[J].On_Board = 0;
+				}
+			}
+			for(J = 0; J < 2 && Bypass;J++)
+			{
+				if (White.Rooks[J].X == XMove && White.Rooks[J].Y == YMove)
+					Bypass = 0;
+				if (Black.Rooks[J].X == XMove && Black.Rooks[J].Y == YMove)
+				{
+					Black.Rooks[J].X = 0;
+					Black.Rooks[J].Y = 0;
+					Black.Rooks[J].On_Board = 0;
+				}
+				if (White.Bishops[J].X == XMove && White.Bishops[J].Y == YMove)
+					Bypass = 0;
+				if (Black.Bishops[J].X == XMove && Black.Bishops[J].Y == YMove)
+				{
+					Black.Bishops[J].X = 0;
+					Black.Bishops[J].Y = 0;
+					Black.Bishops[J].On_Board = 0;
+				}
+				if (White.Knights[J].X == XMove && White.Knights[J].Y == YMove)
+					Bypass = 0;
+				if (Black.Knights[J].X == XMove && Black.Knights[J].Y == YMove)
+				{
+					Black.Knights[J].X = 0;
+					Black.Knights[J].Y = 0;
+					Black.Knights[J].On_Board = 0;
+				}
+			}
+			if (White.Queen.X == XMove && White.Queen.Y == YMove)
+				Bypass = 0;
+
+			if (Bypass)
+			{
+				for (J = 0; J < 2 && !Break; J++)
+				{
+					if (Black.Rooks[J].X == XMove)
+						if (Black.Rooks[J].Y < YMove)
+						{
+							for (K = 0; K < 8 && !Break; K++)
+							{
+								if (White.Pawns[K].X == XMove && White.Pawns[K].Y < YMove)
+									if (White.Pawns[K].Y < White.King.Y)
+										Break = 1;
+								else if (Black.Pawns[K].X==XMove && Black.Pawns[K].Y<YMove)
+									if (Black.Pawns[K].Y < White.King.Y)
+										Break = 1;
+							}
+							for (K = 0; K < 2 && !Break; K++)
+							{
+								if (White.Rooks[K].X == XMove && White.Rooks[K].Y < YMove)
+									if (White.Rooks[K].Y < White.King.Y)
+										Break = 1;
+								else if (Black.Rooks[K].X==XMove && Black.Rooks[K].Y < YMove)
+									if (K != J)
+										if (Black.Rooks[K].Y < White.King.Y)
+											Break = 1;
+								else if (White.Bishops[K].X==XMove&&White.Bishops[K].Y<YMove)
+									if (White.Bishops[K].Y < White.King.Y)
+										Break = 1;
+								else if (Black.Bishops[K].X==XMove&&Black.Bishops[K].Y<YMove)
+									if (Black.Bishops[K].Y < White.King.Y)
+										Break = 1;
+								else if (White.Knights[K].X==XMove&&White.Knights[K].Y<YMove)
+									if (White.Knights[K].Y < White.King.Y)
+										Break = 1;
+								else if (Black.Knights[K].X==XMove&&Black.Knights[K].Y<YMove)
+									if (Black.Knights[K].Y < White.King.Y)
+										Break = 1;
+							}
+							if (Black.Queen.X==XMove&&Black.Queen.Y<YMove)
+								if (Black.Queen.Y < White.King.Y)
+									Break = 1;
+							else if (White.Queen.X==XMove&&White.Queen.Y<YMove)
+								if (White.Queen.Y < White.King.Y)
+									Break = 1;
+							else if (Black.King.X==XMove&&Black.King.Y<YMove)
+								if (Black.King.Y < White.King.Y)
+									Break = 1;
+						}
+						if (Black.Rooks[J].Y > YMove)
+						{
+							for (K = 0; K < 8 && !Break; K++)
+							{
+								if (White.Pawns[K].X == XMove && White.Pawns[K].Y > YMove)
+									if (White.Pawns[K].Y > White.King.Y)
+										Break = 1;
+								else if (Black.Pawns[K].X==XMove && Black.Pawns[K].Y>YMove)
+									if (Black.Pawns[K].Y > White.King.Y)
+										Break = 1;
+							}
+							for (K = 0; K < 2 && !Break; K++)
+							{
+								if (White.Rooks[J].X == XMove && White.Rooks[J].Y > YMove)
+									if (White.Rooks[K].Y > White.King.Y)
+										Break = 1;
+								else if (Black.Rooks[K].X==XMove && Black.Rooks[K].Y > YMove)
+									if (K != J)
+										if (Black.Rooks[K].Y > White.King.Y)
+											Break = 1;
+								else if (White.Bishops[K].X==XMove&&White.Bishops[K].Y>YMove)
+									if (White.Bishops[K].Y > White.King.Y)
+										Break = 1;
+								else if (Black.Bishops[K].X==XMove&&Black.Bishops[K].Y>YMove)
+									if (Black.Bishops[K].Y > White.King.Y)
+										Break = 1;
+								else if (White.Knights[K].X==XMove&&White.Knights[K].Y>YMove)
+									if (White.Knights[K].Y > White.King.Y)
+										Break = 1;
+								else if (Black.Knights[K].X==XMove&&Black.Knights[K].Y>YMove)
+									if (Black.Knights[K].Y > White.King.Y)
+										Break = 1;
+							}
+						}
+					if (Black.Rooks[J].Y == YMove)
+						if (Black.Rooks[J].X < XMove)
+						{
+							for (K = 0; K < 8 && !Break; K++)
+							{
+								if (White.Pawns[K].X < XMove && White.Pawns[K].Y == YMove)
+									if (White.Pawns[K].X < White.King.X)
+										Break = 1;
+								else if (Black.Pawns[K].X<XMove && Black.Pawns[K].Y==YMove)
+									if (Black.Pawns[K].X < White.King.X)
+										Break = 1;
+							}
+							for (K = 0; K < 2 && !Break; K++)
+							{
+								if (White.Rooks[K].X < XMove && White.Rooks[K].Y == YMove)
+									if (White.Rooks[K].X < White.King.X)
+										Break = 1;
+								else if (Black.Rooks[K].X<XMove && Black.Rooks[K].Y == YMove)
+									if (K != J)
+										if (Black.Rooks[K].X < White.King.X)
+											Break = 1;
+								else if (White.Bishops[K].X<XMove&&White.Bishops[K].Y==YMove)
+									if (White.Bishops[K].X < White.King.X)
+										Break = 1;
+								else if (Black.Bishops[K].X<XMove&&Black.Bishops[K].Y==YMove)
+									if (Black.Bishops[K].X < White.King.X)
+										Break = 1;
+								else if (White.Knights[K].X<XMove&&White.Knights[K].Y==YMove)
+									if (White.Knights[K].X < White.King.X)
+										Break = 1;
+								else if (Black.Knights[K].X<XMove&&Black.Knights[K].Y==YMove)
+									if (Black.Knights[K].X < White.King.X)
+										Break = 1;
+							}
+						}
+						if (Black.Rooks[J].X > XMove)
+						{
+							for (K = 0; K < 8 && !Break; K++)
+							{
+								if (White.Pawns[K].X > XMove && White.Pawns[K].Y == YMove)
+									if (White.Pawns[K].X > White.King.X)
+										Break = 1;
+								else if (Black.Pawns[K].X>XMove && Black.Pawns[K].Y==YMove)
+									if (Black.Pawns[K].X > White.King.X)
+										Break = 1;
+							}
+							for (K = 0; K < 2 && !Break; K++)
+							{
+								if (White.Rooks[K].X > XMove && White.Rooks[K].Y == YMove)
+									if (White.Rooks[K].X > White.King.X)
+										Break = 1;
+								else if (Black.Rooks[K].X>XMove && Black.Rooks[K].Y == YMove)
+									if (K != J)
+										if (Black.Rooks[K].X > White.King.X)
+											Break = 1;
+								else if (White.Bishops[K].X>XMove&&White.Bishops[K].Y==YMove)
+									if (White.Bishops[K].X > White.King.X)
+										Break = 1;
+								else if (Black.Bishops[K].X>XMove&&Black.Bishops[K].Y==YMove)
+									if (Black.Bishops[K].X > White.King.X)
+										Break = 1;
+								else if (White.Knights[K].X>XMove&&White.Knights[K].Y==YMove)
+									if (White.Knights[K].X > White.King.X)
+										Break = 1;
+								else if (Black.Knights[K].X>XMove&&Black.Knights[K].Y==YMove)
+									if (Black.Knights[K].X > White.King.X)
+										Break = 1;
+							}
+						}
+				}
+			}
+			if (!Break)
+				Bypass = 0;
+			if (Bypass)
+			{
+				X = (X*50) - 49;
+				Y = (Y*50) - 49;
+				if (BGColor)
+					setfillstyle(1, 7);
+				else
+					setfillstyle(1, 0);
+
+				bar(XMove*50-49, YMove*50-49, XMove*50-1, YMove*50-1);
+
+				if (XYBGColor)
+					setfillstyle(1, 7);
+				else
+					setfillstyle(1, 0);
+
+				bar(X, Y, X+48, Y+48);
+				draw_king(1, XMove, YMove);
+				White.King.X = XMove;
+				White.King.Y = YMove;
+				Valid = 1;
+			}
+			else
+				Valid = 0;
+		}
+	}
+	else
+	{
+		// MOVE A BLACK PAWN!  Argh...so many if statements...
+		for(I = 0; I < 8; I++)
+			if(Black.Pawns[I].X == X && Black.Pawns[I].Y == Y)
+			{
+				Bypass = 1;
+				Found_Piece = 0;
+				for(J = 0; J < 8 && Bypass;J++)
+				{
+					if (White.Pawns[J].X == XMove && White.Pawns[J].Y == YMove)
+						Bypass = 0;
+					else if (Black.Pawns[J].X == XMove && Black.Pawns[J].Y == YMove)
+						Bypass = 0;
+					else if (Y-2 == YMove)
+					{
+						if (White.Pawns[J].X == XMove && White.Pawns[J].Y == YMove - 1)
+							Bypass = 0;
+						else if (Black.Pawns[J].X == XMove && Black.Pawns[J].Y == YMove - 1)
+							Bypass = 0;
+					}
+				}
+
+				for(J = 0; J < 2 && Bypass;J++)
+				{
+					if (White.Rooks[J].X == XMove && White.Rooks[J].Y == YMove)
+						Bypass = 0;
+					else if (Black.Rooks[J].X == XMove && Black.Rooks[J].Y == YMove)
+						Bypass = 0;
+					else if (White.Bishops[J].X == XMove && White.Bishops[J].Y == YMove)
+						Bypass = 0;
+					else if (Black.Bishops[J].X == XMove && Black.Bishops[J].Y == YMove)
+						Bypass = 0;
+					else if (White.Knights[J].X == XMove && White.Knights[J].Y == YMove)
+						Bypass = 0;
+					else if (Black.Knights[J].X == XMove && Black.Knights[J].Y == YMove)
+						Bypass = 0;
+					else if (Y+2 == YMove)
+					{
+						if (White.Rooks[J].X == XMove && White.Rooks[J].Y == YMove - 1)
+							Bypass = 0;
+						else if (Black.Rooks[J].X == XMove && Black.Rooks[J].Y == YMove - 1)
+							Bypass = 0;
+						else if (White.Bishops[J].X == XMove && White.Bishops[J].Y == YMove - 1)
+							Bypass = 0;
+						else if (Black.Bishops[J].X == XMove && Black.Bishops[J].Y == YMove - 1)
+							Bypass = 0;
+						else if (White.Knights[J].X == XMove && White.Knights[J].Y == YMove - 1)
+							Bypass = 0;
+						else if (Black.Knights[J].X == XMove && Black.Knights[J].Y == YMove - 1)
+							Bypass = 0;
+					}
+				}
+
+				if (White.King.X == XMove && White.King.Y == YMove)
+					Bypass = 0;
+				else if (Black.King.X == XMove && Black.King.Y == YMove)
+					Bypass = 0;
+				else if (White.Queen.X == XMove && White.Queen.Y == YMove)
+					Bypass = 0;
+				else if (Black.Queen.X == XMove && Black.Queen.Y == YMove)
+					Bypass = 0;
+				else if (Y+2 == YMove)
+				{
+					if (White.King.X == XMove && White.King.Y == YMove - 1)
+						Bypass = 0;
+					else if (Black.King.X == XMove && Black.King.Y == YMove - 1)
+						Bypass = 0;
+					else if (White.Queen.X == XMove && White.Queen.Y == YMove - 1)
+						Bypass = 0;
+					else if (Black.Queen.X == XMove && Black.Queen.Y == YMove - 1)
+						Bypass = 0;
+				}
+
+				else if (XMove - 1 == X || XMove + 1 == X)
+				{
+					for (J = 0; J < 8 && !Found_Piece; J++)
+						if (White.Pawns[J].X == XMove && White.Pawns[J].Y == YMove)
+						{
+							Found_Piece = 1;
+							White.Pawns[J].On_Board = 0;
+							White.Pawns[J].X = 0;
+							White.Pawns[J].Y = 0;
+							draw_removed_pieces(1);
+						}
+					for (J = 0; J < 2 && !Found_Piece; J++)
+					{
+						if (White.Rooks[J].X == XMove && White.Rooks[J].Y == YMove)
+						{
+							Found_Piece = 1;
+							White.Rooks[J].On_Board = 0;
+							White.Rooks[J].X = 0;
+							White.Rooks[J].Y = 0;
+							draw_removed_pieces(1);
+						}
+						else if (White.Knights[J].X == XMove && White.Knights[J].Y == YMove)
+						{
+							Found_Piece = 1;
+							White.Knights[J].On_Board = 0;
+							White.Knights[J].X = 0;
+							White.Knights[J].Y = 0;
+							draw_removed_pieces(1);
+						}
+						else if (White.Bishops[J].X == XMove && White.Bishops[J].Y == YMove)
+						{
+							Found_Piece = 1;
+							White.Bishops[J].On_Board = 0;
+							White.Bishops[J].X = 0;
+							White.Bishops[J].Y = 0;
+							draw_removed_pieces(1);
+						}
+					}
+					if (White.Queen.X == XMove && White.Queen.Y == YMove)
+					{
+						Found_Piece = 1;
+						White.Queen.On_Board = 0;
+						White.Queen.X = 0;
+						White.Queen.Y = 0;
+							draw_removed_pieces(1);
+					}
+				}
+
+				if (X == XMove || Found_Piece)
+					if ((Y == 2 && Y+2 == YMove) || (Y+1 == YMove))
+						if ((Bypass || Found_Piece) && YMove > Y)
+						{
+							X = (X*50) - 49;
+							Y = (Y*50) - 49;
+							if (XYBGColor)
+								setfillstyle(1, 7);
+							else
+								setfillstyle(1, 0);
+
+							bar(X, Y, X+48, Y+48);
+
+							if (BGColor)
+								setfillstyle(1, 7);
+							else
+								setfillstyle(1, 0);
+
+							bar(XMove*50 - 49, YMove*50 - 49, XMove*50 - 1, YMove*50 - 1);
+							draw_pawn(0, XMove, YMove);
+
+							Black.Pawns[I].X = XMove;
+							Black.Pawns[I].Y = YMove;
+							Valid = 1;
+						}
+						else
+							Valid = 0;
+					else
+						Valid = 0;
+				else
+					Valid = 0;
+			}
+
+		for(I = 0; I < 2; I++)
+		{
+			// MOVE A BLACK ROOK!
+			if(Black.Rooks[I].X == X && Black.Rooks[I].Y == Y)
+			{
+				Bypass = 1;
+				if (XMove < X || YMove < Y)
+					Add_To = -1;
+				else
+					Add_To = 1;
+
+				if (X == XMove && Y == YMove)
+					Bypass = 0;
+				if (X != XMove && Y != YMove)
+					Bypass = 0;
+
+				if (XMove != X)
+				{
+					for (J = X+Add_To; J != XMove && Bypass; J += Add_To)
+					{
+						for(K = 0; K < 8 && Bypass; K++)
+						{
+							if (White.Pawns[K].X == J && White.Pawns[K].Y == Y)
+								Bypass = 0;
+							if (Black.Pawns[K].X == J && Black.Pawns[K].Y == Y)
+								Bypass = 0;
+						}
+						for(K = 0; K < 2 && Bypass; K++)
+						{
+							if (White.Rooks[K].X == J && White.Rooks[K].Y == Y)
+								Bypass = 0;
+							if (Black.Rooks[K].X == J && Black.Rooks[K].Y == Y)
+								Bypass = 0;
+							if (White.Bishops[K].X == J && White.Bishops[K].Y == Y)
+								Bypass = 0;
+							if (Black.Bishops[K].X == J && Black.Bishops[K].Y == Y)
+								Bypass = 0;
+							if (White.Knights[K].X == J && White.Knights[K].Y == Y)
+								Bypass = 0;
+							if (Black.Knights[K].X == J && Black.Knights[K].Y == Y)
+								Bypass = 0;
+						}
+						if (White.Queen.X == J && White.Queen.Y == Y)
+							Bypass = 0;
+						if (Black.Queen.X == J && Black.Queen.Y == Y)
+							Bypass = 0;
+					}
+				}
+
+				if (YMove != Y)
+				{
+					for (J = Y+Add_To; J != YMove && Bypass; J += Add_To)
+					{
+						for(K = 0; K < 8 && Bypass; K++)
+						{
+							if (White.Pawns[K].Y == J && White.Pawns[K].X == X)
+								Bypass = 0;
+							if (Black.Pawns[K].Y == J && Black.Pawns[K].X == X)
+								Bypass = 0;
+						}
+						for(K = 0; K < 2 && Bypass; K++)
+						{
+							if (White.Rooks[K].Y == J && White.Rooks[K].X == X)
+								Bypass = 0;
+							if (Black.Rooks[K].Y == J && Black.Rooks[K].X == X)
+								Bypass = 0;
+							if (White.Bishops[K].Y == J && White.Bishops[K].X == X)
+								Bypass = 0;
+							if (Black.Bishops[K].Y == J && Black.Bishops[K].X == X)
+								Bypass = 0;
+							if (White.Knights[K].Y == J && White.Knights[K].X == X)
+								Bypass = 0;
+							if (Black.Knights[K].Y == J && Black.Knights[K].X == X)
+								Bypass = 0;
+						}
+					}
+					if (White.Queen.Y == J && White.Queen.X == X)
+						Bypass = 0;
+					if (Black.Queen.Y == J && Black.Queen.X == X)
+						Bypass = 0;
+				}
+
+				if (Bypass)
+				{
+					for (J = 0; J < 8; J++)
+						if (White.Pawns[J].X == XMove && White.Pawns[J].Y == YMove)
+						{
+							White.Pawns[J].X = 0;
+							White.Pawns[J].Y = 0;
+							White.Pawns[J].On_Board = 0;
+							draw_removed_pieces(1);
+						}
+					for (J = 0; J < 2; J++)
+					{
+						if (White.Knights[J].X == XMove && White.Knights[J].Y == YMove)
+						{
+							White.Knights[J].X = 0;
+							White.Knights[J].Y = 0;
+							White.Knights[J].On_Board = 0;
+							draw_removed_pieces(1);
+						}
+						if (White.Bishops[J].X == XMove && White.Bishops[J].Y == YMove)
+						{
+							White.Bishops[J].X = 0;
+							White.Bishops[J].Y = 0;
+							White.Bishops[J].On_Board = 0;
+							draw_removed_pieces(1);
+						}
+						if (White.Rooks[J].X == XMove && White.Rooks[J].Y == YMove)
+						{
+							White.Rooks[J].X = 0;
+							White.Rooks[J].Y = 0;
+							White.Rooks[J].On_Board = 0;
+							draw_removed_pieces(1);
+						}
+					}
+					if (White.Queen.X == XMove && White.Queen.Y == YMove)
+					{
+						White.Queen.X = 0;
+						White.Queen.Y = 0;
+						White.Queen.On_Board = 0;
+						draw_removed_pieces(1);
+					}
+				}
+				if (Bypass)
+				{
+					X = (X*50) - 49;
+					Y = (Y*50) - 49;
+
+					if (BGColor)
+						setfillstyle(1, 7);
+					else
+						setfillstyle(1, 0);
+					bar(XMove*50-49, YMove*50-49, XMove*50-1, YMove*50-1);
+
+					if (XYBGColor)
+						setfillstyle(1, 7);
+					else
+						setfillstyle(1, 0);
+					bar(X, Y, X+48, Y+48);
+					draw_rook(0, XMove, YMove);
+
+					Black.Rooks[I].X = XMove;
+					Black.Rooks[I].Y = YMove;
+					Valid = 1;
+				}
+				else
+					Valid = 0;
+			}
+
+			//MOVE A BLACK BISHOP
+			else if(Black.Bishops[I].X == X && Black.Bishops[I].Y == Y)
+			{
+				Break = 0;
+				Bypass = 1;
+				if (YMove < Y) YAdd = -1;
+				else 					 YAdd = 1;
+				if (XMove < X) XAdd = -1;
+				else 					 XAdd = 1;
+				K = Y+YAdd;
+				A = Y+YAdd;
+
+				for (J = X+XAdd; J<9 && J>0 && A<9 && A>0 && Break == 0;J+=XAdd)
+				{
+					if (XMove == J && YMove == A)
+						Break = 1;
+					A+=YAdd;
+				}
+
+				for (J = X+XAdd;J != XMove && K != YMove && J<9 && J>0 && A<9 && A>0
+				&& Break == 1;J+=XAdd)
+				{
+					for (A = 0; A < 8; A++)
+					{
+						if (Black.Pawns[A].X == J && Black.Pawns[A].Y == K)
+							Break = 0;
+						if (White.Pawns[A].X == J && White.Pawns[A].Y == K)
+							Break = 0;
+					}
+					for (A = 0; A < 2; A++)
+					{
+						if (Black.Rooks[A].X == J && Black.Rooks[A].Y == K)
+							Break = 0;
+						if (White.Rooks[A].X == J && White.Rooks[A].Y == K)
+							Break = 0;
+						if (Black.Bishops[A].X == J && Black.Bishops[A].Y == K)
+							Break = 0;
+						if (White.Bishops[A].X == J && White.Bishops[A].Y == K)
+							Break = 0;
+						if (Black.Knights[A].X == J && Black.Knights[A].Y == K)
+							Break = 0;
+						if (White.Knights[A].X == J && White.Knights[A].Y == K)
+							Break = 0;
+					}
+					if (Black.Queen.X == J && Black.Queen.Y == K)
+						Break = 0;
+					else if (White.Queen.X == J && White.Queen.Y == K)
+						Break = 0;
+					else if (Black.King.X == J && Black.King.Y == K)
+						Break = 0;
+					else if (White.King.X == J && White.King.Y == K)
+						Break = 0;
+
+					K+= YAdd;
+				}
+				for (J = 0; J < 8; J++)
+				{
+					if (White.Pawns[J].X == XMove && White.Pawns[J].Y == YMove)
+					{
+						White.Pawns[J].X = 0;
+						White.Pawns[J].Y = 0;
+						White.Pawns[J].On_Board = 0;
+					}
+					if (Black.Pawns[J].X == XMove && Black.Pawns[J].Y == YMove)
+						Break = 0;
+				}
+				for (J = 0; J < 2; J++)
+				{
+					if (White.Rooks[J].X == XMove && White.Rooks[J].Y == YMove)
+					{
+						White.Rooks[J].X = 0;
+						White.Rooks[J].Y = 0;
+						White.Rooks[J].On_Board = 0;
+					}
+					if (White.Knights[J].X == XMove && White.Knights[J].Y == YMove)
+					{
+						White.Knights[J].X = 0;
+						White.Knights[J].Y = 0;
+						White.Knights[J].On_Board = 0;
+					}
+					if (White.Bishops[J].X == XMove && White.Bishops[J].Y == YMove)
+					{
+						White.Bishops[J].X = 0;
+						White.Bishops[J].Y = 0;
+						White.Bishops[J].On_Board = 0;
+					}
+					if (Black.Rooks[J].X == XMove && Black.Rooks[J].Y == YMove)
+						Break = 0;
+					if (Black.Knights[J].X == XMove && Black.Knights[J].Y == YMove)
+						Break = 0;
+					if (Black.Bishops[J].X == XMove && Black.Bishops[J].Y == YMove)
+						Break = 0;
+				}
+				if (White.Queen.X == XMove && White.Queen.Y == YMove)
+				{
+					White.Queen.X = 0;
+					White.Queen.Y = 0;
+					White.Queen.On_Board = 0;
+				}
+				if (Black.Queen.X == XMove && Black.Queen.Y == YMove)
+					Break = 0;
+
+				if (!Break)
+				{
+					Bypass = 0;
+				}
+				if (Bypass)
+				{
+					X = (X*50) - 49;
+					Y = (Y*50) - 49;
+					if (BGColor)
+						setfillstyle(1, 7);
+					else
+						setfillstyle(1, 0);
+					bar(XMove*50-49, YMove*50-49, XMove*50-1, YMove*50-1);
+					if (XYBGColor)
+						setfillstyle(1, 7);
+					else
+						setfillstyle(1, 0);
+
+					bar(X, Y, X+48, Y+48);
+					draw_bishop(0, XMove, YMove);
+					Black.Bishops[I].X = XMove;
+					Black.Bishops[I].Y = YMove;
+					Valid = 1;
+				}
+				else
+					Valid = 0;
+			}
+
+			//MOVE A BLACK KNIGHT
+			else if(Black.Knights[I].X == X && Black.Knights[I].Y == Y)
+			{
+				Bypass = 0;
+				if (X - 2 == XMove && (Y + 1 == YMove || Y - 1 == YMove))
+					Bypass = 1;
+				if (X + 2 == XMove && (Y + 1 == YMove || Y - 1 == YMove))
+					Bypass = 1;
+				if (Y - 2 == YMove && (X + 1 == XMove || X - 1 == XMove))
+					Bypass = 1;
+				if (Y + 2 == YMove && (X + 1 == XMove || X - 1 == XMove))
+					Bypass = 1;
+
+				if (Bypass)
+				{
+					for (J = 0; J < 8; J++)
+					{
+						if (Black.Pawns[J].X == XMove && Black.Pawns[J].Y == YMove)
+							Bypass = 0;
+						else if (White.Pawns[J].X == XMove && White.Pawns[J].Y == YMove)
+						{
+							White.Pawns[J].X = 0;
+							White.Pawns[J].Y = 0;
+							White.Pawns[J].On_Board = 0;
+							draw_removed_pieces(1);
+						}
+					}
+					for (J = 0; J < 2; J++)
+					{
+						if (Black.Rooks[J].X == XMove && Black.Rooks[J].Y == YMove)
+							Bypass = 0;
+						else if (Black.Bishops[J].X==XMove && Black.Bishops[J].Y==YMove)
+							Bypass = 0;
+						else if (Black.Knights[J].X==XMove && Black.Knights[J].Y==YMove)
+							Bypass = 0;
+						else if (White.Rooks[J].X==XMove && White.Rooks[J].Y==YMove)
+						{
+							White.Rooks[J].X = 0;
+							White.Rooks[J].Y = 0;
+							White.Rooks[J].On_Board = 0;
+							draw_removed_pieces(1);
+						}
+						else if (White.Bishops[J].X==XMove && White.Bishops[J].Y==YMove)
+						{
+							White.Bishops[J].X = 0;
+							White.Bishops[J].Y = 0;
+							White.Bishops[J].On_Board = 0;
+							draw_removed_pieces(1);
+						}
+						else if (White.Knights[J].X==XMove && White.Knights[J].Y==YMove)
+						{
+							White.Knights[J].X = 0;
+							White.Knights[J].Y = 0;
+							White.Knights[J].On_Board = 0;
+							draw_removed_pieces(1);
+						}
+					}
+					if (Black.Queen.X == XMove && Black.Queen.Y == YMove)
+						Bypass = 0;
+					else if (Black.King.X == XMove && Black.King.Y == YMove)
+						Bypass = 0;
+					else if (White.Queen.X == XMove && White.Queen.Y == YMove)
+					{
+						White.Queen.X = 0;
+						White.Queen.Y = 0;
+						White.Queen.On_Board = 0;
+						draw_removed_pieces(1);
+					}
+				}
+
+				if (Bypass)
+				{
+					X = (X*50) - 49;
+					Y = (Y*50) - 49;
+					if (BGColor)
+						setfillstyle(1, 7);
+					else
+						setfillstyle(1, 0);
+					bar(XMove*50-49, YMove*50-49, XMove*50-1, YMove*50-1);
+					if (XYBGColor)
+						setfillstyle(1, 7);
+					else
+						setfillstyle(1, 0);
+
+					bar(X, Y, X+48, Y+48);
+					draw_knight(0, XMove, YMove);
+					Black.Knights[I].X = XMove;
+					Black.Knights[I].Y = YMove;
+					Valid = 1;
+				}
+				else
+					Valid = 0;
+			}
+
+		}
+
+		// MOVE A BLACK QUEEN
+		if(Black.Queen.X == X && Black.Queen.Y == Y)
+		{
+			Break = 0;
+			Bypass = 1;
+			Done_Move = 0;
+
+			if (XMove < X || YMove < Y)
+				Add_To = -1;
+			else
+				Add_To = 1;
+			if (X == XMove && Y == YMove)
+				Bypass = 0;
+			if (X != XMove && Y != YMove)
+				Bypass = 0;
+
+			if (XMove != X && Y == YMove)
+			{
+				for (J = X+Add_To; J != XMove && Bypass; J += Add_To)
+				{
+					for(K = 0; K < 8 && Bypass; K++)
+					{
+						if (White.Pawns[K].X == J && White.Pawns[K].Y == Y)
+							Bypass = 0;
+						if (Black.Pawns[K].X == J && Black.Pawns[K].Y == Y)
+							Bypass = 0;
+						}
+						for(K = 0; K < 2 && Bypass; K++)
+						{
+							if (White.Rooks[K].X == J && White.Rooks[K].Y == Y)
+								Bypass = 0;
+							if (Black.Rooks[K].X == J && Black.Rooks[K].Y == Y)
+								Bypass = 0;
+							if (White.Bishops[K].X == J && White.Bishops[K].Y == Y)
+								Bypass = 0;
+							if (Black.Bishops[K].X == J && Black.Bishops[K].Y == Y)
+								Bypass = 0;
+							if (White.Knights[K].X == J && White.Knights[K].Y == Y)
+								Bypass = 0;
+							if (Black.Knights[K].X == J && Black.Knights[K].Y == Y)
+								Bypass = 0;
+						}
+						if (White.Queen.X == J && White.Queen.Y == Y)
+							Bypass = 0;
+					}
+				}
+
+			if (YMove != Y && X == XMove)
+			{
+				for (J = Y+Add_To; J != YMove && Bypass; J += Add_To)
+				{
+					for(K = 0; K < 8 && Bypass; K++)
+					{
+						if (White.Pawns[K].Y == J && White.Pawns[K].X == X)
+							Bypass = 0;
+						if (Black.Pawns[K].Y == J && Black.Pawns[K].X == X)
+							Bypass = 0;
+					}
+					for(K = 0; K < 2 && Bypass; K++)
+					{
+						if (White.Rooks[K].Y == J && White.Rooks[K].X == X)
+							Bypass = 0;
+						if (Black.Rooks[K].Y == J && Black.Rooks[K].X == X)
+							Bypass = 0;
+						if (White.Bishops[K].Y == J && White.Bishops[K].X == X)
+							Bypass = 0;
+						if (Black.Bishops[K].Y == J && Black.Bishops[K].X == X)
+							Bypass = 0;
+						if (White.Knights[K].Y == J && White.Knights[K].X == X)
+							Bypass = 0;
+						if (Black.Knights[K].Y == J && Black.Knights[K].X == X)
+							Bypass = 0;
+					}
+				}
+				if (White.Queen.Y == J && White.Queen.X == X)
+					Bypass = 0;
+			}
+
+			if (Bypass)
+			{
+				Done_Move = 1;
+				for (J = 0; J < 8; J++)
+					if (White.Pawns[J].X == XMove && White.Pawns[J].Y == YMove)
+					{
+						White.Pawns[J].X = 0;
+						White.Pawns[J].Y = 0;
+						White.Pawns[J].On_Board = 0;
+						draw_removed_pieces(1);
+					}
+				for (J = 0; J < 2; J++)
+				{
+					if (White.Knights[J].X == XMove && White.Knights[J].Y == YMove)
+					{
+						White.Knights[J].X = 0;
+						White.Knights[J].Y = 0;
+						White.Knights[J].On_Board = 0;
+						draw_removed_pieces(1);
+					}
+					if (White.Bishops[J].X == XMove && White.Bishops[J].Y == YMove)
+					{
+						White.Bishops[J].X = 0;
+						White.Bishops[J].Y = 0;
+						White.Bishops[J].On_Board = 0;
+						draw_removed_pieces(1);
+					}
+					if (White.Rooks[J].X == XMove && White.Rooks[J].Y == YMove)
+					{
+						White.Rooks[J].X = 0;
+						White.Rooks[J].Y = 0;
+						White.Rooks[J].On_Board = 0;
+						draw_removed_pieces(1);
+					}
+				}
+				if (White.Queen.X == XMove && White.Queen.Y == YMove)
+				{
+					White.Queen.X = 0;
+					White.Queen.Y = 0;
+					White.Queen.On_Board = 0;
+					draw_removed_pieces(1);
+				}
+			}
+			if (Done_Move)
+			{
+				for (J = 0; J < 8; J++)
+					if (Black.Pawns[J].X == XMove && Black.Pawns[J].Y == YMove)
+						Bypass = 0;
+				for (J = 0; J < 2; J++)
+				{
+					if (Black.Rooks[J].X == XMove && Black.Rooks[J].Y == YMove)
+						Bypass = 0;
+					if (Black.Bishops[J].X == XMove && Black.Bishops[J].Y == YMove)
+						Bypass = 0;
+					if (Black.Knights[J].X == XMove && Black.Knights[J].Y == YMove)
+						Bypass = 0;
+				}
+				if (Black.King.X == XMove && Black.King.Y == YMove)
+					Bypass = 0;
+			}
+			if (!Done_Move)
+			{
+				if (YMove < Y) YAdd = -1;
+				else 					 YAdd = 1;
+				if (XMove < X) XAdd = -1;
+				else 					 XAdd = 1;
+				K = Y+YAdd;
+				A = Y+YAdd;
+
+				if (XMove < X || YMove < Y)
+					Add_To = -1;
+				else
+					Add_To = 1;
+				for (J = X+XAdd; J<9 && J>0 && A<9 && A>0 && Break == 0;J+=XAdd)
+				{
+					if (XMove == J && YMove == A)
+						Break = 1;
+					A+=YAdd;
+				}
+
+				for (J = X+XAdd;J != XMove && K != YMove && J<9 && J>0 && A<9 && A>0
+				&& Break == 1;J+=XAdd)
+				{
+					for (A = 0; A < 8; A++)
+					{
+						if (Black.Pawns[A].X == J && Black.Pawns[A].Y == K)
+							Break = 0;
+						if (White.Pawns[A].X == J && White.Pawns[A].Y == K)
+							Break = 0;
+					}
+					for (A = 0; A < 2; A++)
+					{
+						if (Black.Rooks[A].X == J && Black.Rooks[A].Y == K)
+							Break = 0;
+						if (White.Rooks[A].X == J && White.Rooks[A].Y == K)
+							Break = 0;
+						if (Black.Bishops[A].X == J && Black.Bishops[A].Y == K)
+							Break = 0;
+						if (White.Bishops[A].X == J && White.Bishops[A].Y == K)
+							Break = 0;
+						if (Black.Knights[A].X == J && Black.Knights[A].Y == K)
+							Break = 0;
+						if (White.Knights[A].X == J && White.Knights[A].Y == K)
+							Break = 0;
+					}
+					if (White.Queen.X == J && White.Queen.Y == K)
+						Break = 0;
+					else if (Black.King.X == J && Black.King.Y == K)
+						Break = 0;
+					else if (White.King.X == J && White.King.Y == K)
+						Break = 0;
+					K+= YAdd;
+				}
+				for (J = 0; J < 8; J++)
+				{
+					if (White.Pawns[J].X == XMove && White.Pawns[J].Y == YMove)
+					{
+						White.Pawns[J].X = 0;
+						White.Pawns[J].Y = 0;
+						White.Pawns[J].On_Board = 0;
+					}
+					if (Black.Pawns[J].X == XMove && Black.Pawns[J].Y == YMove)
+						Break = 0;
+				}
+				for (J = 0; J < 2; J++)
+				{
+					if (White.Rooks[J].X == XMove && White.Rooks[J].Y == YMove)
+					{
+						White.Rooks[J].X = 0;
+						White.Rooks[J].Y = 0;
+						White.Rooks[J].On_Board = 0;
+					}
+					if (White.Knights[J].X == XMove && White.Knights[J].Y == YMove)
+					{
+						White.Knights[J].X = 0;
+						White.Knights[J].Y = 0;
+						White.Knights[J].On_Board = 0;
+					}
+					if (White.Bishops[J].X == XMove && White.Bishops[J].Y == YMove)
+					{
+						White.Bishops[J].X = 0;
+						White.Bishops[J].Y = 0;
+						White.Bishops[J].On_Board = 0;
+					}
+					if (Black.Rooks[J].X == XMove && Black.Rooks[J].Y == YMove)
+						Break = 0;
+					if (Black.Knights[J].X == XMove && Black.Knights[J].Y == YMove)
+						Break = 0;
+					if (Black.Bishops[J].X == XMove && Black.Bishops[J].Y == YMove)
+						Break = 0;
+				}
+				if (White.Queen.X == XMove && White.Queen.Y == YMove)
+				{
+					White.Queen.X = 0;
+					White.Queen.Y = 0;
+					White.Queen.On_Board = 0;
+				}
+				if (!Break)
+					Bypass = 0;
+				else
+					Bypass = 1;
+			}
+
+			if (Bypass)
+			{
+				X = (X*50) - 49;
+				Y = (Y*50) - 49;
+				if (BGColor)
+					setfillstyle(1, 7);
+				else
+					setfillstyle(1, 0);
+				bar(XMove*50-49, YMove*50-49, XMove*50-1, YMove*50-1);
+				if (XYBGColor)
+					setfillstyle(1, 7);
+				else
+					setfillstyle(1, 0);
+
+				bar(X, Y, X+48, Y+48);
+				draw_queen(0, XMove, YMove);
+				Black.Queen.X = XMove;
+				Black.Queen.Y = YMove;
+				Valid = 1;
+			}
+			else
+				Valid = 0;
+		}
+
+		//MOVE A BLACK KING
+		else if(Black.King.X == X && Black.King.Y == Y)
+		{
+			X = (X*50) - 49;
+			Y = (Y*50) - 49;
+			if (XYBGColor)
+				setfillstyle(1, 7);
+			else
+				setfillstyle(1, 0);
+
+			bar(X, Y, X+48, Y+48);
+			draw_king(0, XMove, YMove);
+			Black.King.X = XMove;
+			Black.King.Y = YMove;
+		}
+	}
+
+	if (!Valid)
+	{
+		if(BGColor)
+			setcolor(7);
+		else
+			setcolor(0);
+
+		XMove = XMove*50 - 49;
+		YMove = YMove*50 - 49;
+		rectangle(XMove, YMove, XMove+48, YMove+48);
+		rectangle(XMove+1, YMove+1, XMove+47, YMove+47);
+	}
+
+	setcolor(0);
+	if (Player_Turn)
+		rectangle(445, 378, 532, 402);
+	else
+		rectangle(445, 3, 532, 27);
+	return Valid;
+};
+
+
+void draw_removed_pieces(bool Player)
+{
+	Player++;
+};

@@ -1,0 +1,139 @@
+// Mahmood Subhani
+// Period 6
+// Mr. Baker
+// Program: Prob#00 Name, Address, Phone
+
+
+#include<Iostream.h>
+#include<conio.h>n
+#include<apstring.h>
+#include<iomanip.h>
+#include<apvector.h>
+#include<graphics.h>
+#include<stdlib.h>
+
+//constants
+
+
+
+//structure
+
+
+
+//variables
+int grdriver;
+int grmode;
+int errorcode;
+int X;
+int Y;
+int Xa;
+int Ya;
+int R;
+int Color;
+
+//prototypes
+void show ();
+void dots ();
+void circle ();
+void line ();
+void box ();
+
+
+
+void main ()  {
+show();
+
+setbkcolor(0);
+setcolor(15);
+
+
+randomize();
+
+do{
+dots();
+line();
+box();
+circle();
+}while(!kbhit());
+
+
+
+
+getch();
+closegraph();
+
+};
+
+void show()
+{
+grdriver=VGA;
+grmode=VGAHI;
+initgraph(&grdriver, &grmode, "c:\\TC\\BGI");
+errorcode=graphresult();
+
+if(errorcode!=grOk)
+{clrscr();
+cout<<"Error";
+getch();
+exit(1);
+}};
+
+void dots()
+{
+X=random(320)+1;
+Y=random(240)+1;
+
+Color=random(16)+1;
+
+putpixel(X,Y,Color);
+};
+
+void line()
+{
+X=random(320)+1;
+Y=random(480)+240;
+Xa=random(320)+1;
+Ya=random(480)+240;
+
+Color=random(16)+1;
+
+setcolor(Color);
+
+line(X,Y,Xa,Ya);
+};
+
+void box()
+{
+
+X=random(640)+320;
+Y=random(240)+1;
+Xa=random(640)+320;
+Ya=random(240)+1;
+
+Color=random(16)+1;
+setcolor(Color);
+rectangle(X,Y,Xa,Ya);
+};
+
+void circle()
+{
+X=random(640)+320;
+Y=random(480)+240;
+Color=random(16)+1;
+setcolor(Color);
+
+
+
+
+R=random(160);
+
+
+X=random(640)+320+R;
+Y=random(480)+240+R;
+
+
+
+
+
+circle(X,Y,R);
+};

@@ -1,0 +1,80 @@
+// Sean Murray
+// Due Date
+// Program
+// Mr. Baker - 3rd pd.
+
+// Libraries
+#include <conio.h>
+#include <iostream.h>
+#include <iomanip.h>
+#include <apstring.h>
+//Constants
+
+//Variables
+long Wght = 0;
+int Loc = 0;
+
+void main ()
+{
+	clrscr();
+	cout << setiosflags(ios::showpoint);
+	cout << setprecision(2);
+	cout << "Weight Calculation Prog"<<endl;
+	cout << "Enter your weight (in lbs., no decimals): ";
+	cin >> Wght;
+	cout << "Where are you heading off to?"<<endl;
+	cout << "Planet/Moon"<<endl;
+	cout << "1. Moon"<<endl;
+	cout << "2. Mercury"<<endl;
+	cout << "3. Venus"<<endl;
+	cout << "4. Mars"<<endl;
+	cout << "5. Jupiter"<<endl;
+	cout << "6. Saturn"<<endl;
+	cout << "7. Uranus"<<endl;
+	cout << "8. Neptune"<<endl;
+	cout << "9. Pluto"<<endl;
+	cin >> Loc;
+	clrscr;
+	switch(Loc) {
+		case 1 :
+			Wght = Wght * 0.16;
+			cout << "Your weight on the Moon would be "<<Wght<<" lbs.";
+			break;
+		case 2 :
+			Wght = Wght * 0.37;
+			cout << "Your weight on Mercury would be "<<Wght<<" lbs.";
+			break;
+		case 3 :
+			Wght = Wght * 0.88;
+			cout << "Your weight on Venus would be "<<Wght<<" lbs.";
+			break;
+		case 4 :
+			Wght = Wght * 0.38;
+			cout << "Your weight on Mars would be "<<Wght<<" lbs.";
+			break;
+		case 5 :
+			Wght = Wght * 2.64;
+			cout << "Your weight on Jupiter would be "<<Wght<<" lbs.";
+			break;
+		case 6 :
+			Wght = Wght * 1.15;
+			cout << "Your weight on Saturn would be "<<Wght<<" lbs.";
+			break;
+		case 7 :
+			Wght = Wght * 1.15;
+			cout << "Your weight on Uranus would be "<<Wght<<" lbs.";
+			break;
+		case 8 :
+			Wght = Wght * 1.12;
+			cout << "Your weight on Neptune would be "<<Wght<<" lbs.";
+			break;
+		case 9 :
+			Wght = Wght * 0.04;
+			cout << "Your weight on Pluto would be "<<Wght<<" lbs.";
+			break;
+
+		default :
+			cout << "Invalid location!";
+	}
+	getch();
+}

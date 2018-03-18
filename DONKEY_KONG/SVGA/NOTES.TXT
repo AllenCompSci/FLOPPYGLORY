@@ -1,0 +1,13 @@
+char gr_init(int GD, int GM, char *path);
+
+GD - graphics driver, one of the following constants
+
+SVGA16 - 4bpp, 16 colors
+SVGA256 - 8bpp, 256 colors
+SVGA32K - 15bpp, 32,768 colors
+SVGA64K - 16bpp, 65,536 colors
+SVGATC - 24bpp, 16,777,216 colors
+
+GM - graphics mode, selects resolution
+
+path - the path of the driver, if the driver isn't found the current directory is searched

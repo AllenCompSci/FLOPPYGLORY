@@ -1,0 +1,34 @@
+//Kris BIckham
+//Prob33
+//Tuesday
+//Period 6
+//Mr. Baker
+//Libary Section
+#include <conio.h>
+#include <iostream.h>
+#include <iomanip.h>
+#include <apstring.h>
+#include <apmatrix.h>
+#include <fstream.h>
+//Const Section
+//Varible Section
+
+//Protoypes
+
+//Main
+void main()
+{
+clrscr ();
+
+
+
+
+cout<<"Do you want to run again? ";
+cin>>Ans;
+clrscr ();
+}while(Ans=='Y'||Ans=='y');
+};
+
+
+
+

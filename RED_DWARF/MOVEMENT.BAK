@@ -1,0 +1,210 @@
+//KRIS BICKHAM
+//GR#3
+//DUE MON
+//PERIOD 6
+//MR. BAKER
+//LIBRARIES------------
+#include <conio.h>
+#include <iostream.h>
+#include <iomanip.h>
+#include <apstring.h>
+#include <apmatrix.h>
+#include <fstream.h>
+#include <apvector.h>
+#include <graphics.h>
+#include <dos.h>
+#include <alloc.h>
+//Struct
+struct fire
+{ int Order;
+	int Xpos;
+	int Ypos;
+};
+
+//Struct POs
+//{ int X;
+//	int Y;
+
+//};
+
+//VARIABLES------------
+int grdriver;
+int grmode;
+int errorcode;
+int X;
+int Y;
+int I;
+int Num;
+int Delay;
+apvector <int> StarX (40);
+apvector <int>  StarY (40);
+apvector <fire> Fire_U (30);
+
+//PROTOTYPES-----------
+void gr_start (int&, int&, int&);
+void star ();
+void init ();
+void movement ();
+void fire();
+
+//MAIN
+
+void main ()
+{
+init();  //initiates all neccessary functions, commmands and other
+				 //incindental code
+
+
+do
+{
+
+star ();
+movement ();
+
+
+	if (kbhit())
+		if(getch()==32)
+			for(I=0;I<30;I++)
+				if(Fire_U[I].Order==0)
+					{
+					 Fire_U[I].Ypos=Y-2;
+					 Fire_U[I].Xpos=X;
+					 Fire_U[I].Order=I+1;
+					 I=29;
+					};
+
+
+ for(I=0;I<30;I++)
+	 {if(Fire_U[I].Order>0)
+			{	for(Num=0;I<4;I++)
+				{ putpixel(Fire_U[I].Xpos+Num,Fire_U[I].Ypos,0 );
+					Fire_U[I].Ypos++;
+					putpixel(Fire_U[I].Xpos+Num,Fire_U[I].Ypos,7 );
+				};
+		 };
+
+	 };
+
+
+
+
+Delay++;
+}while(Y>10);
+
+getch();
+};
+
+
+
+
+void gr_start (int& grdriver, int& grmode, int& errorcode)
+{grdriver=VGA;
+ grmode=VGAHI;
+ initgraph(&grdriver, &grmode, "C:\\TC\\BGI");
+ errorcode=graphresult();
+ if (errorcode!=grOk)
+	{clrscr();
+	 cout<<"Error: "<<errorcode;
+	 getch();
+	 exit(1);
+	 };
+};
+
+
+void star ()
+{ if(Delay==70)
+		 {	for(Num=0;Num<40;Num++)
+					{putpixel(StarX[Num],StarY[Num],0);
+					 if(StarY[Num]>480)
+						 {StarX[Num]=random(639)+1;
+							StarY[Num]=1;};
+							StarY[Num]+=2;
+							putpixel(StarX[Num],StarY[Num],15);
+						 };
+			Delay=0; };
+
+};
+
+void init ()
+{randomize();
+ clrscr();
+ gr_start(grdriver, grmode, errorcode);
+ cleardevice();
+ Y=400;
+ X=400;
+ Delay=0;
+
+	for(Num=0;Num<40;Num++)
+	 { StarX[Num]=random(639)+1;
+		 StarY[Num]=random(479)+1;
+
+	 };
+	for(Num=0;Num<30;Num++)
+	{
+		Fire_U[Num].Order=0;
+		Fire_U[Num].Xpos=0;
+		Fire_U[Num].Ypos=0;
+	};
+};
+
+
+void movement()
+{	if(kbhit())
+			{ setfillstyle(0,0);
+				bar(X,Y,X+10,Y+10);
+
+				switch (getch())
+					 {case 72:Y=Y-10;
+										break;
+						case 77:X+=10;
+										break;
+						case 75:X=X-10;
+										break;
+						case 80:Y+=10;
+										break;
+						case 1 :break;
+					 };
+
+			 setfillstyle(1,1);
+			 bar(X,Y,X+10,Y+10);
+
+			 };
+			!kbhit();
+
+
+};
+
+void fire()
+{int I;
+ int Num;
+
+
+	if (kbhit())
+		if(getch()==75)
+			for(I=0;I<30;I++)
+				if(Fire_U[I].Order==0)
+					{
+					 Fire_U[I].Xpos=Y-2;
+					 Fire_U[I].Xpos=X;
+					 Fire_U[I].Order=I;
+					 I=29;
+					};
+
+ for(I=0;I<30;I++)
+	 {if(Fire_U[I].Order>0)
+			{	for(Num=0;I<4;I++)
+				{ putpixel(Fire_U[I].Xpos+Num,Fire_U[I].Ypos,0 );
+					Fire_U[I].Ypos++;
+					putpixel(Fire_U[I].Xpos+Num,Fire_U[I].Ypos,7 );
+				};
+		 };
+
+	 };
+
+
+};
+
+
+
+
+

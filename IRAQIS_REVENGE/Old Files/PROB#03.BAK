@@ -1,0 +1,34 @@
+//Toni Whipple
+//prob#3
+//7th
+//Mr. Baker
+
+//library section
+#include<iostream.h>
+#include<iomanip.h>
+#include<conio.h>
+
+//const section
+
+//variable section
+
+
+void main()
+{
+clrscr();
+cout<<"sweater "<<setw(10)<<"35.00"<<endl;
+cout<<"skirt   "<<setw(10)<<"28.50"<<endl;
+cout<<"blouse  "<<setw(10)<<"22.95"<<endl;
+cout<<"bracelet"<<setw(10)<<"12.95"<<endl;
+cout<<"total   "<<setw(10)<<"98.07"<<endl;
+cout<<""<<endl;
+cout<<"sale prices"<<endl;
+cout<<"sweater    "<<setw(10)<<"29.75"<<endl;
+cout<<"skirt      "<<setw(10)<<"24.22"<<endl;
+cout<<"blouse     "<<setw(10)<<"19.51"<<endl;
+cout<<"bracelet   "<<setw(10)<<"10.41"<<endl;
+cout<<"total      "<<setw(10)<<"83.89"<<endl;
+
+getch();
+
+}

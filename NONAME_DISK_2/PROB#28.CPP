@@ -1,0 +1,38 @@
+//Jeremy Higgins
+//Due Date
+//Mr. Baker
+//Block 1
+#include<iostream.h>
+#include<iomanip.h>
+#include<conio.h>
+#include<apstring.h>
+#include<apvector.h>
+//const
+//var
+int L;
+int W;
+char Choice;
+//proto
+void get_data(int&, int&);
+long area(int, int);
+void main()
+{clrscr();
+do{
+	 get_data(L, W);
+	 cout<<"Your area is: "<<area(L, W)<<endl;
+	 cout<<"Would you like to run the Program again";
+	 cin>>Choice;
+	}while (Choice=='Y' || Choice=='y');
+}
+void get_data(int &L, int &W)
+	 {cout<<"Please Enter Length: ";
+		cin>>L;
+		cout<<"Please Enter Width: ";
+		cin>>W;
+	 }
+long area(int L, int W)
+	 {int A;
+		A=L*W;
+		return A;
+	 }
+

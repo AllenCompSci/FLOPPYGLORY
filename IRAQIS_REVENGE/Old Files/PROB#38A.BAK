@@ -1,0 +1,37 @@
+//Chris Chapman
+//7th
+//prob#38a
+//Mr. Baker
+
+//Library Section
+#include<iostream.h>
+#include<iomanip.h>
+#include<conio.h>
+#include<apstring.h>
+#include<apvector.h>
+#include<fstream.h>
+
+//const.section
+
+//struct section
+
+//Prototype
+
+//global variable section
+int E,K;
+char Answer;
+ofstream out_file;
+
+void main ()
+{
+do{
+	//almost lunch time :D
+	clrscr();
+	cout<<"Enter ten two digit numbers, with spaces in between each."<<endl;
+	for (E=0;E<10;E++)
+	cin>>E;
+	out_file.open("a:\\Prob#38.dat");
+		cout<<"Run agian? (Y/N)";
+		cin>>Answer;
+	}while(Answer=='Y'||Answer=='y');
+}

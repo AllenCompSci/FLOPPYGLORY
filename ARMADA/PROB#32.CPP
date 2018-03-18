@@ -1,0 +1,30 @@
+//Rebecca Russell
+//6th
+//Mr.Baker
+//Program:
+#include<iostream.h>
+#include<conio.h>
+#include<apstring.h>
+#include<iomanip.h>
+//Constant
+//Variable
+int N;
+//Prototype
+long factorial (int);
+void main ()
+{clrscr();
+cout<<"Enter a number to use the Factorial Method on: "<<endl;
+cin>>N;
+cout<<"The factorial of "<<N<<" is ";
+cout<<factorial (N);
+getch();
+};
+
+long factorial (int N)
+{long Factorial;
+Factorial=N;
+N--;
+if (N>1)
+Factorial=Factorial*factorial(N);
+return Factorial;
+}

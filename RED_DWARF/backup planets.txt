@@ -1,0 +1,138 @@
+Mercury
+57.9
+36.0
+88 days
+59 days
+Near 0 degress
+7 degrees
+.206
+4880
+3032.4
+Virtually None
+0
+0
+End Mercury
+
+Venus
+108.2
+67.24
+224.7 days
+243 days retrograde
+3 degrees
+3.4 degrees
+.007
+12100
+7519
+Carbon dioxide
+0
+0
+End Venus
+
+Earth
+149.6
+92.9
+365.2 days
+23 hours
+56 minutes 4 seconds
+23 degrees, 27 seconds
+0 degrees
+.017
+12756
+7926.2
+Nitorgen, Oxygen
+1
+0
+End Earth
+
+
+Mars
+227.9
+141.71
+687 days
+24 hours
+37 minutes
+25 degrees, 12 seconds
+1.9 degrees
+.093
+6794
+4194
+Carbon dioxide
+2
+0
+End Mars
+
+Jupiter
+778.3
+483.88
+11.86
+9 hours
+55 minutes, 30 seconds
+3 degrees, 5 seconds
+1.3 degrees
+.048
+142800
+88736
+Hydrogen, Helium
+16
+1
+End Jupiter
+
+Saturn
+1427
+887.14
+29.46 years
+10 hours, 40 minutes, and 24 seconds
+26 degrees, 44 seconds
+2.5 degrees
+.056
+120660
+74978
+Hydrogen, Helium
+18
+1000
+End Saturn
+
+Uranus
+2870
+1783.98
+84 years
+16.8 hours retrograde
+97 degrees, 55 seconds
+.8 degrees
+.047
+51810
+32193
+Helium, Hydrogen, Methane
+15
+11
+End Uranus
+
+Neptune
+4497
+2796.46
+165 years
+16 hours, 11 minutes
+28 degrees, 48 seconds
+1.8 degrees
+.009
+49528
+30775
+Hydrogen, Helium, Methane
+8
+4
+End Neptune
+
+Pluto
+5900
+3666
+248 years
+6 days, 9 hours, 18 minutes retrograde
+60 degrees
+17.2 degrees
+.254
+2290
+1423
+None detected
+1
+?
+End Pluto

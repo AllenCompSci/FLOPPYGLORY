@@ -1,0 +1,70 @@
+// Mahmood Subhani
+// Period 6
+// Mr. Baker
+// Program: Prob#09 ticket the person the right amount
+
+
+#include<Iostream.h>
+#include<conio.h>n
+#include<apstring.h>
+#include<iomanip.h>
+
+int x;
+int y;
+int q;
+int p;
+int o;
+apstring z;
+
+
+
+
+void main ()  {
+clrscr();
+
+
+
+
+cout<<"What is the speed you are traveling?"<<endl<<endl<<endl;
+cin>>x;
+
+cout<<"Where you in a school zone?"<<endl<<endl<<endl;
+cin>>z;
+
+cout<<"What is the speed limit?"<<endl<<endl<<endl;
+cin>>y;
+
+q=x-y;
+p=6*q;
+o=3*q;
+
+
+		 if (z=="yes")
+		 if (x-y>30)
+		cout<<"$"<<130+p<<endl<<endl<<endl;
+
+
+else if (z=="yes")
+		 if (x-y<31)
+		cout<<"$"<<30+p<<endl<<endl<<endl;
+
+
+else if (z=="no")
+		 if (x-y<31)
+		cout<<"$"<<30+o<<endl<<endl<<endl;
+
+
+else if (z=="no")
+		 if (x-y>30)
+		cout<<"$"<<130+o<<endl<<endl<<endl;
+
+
+
+
+
+
+
+
+cout<<"Please press return to continue.";
+getch();
+};

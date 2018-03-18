@@ -1,0 +1,123 @@
+//Jeremy Higgins
+//Due Date
+//Mr. Baker
+//Block 1
+#include<iostream.h>
+#include<iomanip.h>
+#include<conio.h>
+#include<apstring.h>
+//const
+//var
+apstring Name;
+apstring Address;
+int Month;
+int Day;
+int Year;
+int Month1;
+int Day1;
+int Year1;
+int Bill;
+int Total;
+void main()
+{clrscr();
+cout<<"Please enter the Following, enter after each."<<endl;
+cout<<"Name=";
+cin>>Name;
+cout<<"Address";
+cin>>Address;
+cout<<"Current Date"<<endl;
+cout<<"Month=";
+cin>>Month;
+cout<<"Day=";
+cin>>Day;
+cout<<"Year=";
+cin>>Year;
+cout<<"Due Date";
+cout<<"Month=";
+cin>>Month1;
+cout<<"Day=";
+cin>>Day1;
+cout<<"Year=";
+cin>>Year1;
+cout<<"If late, fee is 5%"<<endl;
+cout<<"Enter Number"<<endl;
+cout<<"Standard Service =1"<<endl;
+cout<<"Standard and Cable Service =2"<<endl;
+cout<<"Standard, Cable and Home Cinema =3"<<endl;
+cout<<"Standard, Cable and Cartoon =4"<<endl;
+cout<<"All Services and Channels =5"<<endl;
+cout<<"Standard and Home Cinema =6"<<endl;
+cout<<"Standard and Cartoon =7"<<endl;
+cout<<"Standard, Home Cinema, and Cartoon =8"<<endl;
+cin>>Bill;
+switch (Bill)
+{
+case 1:Total=7.00;
+break;
+case 2:Total=11.00;
+break;
+case 3:Total=13.00;
+break;
+case 4:Total=13.00;
+break;
+case 5:Total=15.00;
+break;
+case 6:Total=9.00;
+break;
+case 7:Total=9.00;
+break;
+case 8:Total=11.00;
+}
+clrscr();
+cout<<"Name:"<<Name<<endl;
+cout<<"Address:"<<Address<<endl;
+cout<<"Due Date:"<<Month1<<"/"<<Day1<<"/"<<Year1<<endl;
+cout<<"Services:"<<endl;
+if (Bill<2)
+ cout<<"Standard";
+	else if (Bill<3)
+	 cout<<"Standard $7.00"<<endl<<"Cable &4.00";
+		else if (Bill<4)
+		 {cout<<"Standard $7.00";
+			cout<<endl<<"Cable $4.00";
+			cout<<endl<<"Home Cinema $2.00";
+		 }
+			else if (Bill<5)
+			 cout<<"Standard $7.00"<<endl<<"Cable $4.00"<<endl<<"Cartoon $2.00";
+				else if (Bill<6)
+				 {cout<<"Standard $7.00";
+					cout<<endl<<"Cable $4.00"<<endl;
+					cout<<"Home Cinema $2.00"<<endl<<"Catoon $2.00";
+				 }
+					else if (Bill<7)
+					 cout<<"Standard $7.00"<<endl<<"Home Cinema $2.00";
+						else if (Bill<8)
+						 cout<<"Standard $7.00"<<endl<<"Cartoon $2.00";
+							else if (Bill<9)
+							 {cout<<"Standard $7.00"<<endl;
+								cout<<"Home Cinema $2.00"<<endl<<"Cartoon $2.00";
+							 }
+								else
+								 cout<<"No Service";
+cout<<endl;
+cout<<"Final Bill"<<endl;
+if (Month<=Month1 && Day<Day1	&& Year<=Year1)
+	 cout<<Total<<"=Bill Amount"<<"   You are on Time";
+		else if (Month>=Month1 && Day<Day1 && Year<=Year1)
+		 cout<<Total*.05+Total<<"=Late Bill Total";
+			else if (Month>=Month1 && Day>Day1 && Year<=Year1)
+			 cout<<Total*.05+Total<<"=Late Bill Total";
+				else if (Year<Year1)
+				 cout<<Total<<"=Bill Amount"<<"   You are on Time";
+					else if (Month<=Month1 && Day<Day1 && Year<=Year1)
+					 cout<<Total*.05+Total<<"=Late Bill Total";
+						else if (Month<=Month && Day>Day1 && Year<=Year1)
+						 cout<<Total<<"=Bill Amount"<<"  You are on Time";
+							else if (Year>Year1)
+							 cout<<Total*.05+Total<<"=Late Bill Total";
+								else
+								 cout<<Total<<"=Bill Amount"<<"  You are on Time";
+
+cout<<endl<<"Press Enter to end";
+getch();
+}

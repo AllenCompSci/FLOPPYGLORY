@@ -1,0 +1,5 @@
+PROJECT 'Quest OF HIGHER KNOWLEDGE'
+
+by Michael Crookston and Jacob Tarver
+
+	Our six-weeks project is going to be a game called "Quest for Higher Knowledge".  The games goal is to help educate elementary students in various fields of study, such as English, Math, and Science.  The game format is going to be a board game, where the goal is to get to the end of the board first.  You roll dice, then land on a square, where you are asked a question.  If you answer the question correctly, you can stay on the square.  If you answer incorrectly, you get sent back to the space that you were previously on.

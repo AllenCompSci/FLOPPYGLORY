@@ -1,0 +1,35 @@
+//Toni Whipple
+//prob#2
+//7th
+//Mr. Baker
+
+//library section
+#include<iostream.h>
+#include<iomanip.h>
+#include<conio.h>
+
+//const section
+
+//variable section
+int A;
+int B;
+int C;
+int D;
+
+void main()
+{
+clrscr();
+cout<<"Please enter a number for each column, ex. 12"<<endl;
+cout<<setw(10)<<"A"<<setw(10)<<"B"<<setw(10)<<"C"<<setw(10)<<"D"<<setw(10);
+cin>>A;
+cout<<setiosflags(ios::showpoint);
+cout<<endl;
+cin>>B;
+cout<<endl;
+cin>>C;
+cout<<endl;
+cin>>D;
+
+getch();
+
+}

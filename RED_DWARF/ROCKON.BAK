@@ -1,0 +1,652 @@
+//KRIS BICKHAM/ANDREW DOBBS
+//GAME PROJECT
+//DUE ONE DAY
+//PERIOD 6
+//MR. BAKER
+//
+//LIBRARIES------------
+#include <conio.h>
+#include <iostream.h>
+#include <iomanip.h>
+#include <apstring.h>
+#include <apmatrix.h>
+#include <fstream.h>
+#include <apvector.h>
+#include <graphics.h>
+#include <dos.h>
+#include <alloc.h>
+//Struct---------------
+struct fire
+{
+int Exist;
+int Xpos;
+int Ypos;
+};
+
+struct enemy
+{
+int Exist;
+int X;
+int Y;
+int Life;
+int Hit;
+int Color;
+apvector <fire> Fire_E;
+};
+
+struct user
+{
+int X;
+int Y;
+int Life;
+int Hit;
+int W;
+};
+
+//VARIABLES------------
+int grdriver;
+int grmode;
+int errorcode;
+int D;
+int Db;
+int DC;
+int DD;
+int DR;
+
+//Arrays----------------
+apvector <int> StarX (40);
+apvector <int>  StarY (40);
+apvector <fire> Fire_U (15);
+apvector <user> Ship (1);
+apvector <int> Time(1);
+apvector <int> Wave(1);
+apvector <enemy> Bad (20);
+apvector <int> Score (1);
+
+//PROTOTYPES------------
+void gr_start (int&, int&, int&);
+void star ();
+void init ();
+void movement ();
+void background();
+void fire();
+void fireB (int);
+void wave (int, int);
+void badguy (int, int, int);
+void weaponselect ();
+void collision ();
+
+//MAIN------------------
+void main ()
+{
+init();
+delay(2000);
+ do
+ {
+ star ();
+ movement ();
+ fireB(D);
+ D++;
+ Db++;
+ DC++;
+ DR++;
+ collision();
+ badguy(Db,DC,DD);
+ if (Db>300)
+	 Db=0;
+
+ if (DC==501)
+		DC=0;
+
+
+ if (DR==10000)
+		{ wave(Db,DC);
+			DR=0;
+			}
+ if(DD==1000);
+	DD=0;
+
+
+ }while(Ship[0].Y>10&&Ship[0].Y<380&&Ship[0].X>10&&Ship[0].X<630);
+
+};
+
+
+//FUNCTIONS
+
+//Gr Mode
+void gr_start (int& grdriver, int& grmode, int& errorcode)
+{	grdriver=VGA;
+	grmode=VGAHI;
+	initgraph(&grdriver, &grmode, "C:\\TC\\BGI");
+	errorcode=graphresult();
+		if (errorcode!=grOk)
+			{clrscr();
+			 cout<<"Error: "<<errorcode;
+			 getch();
+			 exit(1);
+			 };
+};
+
+
+//Star
+void star ()
+{
+int Num;
+
+	if(D==150)
+		 {
+					for(Num=0;Num<40;Num++)
+						{putpixel(StarX[Num],StarY[Num],0);
+
+
+
+							if(StarY[Num]>395)
+							{ StarX[Num]=random(639)+1;
+								StarY[Num]=10;};
+
+								StarY[Num]+=2;
+								putpixel(StarX[Num],StarY[Num],15);
+						 };
+			D=0; };
+};
+
+
+//Init
+void init ()
+{ int I;
+	int T;
+	int Num;
+randomize();
+clrscr();
+gr_start(grdriver, grmode, errorcode);
+cleardevice();
+Ship[0].Y=350;
+Ship[0].X=400;
+D=0;
+Wave[0]=0;
+Ship[0].W=1;
+Ship[0].Life=5;
+Ship[0].Hit=0;
+Time[0]=random(100)+100;
+// Star Random values
+	for(Num=0;Num<40;Num++)
+	 { StarX[Num]=random(639)+1;
+	 StarY[Num]=random(479)+1;
+	 };
+// User Weapon init
+	 for(Num=0;Num<15;Num++)
+	{
+		Fire_U[Num].Exist=0;
+		Fire_U[Num].Xpos=0;
+		Fire_U[Num].Ypos=0;
+	};
+
+background (); // draws the permanent background.
+//Sets Enemy Data
+for(I=0;I<20;I++)
+	{
+				 Bad[I].Exist=0;
+				 Bad[I].X=0;			//Set  enemy stats
+				 Bad[I].Y=0;
+				 Bad[I].Life=1;
+				 Bad[I].Hit=0;
+				 Bad[I].Color=random(7)+4;
+				 Bad[I].Fire_E.resize(5);
+
+			for (T=0;T<5;T++)
+			 {
+
+				 Bad[I].Fire_E[T].Exist=0;
+				 Bad[I].Fire_E[T].Xpos=0;
+				 Bad[I].Fire_E[T].Ypos=0;
+			 }
+		};
+
+
+};
+
+
+
+// Movement
+void movement ()
+
+{
+if(kbhit())
+
+			{ setfillstyle(0,0);
+				bar(Ship[0].X-5,Ship[0].Y-25,Ship[0].X+5,Ship[0].Y+25);
+				switch (getch())
+					{case 72:Ship[0].Y=Ship[0].Y-5;
+								break;
+					 case 77:Ship[0].X+=5;
+								break;
+					 case 75:Ship[0].X=Ship[0].X-5;
+								break;
+					 case 80:Ship[0].Y+=5;
+								break;
+					 case 32:fire();
+								break;
+					 case 9:weaponselect();
+								 break;
+					 case 27:Ship[0].Y=9000;
+									break;
+					};
+				 setfillstyle(1,2);
+				 fillellipse(Ship[0].X,Ship[0].Y,3,3);
+				 fillellipse(Ship[0].X,Ship[0].Y+7,4,4);
+				 fillellipse(Ship[0].X,Ship[0].Y+17,5,5);
+			 };
+};
+
+
+//Background
+void background ()
+{
+setfillstyle(1,4);
+bar(0, 400, 639, 479);
+bar(0, 0,  3, 400);
+bar(0, 0, 640, 3);
+bar(637, 0, 640, 400);
+setcolor(0);
+circle(45, 440, 38);
+circle(595, 440, 38);
+moveto(16, 435);
+settextstyle(0, 0, 2);
+outtext("Fuel");
+moveto(565, 435);
+settextstyle(0,0,1);
+outtext("Velocity");
+moveto(420, 410);
+outtext("Lazer Cannons ");
+moveto(420, 430);
+outtext("Anti-matter beam ");
+moveto(420, 450);
+outtext("EM Missles ");
+moveto(1,1);
+setcolor(8);
+outtext("Score");
+moveto(225,402);
+setcolor(14);
+outtext("Damage");
+moveto(100,402);
+outtext("0%");
+moveto(370,402);
+outtext("100%");
+setfillstyle(1,12);
+bar(100,420, 400,440);
+};
+
+//Fire
+void fire ()
+{
+int I;
+
+for(I=0;I<15;I++)
+	if (Fire_U[I].Exist==0)
+		{
+		 Fire_U[I].Exist=1;
+		 Fire_U[I].Xpos=Ship[0].X;
+		 Fire_U[I].Ypos=Ship[0].Y;
+		 I=14;
+		};
+};
+
+
+
+//Fire B
+void fireB (int D)
+{
+int I;
+int T;
+int Num;
+if (D==20||D==40||D==60)
+	 {
+			for(I=0;I<15;I++)
+				if(Fire_U[I].Exist==1)
+						{  setfillstyle(0,0);
+							 bar(Fire_U[I].Xpos,Fire_U[I].Ypos-3,Fire_U[I].Xpos+4,Fire_U[I].Ypos);
+							 Fire_U[I].Ypos-=1;
+
+							 setfillstyle(1,	Ship[0].W);
+
+
+
+							 bar(Fire_U[I].Xpos,Fire_U[I].Ypos-3,Fire_U[I].Xpos+4,Fire_U[I].Ypos);
+
+							if(Fire_U[I].Ypos<10)
+								{	Fire_U[I].Exist=0;
+									setfillstyle(0,7);
+									bar(Fire_U[I].Xpos,Fire_U[I].Ypos-3,Fire_U[I].Xpos+4,Fire_U[I].Ypos);
+
+									Fire_U[I].Xpos=0;
+									Fire_U[I].Ypos=0;
+									Fire_U[I].Exist=0;
+								};
+
+							};
+
+
+	 };
+};
+
+//ENEMY GENERATION
+void  wave (int Db,int DC)
+{ int Formation;
+	int Type;
+	int I;
+	int N;
+	int Form;
+
+
+Form=random(3);
+
+for(N=0;N<8;N++)
+ {	I=random(20);
+			if(Bad[I].Exist==0)
+			 {
+
+								switch (Form)
+			{ case 0:
+										 Bad[I].Exist=1;
+										 Bad[I].Life=0;
+										 badguy(Db,DC,DD);
+
+										 Bad[I].Life=1;
+										 Bad[I].X=((N+1)*120); //placing enemies horizontally
+										 Bad[I].Y=13;
+
+
+
+									break;
+
+
+				case 1:    Bad[I].Exist=1;
+										 Bad[I].Life=1;
+										 badguy(Db,DC,DD);
+										 Bad[I].Life=1;
+
+										 Bad[I].X=random(580)+40; //placing horizontally
+										 Bad[I].Y=0-(N*10);
+
+
+									break;
+
+
+				case 2:
+										 Bad[I].Exist=1;
+
+										 badguy(Db,DC,DD);
+										 Bad[I].Life=1;
+
+										 Bad[I].X=random(620)+10;; //placing horizontally
+										 Bad[I].Y=0;
+
+
+
+									break;
+				};
+		};
+	};
+};
+
+
+//ENEMY MOVEMENT
+void badguy (int D,int DC, int DD)
+{
+int T;
+int Q;
+int W;
+int I;
+int Num;
+DD++;
+if (DC==500)
+	for(Q=0;Q<3;Q++)
+	 {	I=random(20);
+			W=random(5);
+				if(Bad[I].Exist==1)
+					for(T=0;T<5;T++)
+						if(Bad[I].Fire_E[T].Exist==0)
+							if(W==4)
+							{ Bad[I].Fire_E[T].Exist=1;
+								Bad[I].Fire_E[T].Xpos=Bad[I].X;
+								Bad[I].Fire_E[T].Ypos=Bad[I].Y;
+								T=5;
+							 }
+
+	}
+DC++;
+
+ if(D==20||D==40||D==60||D==30||D==10)
+	for (I=0;I<20;I++)
+
+
+			 for(T=0;T<5;T++)
+				{
+
+
+				if (Bad[I].Fire_E[T].Exist==1)
+					if (Bad[I].Fire_E[T].Ypos>11)
+					 {setfillstyle(1,0);
+
+						bar(Bad[I].Fire_E[T].Xpos,Bad[I].Fire_E[T].Ypos-3,Bad[I].Fire_E[T].Xpos+4,Bad[I].Fire_E[T].Ypos);
+						Bad[I].Fire_E[T].Ypos++;
+
+						setfillstyle(1,15);
+
+						bar(Bad[I].Fire_E[T].Xpos,Bad[I].Fire_E[T].Ypos-3,Bad[I].Fire_E[T].Xpos+4,Bad[I].Fire_E[T].Ypos);
+						if(Bad[I].Fire_E[T].Ypos>390)
+						 {setfillstyle(1,0);
+
+						 bar(Bad[I].Fire_E[T].Xpos,Bad[I].Fire_E[T].Ypos-3,Bad[I].Fire_E[T].Xpos+4,Bad[I].Fire_E[T].Ypos);
+							Bad[I].Fire_E[T].Exist=0;
+							Bad[I].Fire_E[T].Xpos=0;
+							Bad[I].Fire_E[T].Ypos=0;
+
+						 };
+						};
+					};
+
+
+if (D==80||D==40)
+	for (I=0;I<20;I++)
+
+
+			if (Bad[I].Exist==1)
+				{setfillstyle(1,0);
+					if(Bad[I].Y>15)
+					{
+
+					 bar(Bad[I].X, Bad[I].Y, Bad[I].X+3, Bad[I].Y-10);
+					 bar(Bad[I].X-3,Bad[I].Y-10,Bad[I].X+6,Bad[I].Y-7);
+
+					};
+					Bad[I].Y+=1;
+					W=random(13);
+					if(W<2)
+					 if(Ship[0].X>Bad[I].X)
+						 Bad[I].X++;
+
+					if(W<2)
+					 if(Ship[0].X<Bad[I].X)
+					 Bad[I].X-=1;
+
+
+						setfillstyle(1,Bad[I].Color);
+					if(Bad[I].Y>15)
+						{bar(Bad[I].X, Bad[I].Y, Bad[I].X+3, Bad[I].Y-10);
+						 bar(Bad[I].X-3,Bad[I].Y-10,Bad[I].X+6,Bad[I].Y-7);
+						};
+
+
+					if (Bad[I].Life==0)
+							 {setfillstyle(1,0);
+								bar(Bad[I].X, Bad[I].Y, Bad[I].X+3, Bad[I].Y-10);
+								bar(Bad[I].X-3,Bad[I].Y-10,Bad[I].X+6,Bad[I].Y-7);
+
+								Bad[I].Exist=0;
+								Bad[I].Life=0;
+								Bad[I].Hit=0;
+								Bad[I].X=0;			//Set  enemy stats
+								Bad[I].Y=0;
+
+
+								}
+					if (Bad[I].Y>=390)
+							{ Bad[I].Exist=0;
+								Bad[I].Life=0;
+								Bad[I].Hit=0;
+								setfillstyle(1,0);
+								bar(Bad[I].X, Bad[I].Y, Bad[I].X+3, Bad[I].Y-10);
+								bar(Bad[I].X-3,Bad[I].Y-10,Bad[I].X+6,Bad[I].Y-7);
+
+								Bad[I].X=0;			//Set  enemy stats
+								Bad[I].Y=0;
+							}
+				}
+};
+
+void weaponselect()
+{switch (Ship[0].W)
+	 {case 1: moveto(420, 450);
+						setcolor(4);
+						outtext("<EM Missiles>");
+						moveto(420, 450);
+						setcolor(0);
+						outtext("EM Missiles");
+						moveto(420, 410);
+						setcolor(4);
+						outtext("Lazer Canons");
+						moveto(420, 410);
+						setcolor(0);
+						outtext("<Lazer Canons>");
+						Ship[0].W++;
+						break;
+		case 2: moveto(420, 410);
+						setcolor(4);
+						outtext("<Lazer Canons>");
+						moveto(420, 410);
+						setcolor(0);
+						outtext("Lazer Canons");
+						moveto(420, 430);
+						setcolor(4);
+						outtext("Anti-matter beam");
+						moveto(420, 430);
+						setcolor(0);
+						outtext("<Anti-matter beam>");
+						Ship[0].W++;
+						break;
+		case 3: moveto(420, 430);
+						setcolor(4);
+						outtext("<Anti-matter beam>");
+						moveto(420, 430);
+						setcolor(0);
+						outtext("Anti-matter beam");
+						moveto(420, 450);
+						setcolor(4);
+						outtext("EM Missiles");
+						setcolor(0);
+						moveto(420, 450);
+						outtext("<EM Missiles>");
+						Ship[0].W=1;
+						break;
+
+	}
+};
+
+
+//COLLISION DETECTION
+void collision ()
+{
+int I;
+int Num;
+int J;
+int T;
+
+
+
+
+for (I=0;I<20;I++)
+	if(Bad[I].Exist==1)
+	 {if(Ship[0].Y-3==Bad[I].Y+2)
+			if(Ship[0].X>=Bad[I].X-14 && Ship[0].X<=Bad[I].X+14)
+				{setfillstyle(1,12);
+				 bar(100,420, 400,440);
+				 setfillstyle(1,14);
+				 Ship[0].Hit=5;
+				 bar(105,425,105+58*(Ship[0].Hit)   ,435);
+				 setfillstyle(1,0);
+				 bar(Bad[I].X, Bad[I].Y, Bad[I].X+10, Bad[I].Y-2);
+				 Bad[I].Exist=0;
+				 Bad[I].Life=0;
+				 Bad[I].Hit=0;
+				 Bad[I].X=0;			//Set  enemy stats
+				 Bad[I].Y=0;
+				 cout<<Ship[0].Hit;
+				 };
+			 for(T=0;T<5;T++)
+				if(Bad[I].Fire_E[T].Exist==1)
+				 if(Bad[I].Fire_E[T].Ypos>=Ship[0].Y+3)
+						 if(Bad[I].Fire_E[T].Ypos<=Ship[0].Y+17)
+							if(Bad[I].Fire_E[T].Xpos>=Ship[0].X-8)
+								if(Bad[I].Fire_E[T].Xpos<=Ship[0].X+4)
+									{Ship[0].Hit++;
+									 setfillstyle(1,0);
+									 bar(Bad[I].Fire_E[T].Xpos,Bad[I].Fire_E[T].Ypos-3,Bad[I].Fire_E[T].Xpos+4,Bad[I].Fire_E[T].Ypos);
+									 Bad[I].Fire_E[T].Exist=0;
+									 Bad[I].Fire_E[T].Xpos=0;
+									 Bad[I].Fire_E[T].Ypos=0;
+									 setfillstyle(1,12);
+									 bar(100,420, 400,440);
+									 setfillstyle(1,14);
+									 bar(105,425,105+58*(Ship[0].Hit)   ,435);
+									};
+};
+
+
+
+
+
+
+
+					 for (J=0;J<15;J++)
+						 if(Fire_U[J].Exist==1)
+							 for (I=0;I<20;I++)
+									if (Bad[I].Exist==1)
+														if(Fire_U[J].Ypos==Bad[I].Y+2)
+															if(Fire_U[J].Xpos>=Bad[I].X-3&&Fire_U[J].Xpos<=Bad[I].X+9)
+															 { setfillstyle(1,0);
+																 bar(Bad[I].X, Bad[I].Y, Bad[I].X+3, Bad[I].Y-10);
+																 bar(Bad[I].X-3,Bad[I].Y-10,Bad[I].X+6,Bad[I].Y-7);
+
+
+																 bar(Fire_U[J].Xpos,Fire_U[J].Ypos-3,Fire_U[J].Xpos+4,Fire_U[J].Ypos);
+																 Bad[I].Life-=1;
+																 Fire_U[J].Ypos=0;
+																 Fire_U[J].Xpos=0;
+																 Fire_U[J].Exist=0;
+
+
+
+															 };
+
+
+
+
+	if(Ship[0].Hit==5)
+	 {setfillstyle(1,7);
+		bar(150,200,390,300);
+		moveto(200,200);
+		setcolor(12);
+		settextstyle(0, 0, 2);
+
+		outtext("Game Over");
+		Ship[0].Y=9000;
+
+	 };
+
+
+
+	};
+
+

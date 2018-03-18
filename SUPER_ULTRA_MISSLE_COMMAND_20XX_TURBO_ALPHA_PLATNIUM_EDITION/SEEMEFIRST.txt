@@ -1,0 +1,1 @@
+If the executable displays ammo & score at the top, run from the game.cpp file. 

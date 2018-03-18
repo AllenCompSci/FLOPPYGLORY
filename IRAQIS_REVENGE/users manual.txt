@@ -1,0 +1,46 @@
+Iraqi's Revenge
+--------------
+User's Manual Text
+
+Info.
+	The game missile command orriginated in the late 80's, and was one of the first games after the well- loved Pac Man.
+We in Mr. Baker's Comp. Sci. class have decided to make our own version of this game, and have dedicated hours of work time
+to the making of a successful game. We hope you enjoy our version of Missile Command, dubbed Iraqi's Revenge.
+
+System Requirements
+	Hardware:
+		-Computer with an 'A' drive
+		-Monitor
+		-Keyboard
+		-Mouse
+	Software:
+		-C++
+		-The game Iraqi's Revenge on a flopp disk
+		-The correct drivers to run the game (see Mr. Baker for more info.)
+
+Playing
+Technical
+	-Insert the floppy into your 'A' drive
+	-Start the C++ program
+	-Under file, change the directory to 'a:\'
+	-Open the game file
+	-Choose Run under the fun menu
+	Warning: If you change any of the text used to make this game work, it will not work.
+Literal
+	When the game begins, you will have three choices: (1) New Game- you should choose this only if you wish to
+play Iraq's Revenge; (2) Readme- This file gives a brief background, and contains troubleshooting techniques if you are 
+having problems with the game; (3) Exit- this is for quiting the program at that point.
+
+Rules
+	Shoot the lasers falling towards your city before they hit and destroy the buildings. If all of your buildings are destroyed
+then you get a game over. Points are awarded to the user for every laser that is stopped, and deducted for every building that is 
+hit. If you allow your guns to be hit, then you recieve a penalty of having to wait until a building is destroyed, and you do lose the
+subsequent points. As you progress, the lasers get faster until it isnt possible to stop them anymore. The point of the game is to 
+play with a partner, and make higher scores than them.
+
+Troubleshooting
+	If for some reason the program does not run:
+		-Check to make sure the correct disk is in the correct drive, specified above
+		-Make sure you arent running to many other programs at once, therefore sucking up memory, and CPU capacity
+	If you get strange errors while running the game, seek professional help, or throw the computer out the window in a
+ 	moment of really a lot anger.

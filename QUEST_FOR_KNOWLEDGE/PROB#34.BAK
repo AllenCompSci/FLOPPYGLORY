@@ -1,0 +1,216 @@
+//Michael Crookston
+//Problem #34
+//Due Date
+//Period 6
+//Mr. Baker
+//Libraries Section
+#include<iostream.h>
+#include<iomanip.h>
+#include<conio.h>
+#include<apstring.h>
+#include<fstream.h>
+//Constants
+//Prototypes
+//Global Variables
+int Package,Mode,SeatType,RowTemp,SeatTemp,Invalid,Option,TypeAr;
+int TypeBr,TypeCr,TypeD,TypeAs,TypeBs,TypeCs,I,Time,TickNum,Valid;
+apstring Tickets[8];
+char Correct, Again, SubSect;
+apstring Name, Address, Number;
+int Cost (int,int,int);
+int Available (int,int,int);
+void Reserve (int,int&,int&);
+//Program
+void main ()
+{
+do
+	{do
+		{TypeAr=TypeBr=TypeCr=TypeD=TypeAs=TypeBs=TypeCs=0;
+		cout<<"The City Brethren Ticket Machine"<<endl<<endl;
+		cout<<"1. Salesperson Mode"<<endl;
+		cout<<"2. Manager Mode"<<endl<<endl<<endl;
+		cout<<"Which mode do you want:  ";
+		cin>>Mode;}
+	while(Mode!=1 || Mode!=2);
+	if(Mode==1)
+		{do
+			{cout<<"Please enter the following information:  "<<endl<<endl;
+			cout<<"Name (first, last):  "<<endl;
+			getline(cin, Name);
+			cout<<"Address:  "<<endl;
+			getline(cin, Address);
+			cout<<"Phone Number:  "<<endl;
+			getline(cin, Number);
+			clrscr();
+			cout<<Name<<endl<<Address<<endl<<Number<<endl<<endl;
+			cout<<"Is this correct (Y/N):  ";
+			cin>>Correct;}
+		while(Correct!='Y' || Correct!='y');
+		do
+			{do
+				{clrscr();
+				cout<<"The City Brethen Ticket Machine (salesperson)"<<endl<<endl;
+				cout<<"1. Single Game Ticket"<<endl;
+				cout<<"2. Pre-Season Game Ticket"<<endl;
+				cout<<"3. Post-Season Game Ticket"<<endl;
+				cout<<"4. Full Season Ticket"<<endl;
+				cout<<"5. Team Rival Tickets"<<endl<<endl;
+				cout<<"What ticket package would you like to purchase:  "<<endl;
+				cin>>Package;}
+			while(Package<1 || Package>5);
+			do
+				{clrscr();
+				cout<<"1. Lower Section"<<endl<<"2. Upper Deck"<<endl;
+				cout<<"3. Value Section"<<endl<<"4. Stadium Box"<<endl<<endl;
+				cout<<"Seat Type Choice:  ";
+				cin>>SeatType;}
+			while(SeatType>4 || SeatType<1);
+			if(SeatType==1)
+				{do
+					{clrscr();
+					cout<<"Number of Tickets Wanted (1-1000):  ";
+					cin>>TickNum;}
+				while(TickNum>1000 || TickNum<1);
+				Valid=Available(TickNum,TypeAr,TypeAs);
+				if(Valid==1)
+					{clrscr();
+					cout<<"Seats not available.  Please try another section.";}
+				else
+					{do
+						{clrscr();
+						cout<<"The seats are available."<<endl;
+						cout<<"This will cost you:  "<<Cost(Package,SeatType,TickNum)<<endl<<endl;
+						cout<<"Do you wish to purchase the tickets (Y/N):  ";
+						cin>>Correct;}
+					while(Correct!='y' || Correct!='Y');
+					Reserve(TickNum,TypeAr,TypeAs);
+					Time++;}
+				cout<<"Do you wish to buy more tickets (Y/N):  ";
+				cin>>Correct;}
+			if(SeatType==2)
+				{do
+					{clrscr();
+					cout<<"Number of Tickets Wanted (1-1000):  ";
+					cin>>TickNum;}
+				while(TickNum>1000 || TickNum<1);
+				Valid=Available(TickNum,TypeBr,TypeBs);
+				if(Valid==1)
+					{clrscr();
+					cout<<"Seats not available.  Please try another section.";}
+				else
+					{do
+						{clrscr();
+						cout<<"The seats are available."<<endl;
+						cout<<"This will cost you:  "<<Cost(Package,SeatType,TickNum)<<endl<<endl;
+						cout<<"Do you wish to purchase the tickets (Y/N):  ";
+						cin>>Correct;}
+					while(Correct!='y' || Correct!='Y');
+					Reserve(TickNum,TypeBr,TypeBs);
+					Time++;}
+				cout<<"Do you wish to buy more tickets (Y/N):  ";
+				cin>>Correct;}
+			if(SeatType==3)
+				{do
+					{clrscr();
+					cout<<"Number of Tickets Wanted (1-1000):  ";
+					cin>>TickNum;}
+				while(TickNum>1000 || TickNum<1);
+				Valid=Available(TickNum,TypeCr,TypeCs);
+				if(Valid==1)
+					{clrscr();
+					cout<<"Seats not available.  Please try another section.";}
+				else
+					{do
+						{clrscr();
+						cout<<"The seats are available."<<endl;
+						cout<<"This will cost you:  "<<Cost(Package,SeatType,TickNum)<<endl<<endl;
+						cout<<"Do you wish to purchase the tickets (Y/N):  ";
+						cin>>Correct;}
+					while(Correct!='y' || Correct!='Y');
+					Reserve(TickNum,TypeCr,TypeCs);
+					Time++;}
+				cout<<"Do you wish to buy more tickets (Y/N):  ";
+				cin>>Correct;}
+			if(SeatType==4)
+				{clrscr();
+				if(TypeD<10)
+					{do
+						{cout<<"There is a luxury box available."<<endl;
+						cout<<"It will cost:  "<<Cost(Package,SeatType,1)<<endl;
+						cout<<"Do you wish to purchase the box (Y/N):  ";
+						cin>>Correct;}
+					while(Correct!='y' || Correct!='Y');}
+				else
+					cout<<"Sorry.  No more boxes are available."<<endl;
+				cout<<"Do you wish to buy more tickets (Y/N):  ";
+				cin>>Correct;}}
+		while(Correct=='y' || Correct=='Y');
+		cout<<"Is there another customer (Y/N):  ";
+		cin>>Correct;}}
+	while(Correct=='y' || Correct=='Y');
+}
+int Cost(int Package, int SeatType, int TickNum)
+{int Answer;
+if(Package==1)
+	if(SeatType==1)
+		Answer=40*TickNum;
+	else if(SeatType==2)
+		Answer=20*TickNum;
+			 else if(SeatType==3)
+						Answer=10*TickNum;
+						else
+							Answer=100;
+else if(Package==2)
+			if(SeatType==1)
+				Answer=50*TickNum;
+			else if(SeatType==2)
+						Answer=30*TickNum;
+					 else if(SeatType==3)
+									Answer=20*TickNum;
+								else
+									Answer=110;
+else if(Package==3)
+			if(SeatType==1)
+				Answer=60*TickNum;
+			else if(SeatType==2)
+						Answer=40*TickNum;
+					 else if(SeatType==3)
+									Answer=30*TickNum;
+								else
+									Answer=120;
+else if(Package==4)
+			if(SeatType==1)
+				Answer=2500*TickNum;
+			else if(SeatType==2)
+						Answer=1125*TickNum;
+					 else if(SeatType==3)
+									Answer=500*TickNum;
+								else
+									Answer=7000;
+else if(Package==5)
+			if(SeatType==1)
+				Answer=400*TickNum;
+			else if(SeatType==2)
+						Answer=200*TickNum;
+					 else if(SeatType==3)
+									Answer=75*TickNum;
+								else
+									Answer=1000;
+return Answer;}
+int Available (int TickNum,int Startptr,int Startpts)
+{int Answer,J;
+for(J=0;J<TickNum;J++)
+	{if(100<Startpts+J)
+		{Startpts=0;
+		if(Startptr<100)
+			Startptr++;
+		else
+			Answer=1;}}
+return Answer;}
+void Reserve (int TickNum,int&Startptr,int&Startpts)
+{int J;
+for(J=0;J<TickNum;J++)
+	{if(100<Startpts+J)
+		{Startpts=0;
+		if(Startptr<100)
+			Startptr++;}}}

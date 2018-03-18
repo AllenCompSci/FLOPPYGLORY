@@ -1,0 +1,40 @@
+Program product;
+(*El CHoDA
+Baker 6th, *)
+
+uses
+    Crt;
+TYPE
+NUMBERS = array [1..15] of integer;
+TOLIET = array [1..15] of integer;
+PRODUCT1 = array [1..15] of integer;
+var
+num:NUMBERS;
+tol:TOLIET;
+ans:PRODUCT1;
+x,y,z:integer;
+begin (*main*)
+writeln ('The magnifacent multiplying machine');
+for x :=1 to 15 do
+begin
+writeln ('Input a number please');
+readln (num[x]);
+end;
+for y :=1 to 15 do
+begin
+writeln ('Input another number please');
+readln (tol[y]);
+end;
+x:=1;
+y:=1;
+clrscr;
+for z :=1 to 15 do
+begin
+ans[z]:=num[x]*tol[y];
+writeln (ans[z]);
+x:=x+1;
+y:=y+1;
+end;
+readln;
+End. (*main*)
+

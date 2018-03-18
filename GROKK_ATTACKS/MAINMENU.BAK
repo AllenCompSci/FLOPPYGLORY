@@ -1,0 +1,165 @@
+//Library Section
+#include "lv.hpp"
+#include <iostream.h>
+#include <iomanip.h>
+#include <conio.h>
+#include <apstring.h>
+#include <apvector.h>
+#include <apstring.h>
+#include <graphics.h>
+#include <dos.h>
+#include "mainmenu.hpp"
+#include "mybitmap.hpp"
+
+
+//Global Variable Section
+apvector <Star> Space(100);
+char Again;
+int Move,X,Y,MvScr,Z,Tmp,Ecolmn,Erow;
+bool Ekill;
+long Time;
+Shot Temp;
+Bosses Boss;
+Myship_dat MyShip;
+apvector <Edat> EnemyShip(10);
+Enemy Enemy10;
+
+char Pos;
+int grdriver,grmode,errorcode;
+static int I,J,Option;
+apstring Title,Pointer;
+apvector <apstring> Menu (4);
+
+//Prototype Section
+void gr_start(int&,int&,int&);
+void start_game();
+void quit_game();
+
+void main()
+{
+clrscr();
+randomize();
+gr_start(grdriver,grmode,errorcode);
+do{
+cleardevice();
+menu_planets();
+for (I=0;I<getmaxx();I++)
+	for (J=0;J<getmaxy();J++)
+		if (random(1000)<=1&&getpixel(I,J)==0)
+			putpixel(I,J,15);
+Title="GROKK ATTACKS!";
+Menu[0]="   New Game";
+Menu[1]="   High Scores";
+Menu[2]="   Help";
+Menu[3]="   Quit Game";
+Pointer="¯";
+settextstyle(1,0,2);
+for (I=0;I<4;I++)
+	{
+	setcolor(1);
+	outtextxy(250,(30*I)+220,Menu[I].c_str());
+	if (I==0)
+		outtextxy(250,(30*I)+220,Pointer.c_str());
+	else
+		{
+		setcolor(8);
+		outtextxy(250,(30*I)+220,Pointer.c_str());
+		}
+	}
+Option=0;
+getch();
+Pos='8';
+while (Pos!=char(13))
+	{
+	while (!kbhit())
+		{
+		settextstyle(1,0,5);
+		setcolor(random(14)+1);
+		outtextxy(150,150,Title.c_str());
+		}
+	settextstyle(1,0,2);
+	Pos=getch();
+	if (Pos==char(72)) //up
+		if (Option!=0)
+			{
+			Option--;
+			setcolor(8);
+			outtextxy(250,(30*(Option+1))+220,Pointer.c_str());
+			setcolor(1);
+			outtextxy(250,(30*Option)+220,Pointer.c_str());
+			}
+	if (Pos==char(80)) //down
+		if (Option!=3)
+			{
+			Option++;
+			setcolor(8);
+			outtextxy(250,(30*(Option-1))+220,Pointer.c_str());
+			setcolor(1);
+			outtextxy(250,(30*Option)+220,Pointer.c_str());
+			}
+	}
+	switch (Option)
+	{
+	case 0:start_game();
+				 break;
+	case 1:highscore();
+				 break;
+	case 2:help();
+				 break;
+	case 3: quit_game();
+				 break;
+	}
+}while(Option!=3);
+}
+
+//******************************** FUNCTIONS ****************************
+void gr_start(int& grdriver,int& grmode,int& errorcode)
+{
+grdriver=VGA;
+grmode=VGAHI;
+initgraph(&grdriver,&grmode,"C:\\TC\\BGI");
+errorcode=graphresult();
+if (errorcode!=grOk)
+	{
+	clrscr();
+	cout<<"Error: "<<errorcode<<endl;
+	cout<<"Press Return to continue.";
+	getch();
+	exit(1);
+	}
+}
+
+void start_game()
+{
+
+
+	for(MyShip.Continue=0;MyShip.Continue<3;MyShip.Continue++)
+	{
+	MyShip.Win_game=false;
+	if(lv1())
+		if(lv2())
+			if(lv3())
+				if(lv4())
+					if(boss1())
+						if(lv5())
+							if(lv6())
+								if(lv7())
+									if(lv8())
+										if(lv9())
+											if(boss3())
+												if(boss4())
+													MyShip.Win_game=true;
+
+	}
+ if(MyShip.Win_game==false)
+	 loose();
+ else
+	newscore(Time);
+
+}
+
+void quit_game()
+{
+exit(1);
+}
+

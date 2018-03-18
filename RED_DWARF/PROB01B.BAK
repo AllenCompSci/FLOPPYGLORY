@@ -1,0 +1,114 @@
+//KRIS BICKHAM
+//PROBLEM 01
+//DUE DATE
+//PERIOD 6
+//MR. BAKER
+//LIBRARIES
+#include <iostream.h>
+#include <iomanip.h>
+#include <conio.h>
+
+//VARIABLES
+
+//CONSTANTS;
+const int A=2;
+const int B=4;
+const int C=6;
+const int D=8;
+const int E=22;
+const int F=12;
+const int G=14;
+const int H=16;
+const int I=18;
+const int J=20;
+//MAIN
+
+void main ()
+{
+clrscr();
+cout<<"Addition:"<<endl;
+cout<<"10+10="<<X+X<<endl;
+cout<<"10+2="<<X+A<<endl;
+cout<<"10+4="<<X+B<<endl;
+cout<<"10+6="<<X+C<<endl;
+cout<<"10+8="<<X+D<<endl;
+cout<<"10+22="<<X+E<<endl;
+cout<<"10+12="<<X+F<<endl;
+cout<<"10+14="<<X+G<<endl;
+cout<<"10+16="<<X+H<<endl;
+cout<<"10+18="<<X+I<<endl;
+cout<<"10+20="<<X+J<<endl;
+getch ();
+clrscr();
+cout<<"Subtraction:"<<endl;
+cout<<"10-10="<<X-X<<endl;
+cout<<"10-2="<<X-A<<endl;
+cout<<"10-4="<<X-B<<endl;
+cout<<"10-6="<<X-C<<endl;
+cout<<"10-8="<<X-D<<endl;
+cout<<"10-22="<<X-E<<endl;
+cout<<"10-12="<<X-F<<endl;
+cout<<"10-14="<<X-G<<endl;
+cout<<"10-16="<<X-H<<endl;
+cout<<"10-18="<<X-I<<endl;
+cout<<"10-20="<<X-J<<endl;
+getch ();
+clrscr();
+cout<<"Multiplication:"<<endl;
+cout<<"10*10="<<X*X<<endl;
+cout<<"10*2="<<X*A<<endl;
+cout<<"10*4="<<X*B<<endl;
+cout<<"10*6="<<X*C<<endl;
+cout<<"10*8="<<X*D<<endl;
+cout<<"10*22="<<X*E<<endl;
+cout<<"10*12="<<X*F<<endl;
+cout<<"10*14="<<X*G<<endl;
+cout<<"10*16="<<X*H<<endl;
+cout<<"10*18="<<X*I<<endl;
+cout<<"10*20="<<X*J<<endl;
+getch ();
+clrscr();
+cout<<"Division:"<<endl;
+cout<<"10/10="<<X/X<<endl;
+cout<<"10/2="<<X/A<<endl;
+cout<<"10/4="<<X/B<<endl;
+cout<<"10/6="<<X/C<<endl;
+cout<<"10/8="<<X/D<<endl;
+cout<<"10/22="<<X/E<<endl;
+cout<<"10/12="<<X/F<<endl;
+cout<<"10/14="<<X/G<<endl;
+cout<<"10/16="<<X/H<<endl;
+cout<<"10/18="<<X/I<<endl;
+cout<<"10/20="<<X/J<<endl;
+getch ();
+clrscr();
+cout<<"Mod:"<<endl;
+cout<<"10%10="<<X%X<<endl;
+cout<<"10%2="<<X%A<<endl;
+cout<<"10%4="<<X%B<<endl;
+cout<<"10%6="<<X%C<<endl;
+cout<<"10%8="<<X%D<<endl;
+cout<<"10%22="<<X%E<<endl;
+cout<<"10%12="<<X%F<<endl;
+cout<<"10%14="<<X%G<<endl;
+cout<<"10%16="<<X%H<<endl;
+cout<<"10%18="<<X%I<<endl;
+cout<<"10%20="<<X%J<<endl;
+getch ();
+cout<<"Yes....... he is";
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,68 @@
+//Chris Chapman
+//Prob#18
+//7th
+//Mr. Baker
+
+//Library Section
+#include<iostream.h>
+#include<iomanip.h>
+#include<conio.h>
+#include<apstring.h>
+
+//Const Section
+
+//Variables Section
+char Answer;
+int SH,SM,EH,EM,ST,ET,Length,L1,L2,C;
+double Amount;
+apstring Name,Address1,Address2,Trash;
+
+
+void main ()
+{
+do{
+	clrscr();
+	if (Answer=='Y'||Answer=='y')
+		getline (cin,Trash);
+	cout<<"Name: ";
+	getline (cin,Name);
+	cout<<"Street Address: ";
+	getline (cin,Address1);
+	cout<<"City, State, Zip: ";
+	getline (cin,Address2);
+	Amount=0;
+	Length=0;
+	L1=0;
+	L2=0;
+	clrscr();
+	cout<<"Enter starting time! ex. 7 3 instead of 07:03"<<endl;
+	cout<<"Use a 24-hour clock!"<<endl;
+	cout<<"Your call can't be 24 hours or longer!!"<<endl;
+	cin>>SH>>SM;
+	cout<<"Enter ending time! ex. 17 3 instead of 17:03"<<endl;
+	cin>>EH>>EM;
+	clrscr();
+	ST=SH*60+SM;
+	ET=EH*60+EM;
+
+	if (ST>ET)
+		ET+=1440;
+
+	for (C=ST;C<ET;C++)
+			if (((C<1080)&&(C>479))||((C<2520)&&(C>1919)))
+				L1++;
+			else
+				L2++;
+
+	Amount=L1*.25+L2*.18;
+	Length=L1+L2;
+	cout<<Name<<endl<<Address1<<endl<<Address2<<endl<<endl;
+	cout<<setprecision(2)<<setiosflags(ios::showpoint);
+	cout<<"Length of call: "<<Length<<" min."<<endl;
+	cout<<"Amount due: "<<'$'<<Amount<<endl<<endl;
+	cout<<"Length of call in $0.25 zone: "<<L1<<" min."<<endl;
+	cout<<"Length of call in $0.18 zone: "<<L2<<" min."<<endl<<endl;
+	cout<<"Run again? (Y/N)";
+	cin>>Answer;
+	}while(Answer=='Y'||Answer=='y');
+}

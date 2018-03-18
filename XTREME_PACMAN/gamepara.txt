@@ -1,0 +1,7 @@
+Pacman X-Treme is an action packed modification version of its original.  
+Playersare challenged with 6 levels of consuming yellow pellets and avoiding ghosts.
+In between levels, players get money to purchase items in which change game play 
+and increase the chance that the player is succesful.
+Pacman X-treme can save and load play files of previous games, so you can start 
+where you left off the last time you played.
+Turn on your computer and have fun with this awesome graphically designed game!

@@ -1,0 +1,38 @@
+
+
+
+                                                        HELICOPTER
+        ROFLROFLROFLROFL
+               ||
+     _       ---------
+    ! |_____|         |_
+    !--------    _____  |
+            |___________|
+               /\    \
+              0  0    0          http://www.toya.net.pl/~kazzie/flash/helicopter.htm <<example!
+
+
+That is the ROFL copter. Just watch the video on the internet and youl understand....
+
+Anyway, 
+	
+	This is the pseudocode for helicopter. You play the game by pushing the down arrow to go up. The scenery 
+moves, and you sit still. We are going to be make the scenery move and cycle through. It will look like the helicopter 
+is actually moving, but its kind of like the towers of hanoi program, you move the towers instead of the actual blocks.
+We are going to make it generate random blocks that will act as the scenery(ceilings and walls). We will then make a
+function that will generate random blocks that will be in your way as you try to high score.
+	
+	The helicopter will probably around the size shown. We are going to draw it using the line command around
+20 times most likely. The background will be the standard black, and we are going to make the scenary blue or green.
+The helicopter will probably be white. There will be a trail behind the helicopter, which will probably be red. 
+	
+	We are going to use if statements to check if the helicopter has hit the blocks or not. If one of the 
+helicopters pixels cross one of the blocks, ceilings, or floors pixels, we will stop the program and ask if you
+would like to play again.
+	
+	Weapons will be made available in a later version of the game. Cheat codes such as going through the walls
+will also be made available.
+	
+	There will most likely be options as to how fast the scenery goes, for different levels and such. Score will 
+be kept on a basis of one point per pixel. As I increases(pixel counter), it will cout I every few seconds, and
+when the game is over, it will show a final score. 

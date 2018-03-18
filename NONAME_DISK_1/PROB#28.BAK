@@ -1,0 +1,77 @@
+//Jeff Stein
+//6th Period
+//Mr. Baker
+//Program:Song using Functions
+#include <iostream.h>
+#include <conio.h>
+#include <apstring.h>
+#include <iomanip.h>
+#include <apvector.h>
+#include <apmatrix.h>
+#include <stdlib.h>
+
+void vers1 ();
+void vers2 ();
+void vest3 ();
+
+void chor ();
+
+
+void main()
+{
+clrscr();
+
+cout<<setw(40)<<"Turn the Page"<<endl;
+cout<<setw(40)<<"by Metallica"<<endl;
+vers1 ();
+
+
+
+
+
+
+
+
+getch();
+};
+
+void vers1  ()
+{
+cout<<"On a long and lonesome highway east of Omaha "<<endl;
+cout<<"You can listen to the engines moaning out as a one note song "<<endl;
+cout<<"You think about the woman or the girl you knew the night before "<<endl;
+}
+void vers2 ()
+{
+cout<<"But your thoughts will soon be wandering the way they always do"<<endl;
+cout<<"When your riding sixteen hours and there not much to do" <<endl;
+cout<<"And you don't feel much like riding, you just wish the trip was through"<<endl;
+}
+void vers3 ()
+{
+cout<<"So you walk into this restaurant strung out from the road"<<endl;
+cout<<"And you feel the eyes upon you, as you 're shaking off the cold"<<endl;
+cout<<"You pretend it doesn't bother you, but you just want to explode"<<endl;
+void vers4
+{
+cout<<"Must times you can't hear'em talk, other times you can"<<endl;
+cout<<"All the same cliches, 'Is it women?' 'Is it man?' "<<endl;
+cout<<"And you always seemed out number, and don't dare to make a stand"<<endl;
+cout<<"Make your stand"
+}
+void vers5 ()
+{
+cout<<"Ooh-ooh, out there in the spotlight, your're million miles away."<<endl;
+cout<<"Every once of energy you try to give away "<<endl;
+cout<<"As the sweat pours out your body, like music that you play, yeah "<<endl;
+}
+void vers6 ()
+{
+cout<<"Later in the evening, you lie awake in bed."<<endl;
+cout<<"With the echoes of the ampfiliers ringing in your head"<<endl;
+cout<<"You smoke the day's last cigarette, remembering what she said "<<endl;
+cout<,"What she said"<<endl;
+}
+void Chorus()
+{
+}s

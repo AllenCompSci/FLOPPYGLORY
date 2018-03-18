@@ -1,0 +1,65 @@
+//Inforation Section
+//Hendrik Schuetz
+//Shell
+//7th
+//Mr. Baker
+
+//Library Section
+#include<iostream.h>
+#include<iomanip.h>
+#include<conio.h>
+#include<apstring.h>
+#include<apvector.h>
+#include<apmatrix.h>
+#include<fstream.h>
+#include<graphics.h>
+#include<stdlib.h>
+#include<alloc.h>
+#include<dos.h>
+#include<bitmap.h>
+
+
+//Const Section
+
+//Structure Section
+
+//Prototype Section
+void grstart (int&,int&,int&);
+
+//Global Variables Section
+char Answer;
+int grdriver, grmode, errorcode;
+image Start;
+
+void main ()
+{
+	clrscr();
+	grstart (grdriver, grmode, errorcode);
+	Start.open("A:\\name.bmp");
+	Start.draw (0,0);
+	settextstyle (4,
+
+	outtextxy (300,300,"(1) New Game");
+	outtextxy (300,310,"(2) ReadMe");
+	outtextxy (300,320,"(3) Exit");
+	getch();
+
+
+
+}
+
+void grstart (int& grdriver, int& grmode, int& errorcode)
+	{
+		grdriver=VGA;
+		grmode=VGAHI;
+		initgraph (&grdriver, &grmode, "c:\\TC\\BGI");
+		errorcode=graphresult();
+		if (errorcode!=grOk)
+			{
+				clrscr();
+				cout<<"Error: "<<errorcode<<endl;
+				cout<<"Please press return to continue.";
+				getch();
+				exit(1);
+			}
+	};

@@ -1,0 +1,1199 @@
+What is the square root of 64?
+8
+5
+9
+3
+
+What is 24 divided by 3?
+8
+12
+4
+6
+
+What is the radius of a circle that has a diameter of 4?
+2
+1
+8
+3
+
+What is 12 * 12?
+144
+121
+24
+1
+
+What is the cube root of 8?
+2
+3.14
+4
+1
+
+Which of these numbers are prime?
+13
+4
+8
+9
+
+Which of these numbers are odd?
+248765827594758423750947053421
+894792843758472597245454545440
+243572485284752476042692506888
+324095432075023475347560243842
+
+Which number has a factor of 3?
+9
+11
+4
+8
+
+In the equation 2x=4, what is x?
+2
+.5
+8
+1
+
+In the equation 2x-4=2, what is x?
+3
+2
+1
+0
+
+What is 2+2?
+4
+5
+6
+7
+
+What is the square root of 16?
+4
+3
+8
+2
+
+What is pi rounded to the hundreth place?
+3.14
+3.04
+4.14
+4.13
+
+What are the angles in a right triangle?
+90,45,45
+60,60,60
+45,45,45
+90,15,75
+
+What is the equation for a vertical line going through point (3,4)?
+x=3
+y=0
+x=4
+y=3
+
+What is the slope of the line y=5x+2?
+5
+2
+-5
+-2
+
+How many sides does a pentagon have?
+5
+4
+3
+6
+
+What is 10*5?
+50
+15
+5
+10
+
+What is the equation for a horizontal line going through point (3,4)?
+y=4
+x=4
+y=3
+x=3
+
+What is the y-intercept in the line y-2=x+4?
+6
+4
+2
+8
+
+What is .5^2?
+.25
+1
+.5
+2
+
+What is 2^3?
+8
+6
+5
+2
+
+What is 12 divided by 4?
+3
+2
+6
+1
+
+What is 6*8?
+48
+42
+36
+54
+
+What is 7*9?
+63
+16
+12
+5
+
+Which of the following numbers are prime?
+17
+16
+18
+15
+
+Which of these are a factor of 9?
+3
+2
+4
+5
+
+What is 10 squared?
+100
+10
+1
+.1
+
+What is 20-3?
+17
+23
+21
+19
+
+In the equation 2(x^2)=32, what is x?
+4
+15
+8
+2
+
+What is 36+64?
+100
+99
+101
+28
+
+What is the y-intercept in the line y=3x?
+0
+3
+-3
+6
+
+Which of these equations would graph as a circle?
+(x^2)+(y^2)=4
+(x^2)-(y^2)=4
+xy=4
+x/y=4
+
+What is 13*2?
+26
+15
+169
+11
+
+What is 25% of 12?
+3
+4
+12
+1
+
+What is 90*0?
+0
+6
+6556
+0
+
+What is 15+300?
+315
+6456
+1256
+32135
+
+What is 3 * 9?
+27
+12
+36
+21
+
+What is the formula for the area of a triangle?
+A=1/2(Base*Height)
+A=1/3(Base*Height)
+A=Base*Length
+A=Base*Base
+
+What is the definion of "radius" in reguard to regular polygons?
+The distance from the center to a vertex
+The length of each side
+The length of each side squared
+The square root of the length of each side
+
+Which is the right formula for the area of a regular polygon?
+A=1/2(apothem*perimeter)
+A=1/3(apothem*perimeter)
+A=2(apothem*perimeter)
+A=(Number of sides)(Length of each side)
+
+What is the square root of 100?
+10
+4
+12
+50
+
+What is 6 * 8?
+48
+14
+72
+42
+
+What is the fomula for the circumfrence of a circle?
+C=2(pi)(radius)
+C=(pi)(radius)
+C=(Base)(Height)
+C=(radius)(radius)
+
+Which number is divisible by 2?
+4
+5
+7
+9
+
+Which number is divisible by 4?
+16
+18
+34
+54
+
+Which number is prime?
+1
+9
+4
+6
+
+Which number is closest to the value of pi?
+3.14
+3.15
+3.13
+3
+
+Which number is the square root of 8 squared?
+8
+64
+256
+3
+
+Which number is the cubed root of 16?
+2
+4
+6
+8
+
+Solve for X:  (4x)(4x)=256
+4
+8
+64
+16
+
+Solve for X:  3x+2=8
+2
+4
+6
+8
+
+Solve for A:  3a+2x=4
+(4-2x)/3
+17
+3/(4-2x)
+24
+
+What is 17+56?
+73
+63
+83
+64
+
+Solve for X:  2x=8
+4
+6
+10
+16
+
+How many degrees are in a circle?
+360
+270
+180
+450
+
+Which equation is in correct slope/intercept form?
+y=2x+8
+2y=x
+(y)(y)=2x+8
+1/2(y)=17x
+
+How many sides does a square have?
+4
+3
+5
+2
+
+How many sides does a triangle have?
+3
+2
+4
+5
+
+How many sides does a pentagon have?
+5
+4
+6
+7
+
+How many sides does a hexagon have?
+6
+5
+7
+8
+
+What is another way of writing 5^3?
+5*5*5
+5*5*5*5*5
+3*3*3*3*3
+3*3*3
+
+What is another way of writing 6^4?
+6*6*6*6
+6*6*6*6*6*6
+4*4*4*4*4*4
+4*4*4*4
+
+What is the y-intercept of the line y=2x-7?
+-7
+7
+2
+-2
+
+What is 164/2?
+82
+42
+16
+77
+
+What is 13^2
+169
+26
+6.5
+13
+
+What is the correct scientific notation for 367984.2?
+3.679842*10^5
+1*10^1
+36.79842*10^4
+367.9842*10^3
+
+What is 3^0
+1
+2
+3
+0
+
+What is 50% of 10?
+5
+4
+6
+10
+
+What is 20% of 100?
+20
+4
+10
+20.1
+
+What is 5*5?
+25
+24
+6
+2
+
+What is the square root of 36
+6
+5
+7
+8
+
+What is the cubed root of 125?
+5
+4
+6
+25
+
+What is 0*165498494984
+0
+11987498419849
+165498494984
+1
+
+What is 4198198191+19819879984?
+202218078175
+198419819811
+561987563122
+202218088175
+
+What is 3^6?
+1029
+243
+81
+27
+
+Which number is odd?
+3
+4
+6
+8
+
+Which number is even?
+2
+5
+7
+9
+
+Which number is divisible by 16?
+64
+33
+43
+89
+
+What is 25% of 16?
+4
+5
+6
+7
+
+What is 1/4 of 16?
+4
+5
+6
+7
+
+What is 4?
+Four
+Five
+Six
+Seven
+
+Which number is (2+2)/2?
+2
+4
+65
+6
+
+What is 126998?
+One hundred and twenty six thousand nine hundred and ninety eight
+Two
+Three
+Four
+
+What is 25*4?
+100
+75
+25
+50
+
+How many sides is on a dodecagon?
+12
+10
+11
+9
+
+What is 5/2?
+2.5
+2.4
+2.6
+37
+
+How many sides are in a trapezoid?
+1
+2
+3
+4
+
+What is the square root of -1?
+The imaginary number 'i'
+e
+1
+-1
+
+What is 10/2+4?
+9
+5/3
+60
+4
+
+What is 8-2+6/2?
+9
+6
+10
+5
+
+What is 3 cubed?
+27
+9
+3
+8
+
+What is 80/8?
+10
+8
+4
+2
+
+Which one of the following are prime?
+23
+169
+144
+33
+
+What is 12 squared?
+144
+24
+18
+6
+
+What is the fourth root of 256?
+4
+3
+5
+6
+
+What is the square root of 9604?
+98
+99
+97
+96
+
+What is the square root of 4489?
+67
+68
+66
+4
+
+What is the log of 10?
+1
+2
+3
+0
+
+What is the sine of 90 degrees?
+1
+0
+2
+3
+
+What is 16/2?
+8
+3
+4
+7
+
+What is 5^3?
+125
+25
+8
+15
+
+What is 4^4?
+256
+16
+8
+1
+
+What is the tangent of 45 degrees?
+1
+0
+5
+6
+
+What is 6 squared?
+36
+12
+18
+9
+
+What is 5-2?
+3
+2
+7
+9
+
+What would come next in this series: 0,2,4,6,...?
+8
+-4
+4
+2
+
+What would come next in this series: 0,-2,-4,-6,...?
+-8
+4
+-4
+-2
+
+What would come next in this series: 1,1,2,3,5,...?
+8
+7
+6
+5
+
+What is 45/9?
+5
+4
+3
+2
+
+What is 14/2?
+7
+6
+8
+4
+
+In the equation 5x=10, what is x?
+2
+5
+4
+-2
+
+What is the slope in the line 2y=x?
+.5
+2
+3
+8
+
+What is the y-intercept in the line y=x-3?
+-3
+3
+0
+1
+
+What is the y-intercept in the line 2y=x+4?
+2
+4
+-2
+-4
+
+The equation xy=4 graphs as a:
+hyperbola
+parabola
+circle
+ellipse
+
+The equation x^2 + y^2 -4=0 graphs as a:
+circle
+hyperbola
+parabola
+ellipse
+
+What is 10% of 70?
+7
+10
+5
+2
+
+What is 15% of 60?
+9
+10
+8
+4
+
+What is 20% of 80?
+16
+8
+5
+4
+
+What is 50% of 12/6?
+1
+2
+3
+4
+
+What is 12*.5?
+6
+60
+12.5
+4
+
+What is 18/3?
+6
+3
+9
+11
+
+What is 25% of 10?
+2.5
+4
+3
+5
+
+What is 30/3?
+10
+4
+5
+6
+
+What is the sine of 45 degrees?
+.707
+1
+0
+.5
+
+What is the sine of 30 degrees?
+.5
+1
+0
+.707
+
+What is the cosine of 60 degrees?
+.5
+1
+0
+.707
+
+What is the cosine of 45 degrees?
+.707
+.5
+1
+0
+
+What is 5 cubed?
+125
+67
+90
+18
+
+If a triangle has the angles 30 and 45, the other angle is:
+105
+90
+45
+30
+
+What is 60*.25?
+15
+1500
+45
+10
+
+What is 2+2-4+5-6?
+-1
+0
+1
+2
+
+What is the square root of 100-64+36-4+32?
+10
+100
+1000
+1
+
+In the equation x^2-6x+9=0, what is x?
+3
+2
+1
+0
+
+In the equation x^2-5x+6=0, what is x?
+2,3
+2,5
+-2,-3
+1,2
+
+In the equation 5x/10=2, what is x?
+4
+3
+5
+2
+
+In the equation 2x=16, what is x?
+8
+7
+14
+2
+
+What is the fifth root of 1024?
+4
+3
+5
+2
+
+How many times does 6 go into 48?
+8
+7
+9
+6
+
+What is 6+4/2-3?
+5
+4
+6
+2
+
+In the line x-y=3, what is the y-intercept?
+-3
+3
+1
+-1
+
+What is the square root of 121?
+11
+12
+13
+14
+
+What is the square root of 529?
+23
+22
+24
+21
+
+Which one of the following points does the line y=2x go through?
+(3,6)
+(3,5)
+(2,5)
+(4,6)
+
+Which one of the following points does the line y=x+2 go through?
+(0,2)
+(0,1)
+(0,0)
+(-1,0)
+
+Which one of the following points does the line x-y=3 go through?
+(1,-2)
+(0,0)
+(1,-3)
+(1,-4)
+
+What is 2+2-2+2-2+2+2?
+6
+4
+2
+0
+
+What is 2x-x+3x-x-x?
+x
+2x
+0
+-x
+
+What is 2+2?
+4
+3
+0
+2
+
+What is the next number in this pattern: 0,-1,2,-3,4...?
+-5
+5
+-4
+-3
+
+What is the next number in this pattern: 0,2,4,2,0,2...?
+4
+2
+-4
+0
+
+What is the next number in this pattern: 2,3,5,7,11,13...?
+17
+15
+16
+14
+
+What is 15/3?
+5
+3
+6
+1
+
+What is 5!?
+120
+5
+1
+25
+
+What is 8!?
+40320
+20160
+10080
+5040
+
+What is 50!?
+3.04140932*10^64
+1.52070466*10^64
+7.6035233*10^64
+3.80176165*10^63
+
+What is 10!?
+3628800
+3628900
+3628700
+3628600
+
+What is the log of 316.227766?
+2.5
+2.4
+2.6
+2.3
+
+What is the log of 1258.925412?
+3.1
+3.2
+3
+3.3
+
+What is 104*102?
+10608
+10618
+10628
+10598
+
+What is 816/3?
+272
+273
+271
+270
+
+What is 272*4?
+1088
+5678
+7598
+3428
+
+What is 25*2?
+50
+45
+60
+75
+
+What is 10% of 150?
+15
+20
+10
+25
+
+What is 15% of 60?
+9
+7
+6
+5
+
+What is 25% of 60?
+15
+45
+30
+25
+
+What is 25% of 120?
+30
+25
+15
+9
+
+What is 9% of 6?
+.54
+.55
+.56
+.52
+
+What is the slope in the line y=3x-2?
+3
+-2
+-3
+2
+
+What is the slope in the line 2y=2x?
+1
+2
+-1
+-2
+
+What is the slope in the line y+3=x-2?
+1
+-1
+3
+-2
+
+What is the slope in the line 5y=25x?
+5
+25
+-25
+-5
+
+In the equation 2-2x=0, what is x?
+1
+-1
+0
+2
+
+In the equation 5x=32+x, what is x?
+8
+6
+7
+5
+
+In the equation 5x=20+x, what is x?
+5
+4
+6
+3
+
+In the equation 6x-12=6, what is x?
+3
+4
+5
+6
+
+Which one of the following lines contains point (0,0)?
+y=2x
+y=x+1
+y=x-1
+x=y+1
+
+Which one of the following lines contains point (3,4)?
+y=x+1
+y=x
+y=x-1
+y=x^2
+
+Which one of the following lines contains point (6,3)?
+2y=x
+y=2x
+y=(1/3)x
+y=3x
+
+Which one of the following lines contains point (4,4)?
+y=x
+y=x+1
+y=2
+x=2
+
+Which one of the following lines contains point (5,3)?
+x=5
+y=5
+y=x
+y=2x
+
+Which one of the following lines contains point (2,6)?
+y/3=x
+y=x/3
+y=x+3
+y=x-3
+
+Which one of the following lines contains point (-1,1)?
+y=-x
+y=x-1
+y=x+1
+y=x
+
+What is the ln of e?
+1
+0
+2
+3
+
+What is the ln of e^2?
+2
+1
+3
+4
+
+What is the log of 100?
+2
+1
+3
+4
+
+In the equation 2x=x-x-x+1?
+1/3
+1/2
+2
+1
+
+What is 1+1?
+2
+1
+3
+4
+
+What is 1*1?
+1
+2
+3
+0
+
+What is 1*0?
+0
+1
+2
+3
+
+What is 12/4?
+3
+2
+4
+1
+
+What is the square root of 49?
+7
+6
+8
+5
+
+What is 11 squared?
+121
+144
+100
+169
+
+What is the fourth root of 2401?
+7
+6
+8
+5
+
+What is the square root of 196?
+14
+15
+13
+16
+
+What is 14^0?
+1
+14
+-14
+2
+
+What is 4^-2?
+.0625
+.05
+.025
+.0125
+
+What is 2+2-4?
+0
+1
+-1
+2
+
+What is the fourth root of 83521?
+17
+16
+18
+15

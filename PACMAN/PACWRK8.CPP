@@ -1,0 +1,1657 @@
+//comments
+//Rachel Clark
+//pacman revised
+//3rd
+
+// note to self section
+
+//library section
+#include <stdlib.h>
+#include <iomanip.h>
+#include <iostream.h>
+#include <conio.h>
+#include <apstring.h>
+#include <fstream.h>
+#include <apvector.h>
+#include <apmatrix.h>
+#include <graphics.h>
+#include <dos.h>
+#include "bmputil.h"
+//constants
+const int SIZE_XP = 640;    //screen size in pixels
+const int SIZE_YP = 480;
+const int PAC_SPEED = 8;
+const int GHOST_SPEED = 8;
+const int BM_SIZE = 32;
+const int SIZE_XM = 15;       //grid size
+const int SIZE_YM = 15;
+const int PILL_LIFETIME = 200; //controls how long pill is in effect-change?
+const int NUM_LEVELS = 10;
+const int NUM_GHOSTS = 4;	 //hardwired-some are 1,2,3 & 4
+const int NUM_HIGH_SCORES = 10;
+const int START_LIVES = 3;
+const int START_LEVEL = 0;
+const int POINTS_GHOST = 300;
+const int POINTS_PILL = 100;
+const int POINTS_DOT = 10;
+
+const apstring HIGHSCORE_FILENAME = "hiscores.dat";
+
+const char CLEAR = '0';
+const char THRU = 'Q';
+const char UPPER_LEFT = 'A';
+const char UPPER_RIGHT = 'B';
+const char LOWER_LEFT = 'C';
+const char LOWER_RIGHT = 'D';
+const char T_UP = 'E';
+const char T_DOWN = 'F';
+const char T_LEFT = 'G';
+const char T_RIGHT = 'H';
+const char CROSS = '+';
+const char H_WALL = '-';
+const char V_WALL = '|';
+const char Z_WALL = 'Z';
+const char DOT = '.';
+const char PILL = 'P';
+const char PACMAN = 'X';
+const char GHOST1 = '1';
+const char GHOST2 = '2';
+const char GHOST3 = '3';
+const char GHOST4 = '4';
+const char BLOCK ='#';
+
+const int PLAY = 49;
+const int HELP = 50;
+const int SCORES = 51;
+const int ABOUT = 52;
+const int EXIT = 53;
+const int UP = 72;
+const int DOWN = 80;
+const int RIGHT = 77;
+const int LEFT = 75;
+const int BUGOUT = 49;
+
+//struct
+struct Location
+{
+int X;   //in pixels
+int Y;
+};
+
+struct Velocity
+{
+int X;   //pixel shift per turn
+int Y;
+};
+
+
+struct Level_Rec
+{
+apmatrix <char> Map ; // will be set to  (SIZE_XM, SIZE_YM)
+int PillsRemaining;  // counts down
+int DotsRemaining; // if greater than 0, don't go on to next level
+apvector <Location> StartGhostLoc ; // NUM_GHOSTS
+Location StartPacLoc;
+};
+
+struct Score_Rec
+{
+apstring PName;			//applies to high score setters
+long PScore;
+};
+
+struct Saved_BM      //holds info for bms under pacman, ghosts
+{
+int X;
+int Y;
+int SizeX;           //holds size of bm
+int SizeY;
+void far *BMPointer;
+};
+
+//variable dictionary
+/*
+	Game State: crucial to game play
+
+	apstring Path
+	file path used to open all maps and score files
+
+	int CurrentLevel
+	keeps track of level, and is used to load working level
+
+	int LivesRemaining
+	keeps track oflives remaining for pacman
+
+	int PillTurnsRemaining
+	starts as 0,butwhen a pill is eaten, it becomes a counter
+
+	unsigned int TurnCounter
+	each turn is incremented: tells pacman when to open,close mouth everyso often
+
+	bool MouthOpen
+	depends on TurnCounter to switch back and forth,tell pac which to draw
+
+	Level_Rec WorkingLevel
+	a struct variable that holds a copy of the level that can be altered instead
+	of screwing up the original data for the level
+
+	Location PacLoc
+	x and y that dictates pacman's location in  pixels
+
+	apvector <Location> GhostLoc (NUM_GHOSTS);
+	vector of x,y locations in pixels: for each ghost
+
+	Velocity PacVel;
+	x,y that is set to be added to pacvel to increment pac's movement
+	set according to user command
+
+	apvector <Velocity> GhostVel (NUM_GHOSTS);
+	x,y vector that increments the ghost locations
+
+	Saved_BM PacUnder;
+	structure variable that keeps track of the bm under pacman while he's in
+	a map spot
+
+	apvector <Saved_BM> GhostUnder (NUM_GHOSTS);
+	vector that keeps track of the bm under the ghosts while they're in a spot
+
+	apvector <Level_Rec> LevelList (NUM_LEVELS);
+	the levels are read into this vector, but not altered
+	workinglevel[currentlevel] is copied from here
+
+	apvector <Score_Rec> HighScores (NUM_LEVELS);
+	top ten scores are read into this from a .DAT file- compared to current score
+
+	apvector <int> GhostSentToCorral(NUM_GHOSTS);
+	flag: whether ghost has been eaten or not 0/1
+
+	apvector <apstring> MapFileNames (NUM_LEVELS);
+	vector of mapfile names that are assigned in init_static_data because
+	it's hard to increment string names without lynching yourself
+
+	bool Exit;
+	this is the get-out-of-the-program bool condition; in both main and play
+	loops
+
+	Bitmap MENU_BM;                these right here are the equivalents
+	Bitmap KEYS_BM;								 of the image using the bitmap.h library
+	Bitmap UPPER_LEFT_BM;					 i happen to be using another library,
+	Bitmap UPPER_RIGHT_BM;         bmputil.h which is on the disk-
+	Bitmap LOWER_LEFT_BM;          instead of reading just the header,
+	Bitmap LOWER_RIGHT_BM;         the .Read function reads the whole bitmap
+	Bitmap T_UP_BM;									and stores it somewhere convenient
+	Bitmap T_DOWN_BM;              instead of taking forever to read from the
+	Bitmap T_LEFT_BM;              disk when trying to read in a map and stallin
+	Bitmap T_RIGHT_BM;						 the game which is not very much fun for pacman
+	Bitmap CROSS_BM;
+	Bitmap H_WALL_BM;
+	Bitmap V_WALL_BM;
+	Bitmap Z_WALL_BM;
+	Bitmap DOT_BM;
+	Bitmap PILL_BM;
+	Bitmap CLEAR_BM;
+	Bitmap BLOCK_BM;
+
+	Bitmap PAC_ORIGHT_BM;
+	Bitmap PAC_OLEFT_BM;
+	Bitmap PAC_OUP_BM;
+	Bitmap PAC_ODOWN_BM;
+	Bitmap PAC_CRIGHT_BM;
+	Bitmap PAC_CLEFT_BM;
+	Bitmap PAC_CUP_BM;
+	Bitmap PAC_CDOWN_BM;
+
+	apvector <Bitmap> GHOST_BM (NUM_GHOSTS);
+	vector of ghosts so you don't have to kick the code that draws them out of
+	a for loop that controls everything else the ghosts do
+
+	apvector <Bitmap> GHOST_BLUE_BM (NUM_GHOSTS);
+	same thing as the GHOST_BM,except this is for when pac eats a pill and then
+	is able to eat the ghosts
+ */
+
+
+//global variables
+
+//**********************************************
+// Game State Variables
+apstring Path; // path to all data files
+int CurrentLevel;
+int LivesRemaining;
+int PillTurnsRemaining; // normally 0, when pill eaten -> PILL_LIFETIME
+unsigned int TurnCounter;
+bool MouthOpen;
+Level_Rec WorkingLevel;
+Location PacLoc;
+apvector <Location> GhostLoc (NUM_GHOSTS);
+Velocity PacVel;
+apvector <Velocity> GhostVel (NUM_GHOSTS);
+Saved_BM PacUnder;
+apvector <Saved_BM> GhostUnder (NUM_GHOSTS);
+int CurrentScore;
+apvector <Score_Rec> HighScores (NUM_HIGH_SCORES);
+apvector <int> GhostSentToCorral (NUM_GHOSTS);
+//**********************************************
+
+
+
+
+int Choice;
+int grdriver, grmode, errorcode;
+
+apvector <Level_Rec> LevelList (NUM_LEVELS);
+apvector <apstring> MapFileNames (NUM_LEVELS); //bfai
+
+bool Exit;
+
+Bitmap MENU_BM;
+Bitmap KEYS_BM;
+Bitmap UPPER_LEFT_BM;
+Bitmap UPPER_RIGHT_BM;
+Bitmap LOWER_LEFT_BM;
+Bitmap LOWER_RIGHT_BM;
+Bitmap T_UP_BM;
+Bitmap T_DOWN_BM;
+Bitmap T_LEFT_BM;
+Bitmap T_RIGHT_BM;
+Bitmap CROSS_BM;
+Bitmap H_WALL_BM;
+Bitmap V_WALL_BM;
+Bitmap Z_WALL_BM;
+Bitmap DOT_BM;
+Bitmap PILL_BM;
+Bitmap CLEAR_BM;
+Bitmap BLOCK_BM;
+
+Bitmap PAC_ORIGHT_BM;
+Bitmap PAC_OLEFT_BM;
+Bitmap PAC_OUP_BM;
+Bitmap PAC_ODOWN_BM;
+Bitmap PAC_CRIGHT_BM;
+Bitmap PAC_CLEFT_BM;
+Bitmap PAC_CUP_BM;
+Bitmap PAC_CDOWN_BM;
+
+apvector <Bitmap> GHOST_BM (NUM_GHOSTS);
+apvector <Bitmap> GHOST_BLUE_BM (NUM_GHOSTS);
+
+
+//Prototypes
+void gr_start(int&, int &, int &);
+//graphics start function
+
+void load_working_level();
+//resets WorkingLevel to the approp. level from LevelList[CurrentLevel]
+//resets starting locations for pacman and ghosts
+
+void new_game();
+//resets current level, lives remaining, turncounter, and mouth open
+
+void init_static_data();
+//init saveunder pointers for pacman and ghosts
+//reads bitmaps for pacman, ghosts, and level grid, with assorted other stuff
+//sets MapFileNames bfai
+//reads in LevelList maps, increments pill, dot counters
+
+void draw_level(Level_Rec &);
+//reads map matrix for level given and draws map w/o pacman or ghosts
+
+void draw_menu(Bitmap &);
+//pass in menu bitmap, draws main screen menu
+
+void play();
+//play loop: take in command, calc velocs, move pacman and ghosts, check for
+//pills or collisions,draw players in new place, delay...repeat
+
+void help();
+//brief directions on how to play-really brief
+
+void about();
+//main menu thing-who wrote program
+
+void calc_velocs(char);
+//calcs pacvel according to char command passed in
+//calcs ghostvels according to distance between pacman and ghost
+
+void move_pacman();
+//calcs new pac loc. according to pacvel
+
+void move_ghosts();
+//calcs new ghost loc according to ghostvel[i]
+
+void disp_current_score();
+//shows score info on screen
+
+void check_pills();
+//checks to see if pac has eaten pill
+//incs score
+
+int check_collisions();
+//checks to see if pac has run into ghosts: which guy eats which
+
+int level_clear();
+//if all the dots are cleared, should move to next level
+
+void draw_players();
+//undraws players at old locations
+//saves bms under  new locations(in reverse order of undraw)
+//draws players at new locs
+
+int legal_pac_move(int, int);
+//takes in pac loc in GRID -> divide by BM_SIZE if pixels
+//checks against WorkingLevel.Map
+//* * * *  DIFFERENT THAN LEGAL GHOST MOVE
+
+int legal_ghost_move(int, int, int); //pass in pixels
+//checks new x,y loc in pixels for limits including other ghosts
+
+char whats_here_map(int,int);
+//takes GRID loc, returns char of obj on map
+
+bool is_overlapped(Location, Location);
+//takes pixel locs of bms, returns true if overlapped (affects legal move)
+
+int sign(int);
+//returns sign of an integer perameter ret 0 if arg == 0
+
+void send_ghost_to_corral(int);
+//sends argument ghost to corral, checks ahead for overlap(which is bad)
+//recursively moves ghosts that are in way
+
+void flush_kb();
+//gets rid of extra keyhits
+
+void check_for_high_score();
+//comps user score against high score list, adds user to list if necess.
+
+void read_high_score_file(apstring);
+//reads in highscores file if existent, inits high score list if no file found
+
+void write_high_score_file(apstring);
+//writes out new high scores to file
+
+void display_high_scores();
+//shows user high scores upon request
+
+void free_save_unders();
+// frees the save under farmalloc space and inits pointers back to NULL
+
+
+
+
+//main program
+
+void main()                    //************* M A I N ******************
+{
+
+gr_start(grdriver, grmode, errorcode);
+init_static_data(); //loads bitmaps, level maps
+
+
+
+cleardevice();
+draw_menu(MENU_BM);
+do
+{
+	Exit = false;
+	outtextxy(10,355,"Please enter a Choice");
+	gotoxy(2,24);
+	Choice=getche();
+
+	switch (Choice)     //switches according to user preference
+	{
+	case PLAY	 : 	play();
+								Exit = false;
+								// add score to high score if necessary
+								cleardevice();
+								check_for_high_score();
+								draw_menu(MENU_BM);
+								break;
+
+	case HELP	 :	help();
+								cleardevice();
+								draw_menu(MENU_BM);
+								break;
+
+	case SCORES: 	display_high_scores();
+								cleardevice();
+								draw_menu(MENU_BM);
+								break;
+
+	case ABOUT : 	about();
+								cleardevice();
+								draw_menu(MENU_BM);
+								break;
+
+	case EXIT  :	Exit = true;
+								write_high_score_file(Path + HIGHSCORE_FILENAME);
+								break;
+	};
+
+
+
+}while(!Exit);
+
+}
+//* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+void gr_start(int&grdriver,int&grmode,int&errorcode)
+{
+	grdriver = VGA;
+	grmode = VGAHI;
+
+	initgraph(&grdriver, &grmode, "C:\\TC\\BGI");
+
+	errorcode = graphresult();
+
+	if(errorcode!=grOk)
+		{
+		clrscr();
+		cout << "ERROR: " << errorcode << endl;
+		cout << "Press return to continue." << endl;
+		getch();
+		exit(1);
+		}
+
+
+
+};
+void load_working_level()
+{
+int I;
+//CurrentLevel = 1;
+PillTurnsRemaining = 0;
+WorkingLevel = LevelList[CurrentLevel];
+PacLoc.X = WorkingLevel.StartPacLoc.X * BM_SIZE;   //sets pacloc in pix, not
+PacLoc.Y = WorkingLevel.StartPacLoc.Y * BM_SIZE;		//grid
+PacVel.X = 0;                                       //velocs to 0
+PacVel.Y = 0;
+
+for (I=0; I < NUM_GHOSTS; I++)
+	{
+	GhostLoc[I].X = WorkingLevel.StartGhostLoc[I].X * BM_SIZE; //sets ghostloc
+	GhostLoc[I].Y = WorkingLevel.StartGhostLoc[I].Y * BM_SIZE; // to pixels
+	GhostVel[I].X = 0;                               //velocs to 0
+	GhostVel[I].Y = 0;
+	}
+
+
+};
+
+void new_game( )
+{
+	int I;
+CurrentLevel = 0;                 //resets global stuff-current score, level
+CurrentScore = 0;
+for (I=0; I<NUM_GHOSTS; I++)
+	{
+	GhostSentToCorral[I] = 0;
+	}
+LivesRemaining = START_LIVES;      //gives you # of lives
+TurnCounter = 0;
+MouthOpen = true;
+
+};
+void init_static_data( )
+{
+ifstream InFile;
+ofstream OutFile;
+apstring Filename;
+apstring outname;
+int I, X, Y;
+
+//randomize just once right here
+randomize();
+
+//initialize empty SaveUnder pointers ***************************
+
+PacUnder.BMPointer = NULL;
+PacUnder.SizeX = BM_SIZE;
+PacUnder.SizeY = BM_SIZE;
+
+for(I=0; I < NUM_GHOSTS; I++)
+	{
+	GhostUnder[I].BMPointer = NULL;
+	GhostUnder[I].SizeX = BM_SIZE;
+	GhostUnder[I].SizeY = BM_SIZE;
+	}
+
+/*opens all the bitmaps at once, so all you have to say when you need them
+is .Draw, and it all works out pretty.
+*/
+
+
+//Path = "C:\\users\\rachel\\turbo_c\\pacproj\\yuckbm\\";
+//Path = "A:\\Pacman\\";
+Path = "A:\\Yuckbm\\";
+
+MENU_BM.Read(Path + "pacman2.bmp", false);  // menu screen
+UPPER_LEFT_BM.Read(Path + "ul_wall.bmp");
+UPPER_RIGHT_BM.Read(Path + "ur_wall.bmp");
+LOWER_LEFT_BM.Read(Path + "ll_wall.bmp");
+LOWER_RIGHT_BM.Read(Path + "lr_wall.bmp");
+
+T_UP_BM.Read(Path + "t_up.bmp");
+T_DOWN_BM.Read(Path + "t_down.bmp");
+T_LEFT_BM.Read(Path + "t_left.bmp");
+T_RIGHT_BM.Read(Path + "t_right.bmp");
+
+CROSS_BM.Read(Path + "cross.bmp");
+
+H_WALL_BM.Read(Path + "h_wall.bmp");
+
+
+Z_WALL_BM.Read(Path + "z_wall.bmp");
+
+V_WALL_BM.Read(Path + "v_wall.bmp");
+
+PILL_BM.Read(Path + "pill.bmp");
+DOT_BM.Read(Path + "dot.bmp");
+
+CLEAR_BM.Read(Path + "clear.bmp");
+
+BLOCK_BM.Read(Path + "block.bmp");
+
+PAC_ORIGHT_BM.Read(Path + "pac_or.bmp");
+PAC_OLEFT_BM. Read (Path + "pac_ol.bmp");
+PAC_OUP_BM.Read(Path + "pac_ou.bmp");
+PAC_ODOWN_BM.Read(Path + "pac_od.bmp");
+PAC_CRIGHT_BM.Read(Path + "pac_cr.bmp");
+PAC_CLEFT_BM.Read(Path + "pac_cl.bmp");
+PAC_CUP_BM.Read(Path + "pac_cu.bmp");
+PAC_CDOWN_BM.Read(Path + "pac_cd.bmp");
+
+GHOST_BM[0].Read(Path + "g1.bmp");
+GHOST_BM[1].Read(Path + "g2.bmp");
+GHOST_BM[2].Read(Path + "g3.bmp");
+GHOST_BM[3].Read(Path + "g4.bmp");
+
+GHOST_BLUE_BM[0].Read(Path + "gblue.bmp");
+GHOST_BLUE_BM[1].Read(Path + "gblue.bmp");
+GHOST_BLUE_BM[2].Read(Path + "gblue.bmp");
+GHOST_BLUE_BM[3].Read(Path + "gblue.bmp");
+
+
+
+MapFileNames[0] = "MAP0.DAT";    //bfai setting map names...
+
+MapFileNames[1] = "MAP1.DAT";
+MapFileNames[2] = "MAP2.DAT";
+MapFileNames[3] = "MAP3.DAT";
+MapFileNames[4] = "MAP4.DAT";
+MapFileNames[5] = "MAP5.DAT";
+MapFileNames[6] = "MAP6.DAT";
+MapFileNames[7] = "MAP7.DAT";
+MapFileNames[8] = "MAP8.DAT";
+MapFileNames[9] = "MAP9.DAT";
+
+
+WorkingLevel.Map.resize(SIZE_XM,SIZE_YM);
+WorkingLevel.StartGhostLoc.resize(NUM_GHOSTS);
+
+for (I=0; I < NUM_LEVELS; I++)                   //reads in ascii reps of
+	{                                              //maps, saves various locs
+																								//for later reference
+	Filename = Path + MapFileNames[I];
+	InFile.open(Filename.c_str());
+	LevelList[I].Map.resize(SIZE_XM,SIZE_YM);
+	LevelList[I].StartGhostLoc.resize(NUM_GHOSTS);
+	LevelList[I].PillsRemaining = 0;
+	LevelList[I].DotsRemaining = 0;
+
+
+		for (Y=0; Y < SIZE_YM; Y++)
+			{
+			for (X=0; X < SIZE_XM; X++)
+				{
+				InFile >> LevelList[I].Map[X][Y];
+
+				switch (LevelList[I].Map[X][Y])
+					{
+					case PILL :
+											LevelList[I].PillsRemaining++;
+											break;
+
+					case DOT  :
+											LevelList[I].DotsRemaining++;
+											break;
+
+					case PACMAN :
+												LevelList[I].StartPacLoc.X = X;
+												LevelList[I].StartPacLoc.Y = Y;
+												LevelList[I].Map[X][Y] = CLEAR;      //draws blank
+																														 //under pacman
+												break;
+					case GHOST1 :
+												LevelList[I].StartGhostLoc[0].X = X;
+												LevelList[I].StartGhostLoc[0].Y = Y;
+												LevelList[I].Map[X][Y] = CLEAR;
+												break;
+					case GHOST2 :
+												LevelList[I].StartGhostLoc[1].X = X;
+												LevelList[I].StartGhostLoc[1].Y = Y;
+												LevelList[I].Map[X][Y] = CLEAR;
+												break;
+					case GHOST3 :
+												LevelList[I].StartGhostLoc[2].X = X;
+												LevelList[I].StartGhostLoc[2].Y = Y;
+												LevelList[I].Map[X][Y] = CLEAR;
+												break;
+					case GHOST4 :
+												LevelList[I].StartGhostLoc[3].X = X;
+												LevelList[I].StartGhostLoc[3].Y = Y;
+												LevelList[I].Map[X][Y] = CLEAR;
+												break;
+					}
+				}
+
+			}
+
+		InFile.close();
+
+	}
+
+// Read high score file if it exists or initialize if it doesn't
+	read_high_score_file(Path + HIGHSCORE_FILENAME);
+
+};
+
+
+void draw_level(Level_Rec & Dlevel)
+{
+//reads matrix, draws map w/o pacman or ghosts
+int Xm, Ym;
+
+cleardevice();
+UPPER_LEFT_BM.SetPalette();
+
+for (Ym=0; Ym < SIZE_YM; Ym++)
+	{
+	for (Xm=0; Xm < SIZE_XM; Xm++)
+		{
+		switch (Dlevel.Map[Xm][Ym])
+			{
+			case  PACMAN :
+												CLEAR_BM.Draw(Xm*BM_SIZE,Ym*BM_SIZE);  // put Pacman in later
+												break;
+			case  GHOST1 :
+												CLEAR_BM.Draw(Xm*BM_SIZE,Ym*BM_SIZE);
+												break;
+			case  GHOST2 :
+												CLEAR_BM.Draw(Xm*BM_SIZE,Ym*BM_SIZE);
+												break;
+
+			case  GHOST3 :
+												CLEAR_BM.Draw(Xm*BM_SIZE,Ym*BM_SIZE);
+												break;
+
+			case  GHOST4 :
+												CLEAR_BM.Draw(Xm*BM_SIZE,Ym*BM_SIZE);
+												break;
+
+			case  UPPER_LEFT :
+												UPPER_LEFT_BM.Draw(Xm*BM_SIZE,Ym*BM_SIZE);
+												break;
+
+			case  UPPER_RIGHT :
+												UPPER_RIGHT_BM.Draw(Xm*BM_SIZE,Ym*BM_SIZE);
+												break;
+
+			case  LOWER_LEFT :
+												LOWER_LEFT_BM.Draw(Xm*BM_SIZE,Ym*BM_SIZE);
+												break;
+
+			case 	LOWER_RIGHT :
+												LOWER_RIGHT_BM.Draw(Xm*BM_SIZE,Ym*BM_SIZE);
+												break;
+
+			case  T_UP :
+												T_UP_BM.Draw(Xm*BM_SIZE,Ym*BM_SIZE);
+												break;
+
+			case  T_DOWN :
+												T_DOWN_BM.Draw(Xm*BM_SIZE,Ym*BM_SIZE);
+												break;
+
+			case  T_LEFT :
+												T_LEFT_BM.Draw(Xm*BM_SIZE,Ym*BM_SIZE);
+												break;
+
+			case  T_RIGHT :
+												T_RIGHT_BM.Draw(Xm*BM_SIZE,Ym*BM_SIZE);
+												break;
+
+			case  H_WALL :
+												H_WALL_BM.Draw(Xm*BM_SIZE,Ym*BM_SIZE);
+												break;
+
+			case V_WALL	:
+												V_WALL_BM.Draw(Xm*BM_SIZE,Ym*BM_SIZE);
+												break;
+
+			case Z_WALL :
+												Z_WALL_BM.Draw(Xm*BM_SIZE,Ym*BM_SIZE);
+												break;
+
+			case DOT :
+												DOT_BM.Draw(Xm*BM_SIZE,Ym*BM_SIZE);
+												break;
+
+			case PILL :
+												PILL_BM.Draw(Xm*BM_SIZE,Ym*BM_SIZE);
+												break;
+
+			case BLOCK :			BLOCK_BM.Draw(Xm*BM_SIZE,Ym*BM_SIZE);
+												break;
+
+			}
+
+		}
+
+	}
+
+
+
+
+
+
+
+
+};
+
+void draw_menu ( Bitmap & MENU_BM)
+{
+settextstyle(0,0,1);
+setcolor(15);
+cleardevice();
+MENU_BM.SetPalette();
+MENU_BM.Draw(0,0);
+};
+
+
+void play()
+{
+int I;
+int Collision;
+char Command;
+
+new_game();
+load_working_level();
+draw_level(WorkingLevel);
+draw_players();
+
+
+	Command = 0;
+	do{
+	if(kbhit())
+		{
+		Command = getch();
+		if (Command == BUGOUT)
+			{
+			Exit = true;
+			}
+		}
+
+	calc_velocs(Command);
+
+	move_pacman();    // just calculates new pos,not draw
+
+	move_ghosts();					//just calcs again
+
+	check_pills();				//has he just eaten one?
+
+
+
+	Collision = check_collisions();
+
+	if(Collision)
+		{
+		if(PillTurnsRemaining)
+			{
+			CurrentScore += POINTS_GHOST;
+			send_ghost_to_corral(Collision-1);
+			}
+
+		else
+			{
+			LivesRemaining--;
+			if (!LivesRemaining)
+				{
+				Exit = true;
+				flush_kb();
+				}
+			PacLoc.X = WorkingLevel.StartPacLoc.X*BM_SIZE;
+			PacLoc.Y = WorkingLevel.StartPacLoc.Y*BM_SIZE;
+
+			for(I =0; I < NUM_GHOSTS; I++)
+				{
+				GhostLoc[I].X = WorkingLevel.StartGhostLoc[I].X*BM_SIZE;
+				GhostLoc[I].Y = WorkingLevel.StartGhostLoc[I].Y*BM_SIZE;
+				}
+			delay(20); //* * * * * * * * * * * * * * * *
+			}
+		}
+
+	if(level_clear())
+		{
+		CurrentLevel++;
+		free_save_unders();
+		load_working_level();
+		draw_level(WorkingLevel);
+		draw_players();
+		delay(500);
+		}
+
+	else
+		{
+		draw_players();
+		}
+	TurnCounter++;
+	if (PillTurnsRemaining)
+		{
+		PillTurnsRemaining--;
+		if(!PillTurnsRemaining)
+			{
+			for (I=0; I < NUM_GHOSTS; I++)
+				{
+				GhostSentToCorral[I] = 0;
+				}
+			}
+		}
+	disp_current_score();
+	delay(20);
+	}while(!Exit);
+
+
+};
+
+void help()
+{
+cleardevice();
+setcolor(145);
+settextstyle(3,0,6);
+outtextxy(50,10,"Welcome to Pacman");
+setcolor(15);
+settextstyle(3,0,3);
+
+outtextxy(10,100,"*To navigate around the maze, use the arrow keys.");
+outtextxy(10,155,"*Take pills to kill ghosts.");
+outtextxy(10,205,"*Eat all the dots before the ghosts attack you.");
+outtextxy(10,255,"*To return to the menu during the game, press 1.");
+setcolor(2);
+outtextxy(10,305,"Press Return to Continue");
+getch();
+};
+
+
+void about()
+{
+cleardevice();
+settextstyle(3,0,3);
+outtextxy(10,10,"Program Made for Computer Science");
+outtextxy(10,50,"Made By");
+outtextxy(10,100,"Rachel Clark");
+outtextxy(20,150,"& Chris Varanasi");
+setcolor(2);
+outtextxy(10,200,"Press Return to Continue");
+getch();
+};
+
+void calc_velocs(char Command)
+{
+int I;
+int CoinToss;
+int DeltaX,DeltaY;
+int Fear;
+int Freeze;
+//calc pac velocity
+
+if(!(PacLoc.X%BM_SIZE) && !(PacLoc.Y%BM_SIZE))
+	{
+
+	switch(Command)
+		{
+		case 0:
+						break;
+
+		case UP:
+						if(legal_pac_move(PacLoc.X/BM_SIZE, PacLoc.Y/BM_SIZE-1))
+							{
+							PacVel.X = 0;
+							PacVel.Y = -PAC_SPEED;
+							}
+						break;
+
+		case DOWN:
+							if(legal_pac_move(PacLoc.X/BM_SIZE, PacLoc.Y/BM_SIZE+1))
+								{
+								PacVel.X = 0;
+								PacVel.Y = PAC_SPEED;
+								}
+							break;
+
+		case LEFT:
+							if(legal_pac_move(PacLoc.X/BM_SIZE-1, PacLoc.Y/BM_SIZE))
+								{
+								PacVel.X = -PAC_SPEED;
+								PacVel.Y = 0;
+								}
+							break;
+
+		case RIGHT:
+							if(legal_pac_move(PacLoc.X/BM_SIZE+1, PacLoc.Y/BM_SIZE))
+								{
+								PacVel.X = PAC_SPEED;
+								PacVel.Y = 0;
+								}
+							break;
+
+		}
+	}
+
+
+//calc ghost velocities
+
+if (PillTurnsRemaining)
+	{
+	Fear = -1;
+	}
+else
+	{
+	Fear = 1;
+	}
+
+for (I=0; I<NUM_GHOSTS; I++)
+	{
+  if(PillTurnsRemaining && GhostSentToCorral[I])
+	  {
+	  Freeze = 0;
+	  }
+	else
+	  {
+	  Freeze = 1;
+	  }
+
+	DeltaX = PacLoc.X - GhostLoc[I].X;
+	DeltaY = PacLoc.Y - GhostLoc[I].Y;
+	GhostVel[I].X = sign(DeltaX) * GHOST_SPEED * Fear * Freeze;
+	GhostVel[I].Y = sign(DeltaY) * GHOST_SPEED * Fear * Freeze;
+	if(!legal_ghost_move(GhostLoc[I].X + GhostVel[I].X, GhostLoc[I].Y, I))
+		{
+		GhostVel[I].X = 0;
+		}
+
+	if(!legal_ghost_move(GhostLoc[I].X, GhostLoc[I].Y + GhostVel[I].Y, I))
+		{
+		GhostVel[I].Y = 0;
+		}
+
+	if(GhostVel[I].X != 0 && GhostVel[I].Y != 0)
+		{
+		CoinToss = random(2);
+
+		if(CoinToss)
+			{
+			GhostVel[I].X = 0;
+			}
+		else
+			{
+			GhostVel[I].Y = 0;
+			}
+		}
+
+
+
+	}
+
+
+};
+void move_pacman()    //smarter: don't run over walls
+{
+Location PacNew;
+Location PacNewGrid;
+int OffsetX;
+int OffsetY;
+
+PacNew = PacLoc;
+PacNew.X += PacVel.X;
+PacNew.Y += PacVel.Y;
+OffsetX = 0;
+OffsetY = 0;
+
+if(PacVel.X>0)
+	{
+	OffsetX = (PacNew.X%BM_SIZE) ? BM_SIZE : 0;
+	}
+else if(PacVel.Y>0)
+	{
+	OffsetY = (PacNew.Y%BM_SIZE) ? BM_SIZE : 0;
+	}
+
+PacNewGrid.X = (PacNew.X+OffsetX)/BM_SIZE;
+PacNewGrid.Y = (PacNew.Y+OffsetY)/BM_SIZE;
+
+if(legal_pac_move(PacNewGrid.X,PacNewGrid.Y))
+	{
+	PacLoc = PacNew;
+	}
+
+
+};
+
+void move_ghosts()
+{
+int I;
+Location GhostNew;
+Location GhostNewGrid;
+int OffsetX;
+int OffsetY;
+for (I=0; I < NUM_GHOSTS; I++)
+	{
+	GhostLoc[I].X += GhostVel[I].X;
+	GhostLoc[I].Y += GhostVel[I].Y;
+	}
+};
+
+void disp_current_score()
+{
+char buffer[80];
+
+setcolor(0);
+setfillstyle(0,1);
+bar(500,10,639,60);
+setcolor(15);
+sprintf(buffer,"Score:%6.d",CurrentScore);
+outtextxy(500,10,buffer);
+sprintf(buffer,"Lives Left:%3.d",LivesRemaining);
+outtextxy(500,20,buffer);
+outtextxy(500,30,"Press 1 to exit");
+};
+
+
+void check_pills()
+{
+if(whats_here_map(PacLoc.X, PacLoc.Y) == PILL)
+	{
+	WorkingLevel.PillsRemaining--;
+	PillTurnsRemaining += PILL_LIFETIME;
+	CurrentScore += POINTS_PILL;
+	}
+};
+
+//************************
+
+int check_collisions()
+{
+int I;
+int Returnhit;
+Returnhit =0;
+for (I=0; I < NUM_GHOSTS; I++)
+	{
+	if (is_overlapped(PacLoc,GhostLoc[I]))
+		{
+		Returnhit = I+1;
+		break;
+		}
+	}
+return Returnhit;
+};
+
+//************************
+
+int level_clear()
+{
+int LevelClear;
+if (WorkingLevel.DotsRemaining)
+	{
+	LevelClear = 0;
+	}
+else
+  {
+	LevelClear = 1;
+	}
+return LevelClear;
+};
+
+
+//************************
+
+
+void draw_players()
+{
+int I;
+
+
+//undraw old pacman position
+if(PacUnder.BMPointer) //if not NULL
+	{
+	putimage(PacUnder.X,PacUnder.Y,PacUnder.BMPointer,COPY_PUT);
+	}
+
+if(!PacUnder.BMPointer)   // if NULL
+	{
+	//need to alloc space
+	PacUnder.BMPointer = farmalloc(imagesize(0,0,BM_SIZE,BM_SIZE));
+	}
+
+//undraw old ghosts position
+
+for(I=0; I<NUM_GHOSTS;I++)
+	{
+	//undraw old ghosts
+	if(GhostUnder[I].BMPointer) //if not NULL
+		{
+		//put back old image
+		putimage(GhostUnder[I].X,GhostUnder[I].Y,GhostUnder[I].BMPointer,COPY_PUT);
+		}
+
+	if(!GhostUnder[I].BMPointer)   // if first time thru
+		{
+		//need to alloc space for bm under ghosts
+		GhostUnder[I].BMPointer = farmalloc(imagesize(0,0,BM_SIZE,BM_SIZE));
+		}
+  }
+
+//save the under bm location as pac's new position
+
+for(I=NUM_GHOSTS-1; I>=0;I--)
+	{
+	//save the loc for the bm underneath the ghosts new position as the ghostloc
+	GhostUnder[I].X = GhostLoc[I].X;
+	GhostUnder[I].Y = GhostLoc[I].Y;
+
+	getimage(GhostUnder[I].X,GhostUnder[I].Y,GhostUnder[I].X+GhostUnder[I].SizeX,GhostUnder[I].Y+GhostUnder[I].SizeY,GhostUnder[I].BMPointer);
+  }
+
+//save the under bm location as pac's new position
+PacUnder.X = PacLoc.X;
+PacUnder.Y = PacLoc.Y;
+if(whats_here_map(PacLoc.X,PacLoc.Y) == DOT)
+	{
+
+	WorkingLevel.Map[PacLoc.X/BM_SIZE][PacLoc.Y/BM_SIZE] = CLEAR;
+	CLEAR_BM.Draw(PacLoc.X,PacLoc.Y);
+	WorkingLevel.DotsRemaining--;
+	CurrentScore += POINTS_DOT;
+	}
+getimage(PacUnder.X,PacUnder.Y,PacUnder.X+PacUnder.SizeX,PacUnder.Y+PacUnder.SizeY,PacUnder.BMPointer);
+
+if(whats_here_map(PacLoc.X,PacLoc.Y) == PILL)
+	{
+
+	WorkingLevel.Map[PacLoc.X/BM_SIZE][PacLoc.Y/BM_SIZE] = CLEAR;
+	CLEAR_BM.Draw(PacLoc.X,PacLoc.Y);
+
+	}
+getimage(PacUnder.X,PacUnder.Y,PacUnder.X+PacUnder.SizeX,PacUnder.Y+PacUnder.SizeY,PacUnder.BMPointer);
+
+
+//draw over new position
+
+if(!(TurnCounter%2))
+	{
+	MouthOpen = !MouthOpen;
+	}
+
+if(PacVel.X>0)
+	{
+	if(MouthOpen)
+		{
+		PAC_ORIGHT_BM.Draw(PacLoc.X,PacLoc.Y);
+		}
+
+	else
+		{
+		PAC_CRIGHT_BM.Draw(PacLoc.X,PacLoc.Y);
+		}
+	}
+
+else if(PacVel.X<0)
+	{
+	if(MouthOpen)
+		{
+		PAC_OLEFT_BM.Draw(PacLoc.X,PacLoc.Y);
+		}
+
+	else
+		{
+		PAC_CLEFT_BM.Draw(PacLoc.X,PacLoc.Y);
+		}
+	}
+else if(PacVel.Y>0)
+	{
+	if(MouthOpen)
+		{
+		PAC_ODOWN_BM.Draw(PacLoc.X,PacLoc.Y);
+		}
+
+	else
+		{
+		PAC_CDOWN_BM.Draw(PacLoc.X,PacLoc.Y);
+		}
+	}
+
+else if(PacVel.Y<0)
+	{
+	if(MouthOpen)
+		{
+		PAC_OUP_BM.Draw(PacLoc.X,PacLoc.Y);
+		}
+
+	else
+		{
+		PAC_CUP_BM.Draw(PacLoc.X,PacLoc.Y);
+		}
+	}
+else
+	{
+	PAC_ORIGHT_BM.Draw(PacLoc.X,PacLoc.Y);
+	}
+
+
+for(I=0; I<NUM_GHOSTS;I++)
+	{
+	//draw new ghosts
+	if (PillTurnsRemaining)
+		{
+		GHOST_BLUE_BM[I].Draw(GhostLoc[I].X, GhostLoc[I].Y);
+		}
+	else
+		{
+		GHOST_BM[I].Draw(GhostLoc[I].X,GhostLoc[I].Y);
+		}
+
+	}
+
+
+};
+
+int legal_pac_move(int X, int Y) // X and Y are Grid X,Y
+{
+
+int MoveLegal = 0;
+if(X<0 || X>=SIZE_XM || Y<0 || Y>=SIZE_YM)
+	{
+	return MoveLegal;
+	}
+switch (WorkingLevel.Map[X][Y])
+							{
+							case UPPER_LEFT:
+																break;
+							case UPPER_RIGHT:
+																break;
+							case LOWER_LEFT:
+																break;
+							case LOWER_RIGHT:
+																break;
+							case CROSS:
+																break;
+							case H_WALL :
+																break;
+							case V_WALL:
+																break;
+							case Z_WALL:
+																break;
+							case T_UP:
+																break;
+							case T_DOWN:
+																break;
+							case T_LEFT:
+																break;
+							case T_RIGHT:
+																break;
+							case BLOCK:
+																break;
+
+							case DOT:
+																MoveLegal = 1;
+																break;
+							case PILL:
+																MoveLegal = 1;
+																break;
+							default:
+																MoveLegal = 1;
+																break;
+
+	}
+
+return MoveLegal;
+
+};
+
+
+int legal_ghost_move(int X, int Y, int Index) // X and Y are PIXEL X,Y
+{
+int I;
+int MoveLegal;
+Location TestLoc;
+
+MoveLegal = 1;
+TestLoc.X = X;
+TestLoc.Y = Y;
+
+if(X < 0 || X > ((SIZE_XM-1)*BM_SIZE) || Y < 0 || Y > ((SIZE_YM-1)*BM_SIZE))
+	{
+	MoveLegal = 0;
+	}
+
+//check to see if ghosts are overlapping each other: not good.
+
+// well, also the legal_ghost_move perameters don't line up with the is_overlapped
+// which is not good either.
+
+if (MoveLegal)
+	{
+	for (I=0; I < NUM_GHOSTS; I++)
+		{
+		if (I != Index)
+			{
+			if(is_overlapped(TestLoc, GhostLoc[I]))
+				{
+				MoveLegal = 0;
+				break;
+				}
+			}
+		}
+	}
+// upper left corner
+
+if(MoveLegal)
+	{
+	MoveLegal = 0;
+
+	switch (WorkingLevel.Map[X/BM_SIZE][Y/BM_SIZE])
+		{
+
+							case Z_WALL:
+																MoveLegal = 1;
+																break;
+							case DOT:
+																MoveLegal = 1;
+																break;
+							case PILL:
+																MoveLegal = 1;
+																break;
+							case CLEAR:
+																MoveLegal = 1;
+																break;
+							default:
+																MoveLegal = 0;
+																break;
+
+		}
+	}
+//upper right corner
+if(MoveLegal)
+	{
+	MoveLegal = 0;
+
+	switch (WorkingLevel.Map[(X+BM_SIZE-1)/BM_SIZE][Y/BM_SIZE])
+		{
+
+							case Z_WALL:
+																MoveLegal = 1;
+																break;
+							case DOT:
+																MoveLegal = 1;
+																break;
+							case PILL:
+																MoveLegal = 1;
+																break;
+							case CLEAR:
+																MoveLegal = 1;
+																break;
+							default:
+																MoveLegal = 0;
+																break;
+
+		}
+	}
+
+//lower right corner
+if(MoveLegal)
+	{
+	MoveLegal = 0;
+
+	switch (WorkingLevel.Map[X/BM_SIZE][(Y+BM_SIZE-1)/BM_SIZE])
+		{
+
+							case Z_WALL:
+																MoveLegal = 1;
+																break;
+							case DOT:
+																MoveLegal = 1;
+																break;
+							case PILL:
+																MoveLegal = 1;
+																break;
+							case CLEAR:
+																MoveLegal = 1;
+																break;
+							default:
+																MoveLegal = 0;
+																break;
+
+		}
+	}
+// lower left corner
+if(MoveLegal)
+	{
+
+	MoveLegal = 0;
+
+	switch (WorkingLevel.Map[(X+BM_SIZE-1)/BM_SIZE][(Y+BM_SIZE-1)/BM_SIZE])
+		{
+
+							case Z_WALL:
+																MoveLegal = 1;
+																break;
+							case DOT:
+																MoveLegal = 1;
+																break;
+							case PILL:
+																MoveLegal = 1;
+																break;
+							case CLEAR:
+																MoveLegal = 1;
+																break;
+							default:
+																MoveLegal = 0;
+																break;
+
+		}
+	}
+return MoveLegal;
+
+
+};
+
+char whats_here_map(int X, int Y)
+{
+char Character = 0;
+
+if(!(X%BM_SIZE) && !(Y%BM_SIZE))
+	{
+	Character = WorkingLevel.Map[X/BM_SIZE][Y/BM_SIZE];
+	}
+return Character;
+};
+
+bool is_overlapped(Location Loc1, Location Loc2)
+{
+bool Overlap;
+if((abs(Loc1.X - Loc2.X)) < BM_SIZE && (abs(Loc1.Y - Loc2.Y)) < BM_SIZE)
+	{
+	Overlap = true;
+	}
+else
+	{
+	Overlap = false;
+	}
+return Overlap;
+};
+
+int sign(int I)
+{
+int ISign;
+
+if (I)
+	{
+	ISign = I/abs(I);
+	}
+else
+	{
+	ISign = 0;
+	}
+
+return ISign;
+};
+
+void send_ghost_to_corral(int DG)
+{
+int I;
+GhostLoc[DG].X = WorkingLevel.StartGhostLoc[DG].X*BM_SIZE;
+GhostLoc[DG].Y = WorkingLevel.StartGhostLoc[DG].Y*BM_SIZE;
+GhostSentToCorral[DG]++;
+
+for (I=0; I < NUM_GHOSTS; I++)
+	{
+	if (I != DG)
+		{
+		if(is_overlapped(GhostLoc[DG],GhostLoc[I]))
+			{
+			send_ghost_to_corral(I);
+			}
+		}
+	}
+};
+
+void flush_kb()
+{
+	while(kbhit())
+		{
+		getch();
+		}
+};
+
+void check_for_high_score()
+{
+int I, J;
+Score_Rec NewScore;
+
+for (I=0; I<NUM_HIGH_SCORES; I++)
+	{
+	if (CurrentScore > HighScores[I].PScore)
+		{
+		restorecrtmode();
+		cout << "Congratulations!  You have a high score!" << endl;
+		cout << "Please enter your name or initials (e.g. Bob): ";
+		getline(cin,NewScore.PName);
+		setgraphmode(getgraphmode());
+		NewScore.PScore = CurrentScore;
+		for (J=NUM_HIGH_SCORES-1; J>I; J--)
+			{
+			HighScores[J] = HighScores[J-1];
+			}
+		HighScores[I] = NewScore;
+		break;
+		}
+	}
+};
+
+void write_high_score_file(apstring Filename)
+{
+ofstream OutFile;
+int I;
+
+	OutFile.open(Filename.c_str());
+	if (OutFile.fail())
+		{
+		cerr << "Error opening " << Filename << " for high score output" << endl;
+		cerr << "Hit any key to continue:";
+		getch();
+		}
+	for (I=0; I < NUM_HIGH_SCORES; I++)
+		{
+		OutFile << HighScores[I].PName << endl;
+		OutFile << HighScores[I].PScore << endl;
+		}
+	OutFile.close();
+
+};
+
+
+void read_high_score_file(apstring Filename)
+{
+ifstream InFile;
+int I;
+
+InFile.open(Filename.c_str());
+if (!InFile.fail())
+	{
+	for (I=0; I<NUM_HIGH_SCORES; I++)
+		{
+		InFile >> HighScores[I].PName;
+		InFile >> HighScores[I].PScore;
+		}
+	InFile.close();
+	}
+else
+	{
+	for (I=0; I<NUM_HIGH_SCORES; I++)
+		{
+		HighScores[I].PName = "";
+		HighScores[I].PScore = 0;
+		}
+	}
+};
+
+
+void display_high_scores()
+{
+	int I;
+	restorecrtmode();
+
+	cout << setw(30)<<"H*I*G*H  S*C*O*R*E*S" << endl << endl;
+	cout << setw(10)<<" "<<setiosflags(ios::left) << setw(30) << "Name";
+	cout << setiosflags(ios::right) << setw(8) << "Score" << endl << endl;
+	for (I=0; I < NUM_HIGH_SCORES; I++)
+		{
+		if (HighScores[I].PScore == 0)
+			{
+			break;
+			}
+		cout << setw(10)<<" "<<setiosflags(ios::left) << setw(30) << HighScores[I].PName;
+		cout << setiosflags(ios::right) << setw(8) << HighScores[I].PScore;
+		cout << endl;
+		}
+	cout << endl << endl << endl;
+	cout << setw(30)<<"Hit any key to continue: ";
+	getch();
+	setgraphmode(getgraphmode());
+};
+
+void free_save_unders()
+{
+int I;
+//free and reinitialize empty SaveUnder pointers ***************************
+
+if (PacUnder.BMPointer)
+	{
+	farfree(PacUnder.BMPointer);
+	PacUnder.BMPointer = NULL;
+	PacUnder.SizeX = BM_SIZE;
+	PacUnder.SizeY = BM_SIZE;
+	}
+
+for(I=0; I < NUM_GHOSTS; I++)
+	{
+	if (GhostUnder[I].BMPointer)
+		{
+		farfree(GhostUnder[I].BMPointer);
+		GhostUnder[I].BMPointer = NULL;
+		GhostUnder[I].SizeX = BM_SIZE;
+		GhostUnder[I].SizeY = BM_SIZE;
+		}
+	}
+
+};

@@ -1,0 +1,28 @@
+
+Welcome to the Red Star database. Everything a pilot of the RSA-Class fighter 
+needs to know is contained in this location, and can be referred to at anytime.
+RSA Class pilots run missions reserved for elite units, and these missions can be done in tandem with another pilot or on a solo run. 
+The commands for controlling your RSA are listed below. 
+(The 2nd Player's commands are in brackets.) 
+
+Forward - Up (W)		Back - Down (S)
+		
+Left - Left (A)		Right - Right (D)
+
+Fire - Spacebar (Left Shift)	Bomb - N (Z)
+
+The RSA Class fighter is capable acquiring some weapons from destroyed opponents. 
+These will be marked as various colored symbols on the display.
+
+Red - Cannon	Blue - Laser	Purple - Arc
+
+
+Keep in mind that every weapon you pick up will add to your attack, but 
+if you pick up a weapon of a different type, it will start out back at level 1. 
+It may be worth it, however, to pick up a certain type of low level weapon in exchange for a high level one. It's your call. Your goal is to simply eliminate as many opponents as you can...but we can never say anything is simple in space. Expect the unexpected....
+
+
+Press a key to continue.
+
+
+

@@ -1,0 +1,153 @@
+//Rebecca Russell
+//6th
+//Mr.Baker
+//Program: Cirlce screensaver
+#include<iostream.h>
+#include<conio.h>
+#include<apstring.h>
+#include<iomanip.h>
+#include<apvector.h>
+#include<fstream.h>
+#include<stdio.h>
+#include<stdlib.h>
+#include<graphics.h>
+#include<dos.h>
+//Constant
+//Structs
+//Variable
+int Grdriver, Grmode, Errorcode, I, X, Y, R, D,C;
+//Prototype
+void grsetup (int&, int&, int&);
+void initials();
+void main ()
+{clrscr();
+ grsetup(Grdriver, Grmode, Errorcode);
+ cleardevice ();
+ randomize();
+ R=10;
+ X=random((getmaxx()-20)+10);
+ Y=random((getmaxy()-20)+10);
+ setcolor(15);
+ circle(X,Y,R);
+ D=random(8);
+ D=0;
+ do
+ {switch (D)
+	{case 0:  if(X<(getmaxx()-R))//l to r
+						{setcolor(0);
+						circle(X,Y,R);
+						X++;
+						C=random(15)+1;
+						setcolor(C);
+						circle(X, Y, R);
+						delay(10);
+						}
+						else
+							D=random(8);
+					 break;
+	 case 1:  if(X>R)//r to l
+						{setcolor(0);
+						 circle(X,Y,R);
+						 X--;
+						 C=random(15)+1;
+						 setcolor(C);
+						 circle(X,Y,R);
+						 delay(10);
+						}
+						else
+							D=random(8);
+						break;
+	 case 2:  if(Y>R)        //bottom to top
+						{setcolor(0);
+						 circle(X,Y,R);
+						 Y--;
+						 C=random(15)+1;
+						 setcolor(C);
+						 circle(X,Y,R);
+						 delay(10);
+						}
+						else
+							D=random(8);
+						break;
+	 case 3:  if(Y<(getmaxy()-R))  //top to bottom
+						{setcolor(0);
+						 circle(X,Y,R);
+						 Y++;
+						 C=random(15)+1;
+						 setcolor(C);
+						 circle(X,Y,R);
+						 delay(10);
+						}
+						else
+							D=random(8);
+						break;
+	 case 4:  if((Y>R)&&(X<(getmaxx()-R)))	//bottom left to top right
+						{setcolor(0);
+						 circle(X,Y,R);
+						 Y--;
+						 X++;
+						 C=random(15)+1;
+						 setcolor(C);
+						 circle(X,Y,R);
+						 delay(10);
+						}
+						else
+							D=random(8);
+						break;
+	 case 5:if((X>R)&&(Y<(getmaxy()-R)))		//top right to bottom left
+						{setcolor(0);
+						 circle(X,Y,R);
+						 Y++;
+						 X--;
+						 C=random(15)+1;
+						 setcolor(C);
+						 circle(X,Y,R);
+						delay(10);
+						}
+						else
+							D=random(8);
+						break;
+	 case 6:  if((X>R)&&(Y>R))     //bottom right to top left
+						{setcolor(0);
+						 circle(X,Y,R);
+						 X--;
+						 Y--;
+						 C=random(15)+1;
+						 setcolor(C);
+						 circle(X,Y,R);
+						 delay(10);
+						}
+						else
+							D=random(8);
+						break;
+	 case 7:  if((X<getmaxx()-R)&&(Y<getmaxy()-R))   //top left to bottom right
+						{setcolor(0);
+						 circle(X,Y,R);
+						 X++;
+						 Y++;
+						 C=random(15)+1;
+						 setcolor(C);
+						 circle(X,Y,R);
+						 delay(10);
+						}
+						else
+							D=random(8);
+						break;
+	}
+ }
+ while(!kbhit());
+getch();
+};
+
+void grsetup (int& Grdriver, int& Grmode, int& Errorcode)
+{Grdriver=VGA;
+ Grmode=VGAHI;
+ initgraph(&Grdriver, &Grmode, "C:\\TC\\BGI");
+ Errorcode=graphresult();
+ if(Errorcode!=grOk)
+	{clrscr();
+	 cout<<"Error";
+	 getch();
+	 exit(1);
+	}
+};

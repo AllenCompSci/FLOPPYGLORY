@@ -1,0 +1,50 @@
+//Michael Crookston
+//Problem #21
+//Due Date
+//Period 6
+//Mr. Baker
+//Libraries Section
+#include<iostream.h>
+#include<iomanip.h>
+#include<conio.h>
+#include<apstring.h>
+#include<apvector.h>
+//Constants
+//Variables
+apvector<apstring>Names(20);
+apvector<apstring>Names2(20);
+int I, Length, J;
+char Again, End;
+apstring Name;
+//Program
+void main ()
+{do
+{for(I=0;I<20;I++)
+	Names[I]="";
+clrscr();
+cout<<"This program allows the user to enter names."<<endl<<endl;
+cout<<"****NOTE:  ZZZ causes the program to STOP****";
+clrscr;
+cout<<"Enter some names:"<<endl;
+for(I=0;I<20;I++)
+	{cin>>Name;
+	if(Name!="ZZZ")
+		Names[I]=Name;
+	else
+		I=20;}
+clrscr();
+Length=1;
+J=0;
+do
+{for(I=0;I<20;I++)
+	{if(Names[I].length()==Length)
+		{Names2[J]=Names[I];
+		J++;}}
+Length++;}
+while(J<20);
+for(I=0;I<20;I++)
+	cout<<Names2[I]<<endl;
+cout<<endl<<"Do you want to play again (Y/N):  ";
+cin>>Again;}
+while(Again=='y' || Again=='Y');
+}

@@ -1,0 +1,37 @@
+//Michael Crookston
+//PROB#15
+//Due Date
+//Period 6
+//Mr. Baker
+//Libraries Section
+#include<iostream.h>
+#include<iomanip.h>
+#include<conio.h>
+//Constants
+//Variables
+int Day;
+double Amount;
+double Total;
+char Again;
+//Program
+void main ()
+{
+do
+{Day=1;
+ Amount=.01;
+	do
+		{clrscr();
+		cout<<"DAY "<<Day<<":"<<endl<<endl;
+		cout<<"Previous Amount:  "<<Amount<<endl;
+		if (Day != 1)
+			Amount*=2;
+		cout<<"New Amount:  "<<Amount<<endl;
+		Total+=Amount;
+		cout<<"Total Amount Donated:  "<<Total;
+		Day++;
+		getch();}
+	while (Day<21);
+	cout<<"Do you want to play again (Y/N)?";
+	cin>>Again;}
+while (Again=='Y' || Again=='y');
+}

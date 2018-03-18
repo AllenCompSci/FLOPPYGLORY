@@ -1,0 +1,34 @@
+//KRIS BICKHAM
+//PROGRAM NAME
+//DUE DATE
+//PERIOD 6
+//MR. BAKER
+//LIBRARIES
+#include <iostream.h>
+#include <iomanip.h>
+#include <conio.h>
+#include <apstring.h>
+//VARIABLES
+long double Money;
+int Quarter;
+int Dollar;
+int Dime;
+int Nickel;
+int Penny;
+int Five;
+char Ans;
+//CONSTANTS
+//MAIN
+void main()
+{
+clrscr ();
+do
+
+
+cout<<" Do you want to run again (Y/N)? ";
+cin>>Ans;
+while(Ans=='Y'||Ans=='y')
+getch();
+}
+
+

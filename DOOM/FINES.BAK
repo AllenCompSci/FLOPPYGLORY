@@ -1,0 +1,72 @@
+Program fines;
+(*El CHoDA
+Baker 6th, *)
+
+uses
+    Crt;
+var
+   a,b,c,d,e:integer;
+   m:string;
+   z,y,x,w,s,l,o:real;
+begin (*main*)
+clrscr;
+writeln ('School Libary Program');
+writeln ('Paperbacks are 15 cents a day fine');
+writeln ('Other general books are 20 cents a day fine');
+writeln ('Magazines are 25 cents a day fine');
+writeln ('Reference books are 50 cents a day fine');
+m:='yes';
+while m='yes' do
+begin
+writeln ('How many paperbacks do you have late?');
+readln (a);
+b:=0;
+while a<>b do
+begin
+b:=b+1;
+writeln ('How many days has periodical number ', b,' been late');
+readln (c);
+z:=c*0.15;
+y:=y+z;
+end;
+writeln ('How many general books do you have late?');
+readln (a);
+b:=0;
+while a<>b do
+begin
+b:=b+1;
+writeln ('How many days has general book number ', b,' been late');
+readln (c);
+z:=c*0.2;
+w:=w+z;
+end;
+writeln ('How many magazines do you have late?');
+readln (a);
+b:=0;
+while a<>b do
+begin
+b:=b+1;
+writeln ('How many days has general book number ', b,' been late');
+readln (c);
+z:=c*0.25;
+s:=s+z;
+end;
+writeln ('How many reference books do you have late?');
+readln (a);
+b:=0;
+while a<>b do
+begin
+b:=b+1;
+writeln ('How many days has reference book number ', b,' been late');
+readln (z);
+z:=c*0.50;
+l:=l+z;
+end;
+o:=l+s+y+w;
+writeln ('Your total fine equals ',o:2:2);
+writeln ('Would you like to run the program agian? (type yes or no)');
+readln (m);
+end;
+
+end. (*main*)
+

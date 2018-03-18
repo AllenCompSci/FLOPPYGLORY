@@ -1,0 +1,21 @@
+//Jeremy Higgins
+//Due Date
+//Mr. Baker
+//Block 1
+#include<iostream.h>
+#include<iomanip.h>
+#include<conio.h>
+#include<apstring.h>
+//const
+const SL=2.3;
+
+//var
+void main()
+{clrscr();
+cout<<"Activity"<<setw(14)<<"15minutes"<<setw(14)<<"30minutes";
+cout<<setw(14)<<"60minutes"<<endl;
+cout<<Sl+2;
+
+
+getch();
+}

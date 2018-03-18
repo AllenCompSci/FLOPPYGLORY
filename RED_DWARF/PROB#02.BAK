@@ -1,0 +1,42 @@
+//KRIS BICKHAM
+//PROB#02
+//DUE MON
+//PERIOD 6
+//MR. BAKER
+//LIBRARIES------------
+#include <iostream.h>
+#include <iomanip.h>
+#include <conio.h>
+#include <apstring.h>
+//VARIABLES------------
+double First;
+double Second;
+double Third;
+double Fourth ;
+//CONSTANTS------------
+//MAIN
+void main ()
+{
+clrscr();
+cout<<"Type a number and press return ";
+cin>>First;
+cout<<"Now another ";
+cin>>Second;
+cout<<"Again ";
+cin>>Third;
+cout<<"One more time ";
+cin>>Fourth;
+cout<<setw(10)<<"First";
+cout<<setw(10)<<"Second";
+cout<<setw(10)<<"Third";
+cout<<setw(10)<<"Fourth"<<endl;
+cout<<setw(10)<<First;
+cout<<setw(10)<<Second;
+cout<<setw(10)<<Third;
+cout<<setw(10)<<Fourth;
+getch();
+
+
+
+}
+

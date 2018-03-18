@@ -1,0 +1,52 @@
+program piglatin; (*El Choda
+6th period
+Mr. Baker*)
+uses
+Crt;
+type
+toilet=array[1..25] of string;
+var
+sent,sent2,newsent,pig,gy,piggy:string;
+t,w,x,y,z:integer;
+seat:toilet;
+begin (*main*)
+gy:='ay';
+z:=1;
+clrscr;
+writeln ('Please input a sentence, no longer than 255 chartecters, and don''t put more than two spaces in a row you wierdo.');
+readln (sent);
+insert(' ',sent,1);
+y:=length(sent);
+if y<>1 then
+begin
+for x:= y downto 1 do
+begin
+if ord(sent[x])=32 then
+begin
+if ord(sent[x+1])<>32 then
+begin
+sent2:=sent;
+delete(sent,1,x);
+seat[z]:=sent;
+pig:=seat[z,1];
+delete (seat[z],1,1);
+t:=length(seat[z]);
+if seat[z,t] =' ' then
+delete(seat[z],t,1);
+piggy:=concat(pig,gy);
+seat[z]:=concat(seat[z],piggy);
+sent:=sent2;
+delete(sent,x,y);
+newsent:=concat(seat[z],' ',newsent);
+inc(z);
+end;
+end;
+end;
+writeln (newsent);
+writeln ('avehay aay icenay ayday');
+end;
+if y=1 then
+writeln ('I said a sentence, pay attention');
+readln;   {>:) El CHoDA strikes agian
+z}
+End. (*main*)

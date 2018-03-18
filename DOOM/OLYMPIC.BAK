@@ -1,0 +1,75 @@
+Program olympic;
+(*El CHoDA
+Baker 6th, *)
+
+uses
+    Crt;
+var
+a,b:string;
+z,y,w,v,x,s,m,high,low,total,choda:real;
+begin (*main*)
+clrscr;
+repeat
+writeln ('What is the diver''s last name');
+readln (a);
+writeln ('Please enter the first score');
+readln (z);
+writeln ('Please enter the second score');
+readln (y);
+writeln ('Please enter the third score');
+readln (x);
+writeln ('Please enter the fourth score');
+readln (w);
+writeln ('Please enter the fifth score');
+readln (v);
+writeln ('Please enter the sixth score');
+readln (s);
+writeln ('Please enter the seventh score');
+readln (m);
+(*now the fun begins*)
+high:=0;
+low:=0;
+if z>y then
+z:=high
+else
+y:=low;
+if x>high then
+x:=high;
+if w>high then
+w:=high;
+if v>high then
+v:=high;
+if s>high then
+s:=high;
+if m>high then
+m:=high;
+if z<y then
+z:=low
+else
+y:=low;
+if x<low then
+x:=low;
+if w<low then
+w:=low;
+if v<low then
+v:=low;
+if s<low then
+s:=low;
+if m<low then
+m:=low;
+
+total:=z+y+x+w+v+s+m;
+total:=total-low;
+total:=total-high;
+choda:=total/5;
+clrscr;
+writeln ('THE HIGH SCORE IS:',high:2:2);
+writeln ('THE LOW SCORE IS:',low:2:2);
+writeln ('THE DIVER''S NAME IS:',a);
+writeln ('THE DIVER''S TOTAL IS:',total:2:2);
+writeln ('THE DIVER''S AVERAGE IS:',choda:2:2);
+writeln ('Do you want to run the program agian?(yes or no)');
+readln (b);
+clrscr;
+until b='no'
+end.

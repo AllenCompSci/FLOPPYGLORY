@@ -1,0 +1,254 @@
+//Michael Crookston
+//Problem #28
+//Due Date
+//Period 6
+//Mr. Baker
+//Libraries Section
+#include<iostream.h>
+#include<iomanip.h>
+#include<conio.h>
+#include<apstring.h>
+#include<apvector.h>
+#include<stdlib.h>
+//Constants
+//Prototypes
+void lw (apstring);
+void hm (apstring);
+void etw (apstring);
+void pip (apstring);
+void oth (apstring);
+//Global Variables
+char Placement[21][21];
+apvector<apstring>Words(20);
+apstring Word,Length,How,Eword,Puz,Other;
+char Repeat;
+int I, Switch, X, Y, A, J, B, Five, Many, Q, W, S, G, K, C, E;
+char Again;
+//Program
+void main ()
+{
+randomize();
+do
+{clrscr();
+lw (Length);
+hm (How);
+etw (Eword);
+pip (Puz);
+oth (Other);
+gotoxy(1,22);
+cout<<"Would you like to do it again (Y/N)"<<endl;
+cin>>Again;}
+while(Again=='y'||Again=='Y');}
+void lw (apstring Lw)
+{
+cout<<"How many letters tall do you want your puzzle to be (1-20):  "<<endl;
+do
+{cin>>Q;}
+while(Q>20);
+clrscr();
+cout<<"How many letters wide do you want your puzzle to be (1-20):  "<<endl;
+do
+{cin>>W;}
+while(W>20);
+clrscr();
+for(A=0;A<Q+1;A++)
+{for(B=0;B<W+1;B++)
+Placement[A][B]=' ';}
+S=Q*W;}
+void hm (apstring Hm)
+{
+do{
+cout<<"How many words would you like to enter? Less than ";
+if(((S)/2)<=20)
+{cout<<(S)/2<<endl<<endl;
+C=(S)/2;}
+else{cout<<"20"<<endl<<endl;
+C=20;
+}
+cin>>Many;
+cout<<"Your puzzle must use less than "<<Q*W<<" letters!!"<<endl;}
+while(Many>C);
+clrscr();
+}
+void etw (apstring Eword)
+{
+for(I=0;I<Many;I++)
+{clrscr();
+cout<<"Word # "<<I+1<<endl<<endl;
+cout<<"Please enter ";
+cout<<"words 2-";
+if((((Q*W))/2)>=2&&(((Q*W))/2)<=8)
+{
+cout<<(((Q*W))/2);
+X=(((Q*W))/2);}
+else{cout<<"8";
+X=8;}
+cout<<" letters long."<<endl;
+cout<<endl<<"You have ";
+cout<<S;
+cout<<" letters left"<<endl;
+if((S)<=0)
+{
+I=Many+1;}
+do{
+cin>>Words[I];
+}
+while(Words[I].length()<2&&X>Words[I].length()||Words[I].length()>S);
+{
+S=S-Words[I].length();
+}
+if((S)<=0)
+{
+I=Many+1;
+}
+}
+clrscr();
+}
+void pip (apstring Puz)
+{
+for(I=0;I<Many;I++)
+{Word=Words[I];
+do
+{Switch=random(8);
+X=random(Q)+1;
+Y=random(W)+1;
+Five=0;
+Repeat='n';
+switch(Switch)
+{case 0 : if(X>Words[I].length())
+Repeat='y';
+else
+{for(J=0;J<Words[I].length();J++)
+{if(Placement[X+J][Y]==' ')
+Five++;
+else
+{J=500;
+Repeat='y';}}
+if(Five==Words[I].length())
+for(J=0;J<Words[I].length();J++)
+Placement[X+J][Y]=Word[J];}
+break;
+case 1 : if(X<Word.length())
+Repeat='y';
+else
+{for(J=0;J<Words[I].length();J++)
+{if(Placement[X-J][Y]==' ')
+Five++;
+else
+{J=500;
+Repeat='y';}}
+if(Five==Words[I].length())
+for(J=0;J<Words[I].length();J++)
+Placement[X-J][Y]=Word[J];}
+break;
+case 2 : if(Y>Word.length())
+Repeat='y';
+else
+{for(J=0;J<Words[I].length();J++)
+{if(Placement[X][Y+J]==' ')
+Five++;
+else
+{J=500;
+Repeat='y';}}
+if(Five==Words[I].length())
+for(J=0;J<Words[I].length();J++)
+Placement[X][Y+J]=Word[J];}
+break;
+case 3 : if(Y<Word.length())
+Repeat='y';
+else
+{for(J=0;J<Words[I].length();J++)
+{if(Placement[X][Y-J]==' ')
+Five++;
+else
+{J=500;
+Repeat='y';}}
+if(Five==Words[I].length())
+for(J=0;J<Words[I].length();J++)
+Placement[X][Y-J]=Word[J];}
+break;
+case 4 : if(X>Word.length())
+Repeat='y';
+if(Y>Word.length())
+Repeat='y';
+if(Repeat!='y')
+{for(J=0;J<Words[I].length();J++)
+{if(Placement[X+J][Y+J]==' ')
+Five++;
+else
+{J=500;
+Repeat='y';}}
+if(Five==Words[I].length())
+for(J=0;J<Words[I].length();J++)
+Placement[X+J][Y+J]=Word[J];}
+break;
+case 5 : if(X<Word.length())
+Repeat='y';
+if(Y<Word.length())
+Repeat='y';
+if(Repeat!='y')
+{for(J=0;J<Words[I].length();J++)
+{if(Placement[X-J][Y-J]==' ')
+Five++;
+else
+{J=500;
+Repeat='y';}}
+if(Five==Words[I].length())
+for(J=0;J<Words[I].length();J++)
+Placement[X-J][Y-J]=Word[J];}
+break;
+case 6 : if(X<Word.length())
+Repeat='y';
+if(Y>Word.length())
+Repeat='y';
+if(Repeat!='y')
+{for(J=0;J<Words[I].length();J++)
+{if(Placement[X-J][Y+J]==' ')
+Five++;
+else
+{J=500;
+Repeat='y';}}
+if(Five==Words[I].length())
+for(J=0;J<Words[I].length();J++)
+Placement[X-J][Y+J]=Word[J];}
+break;
+case 7 : if(X>Word.length())
+Repeat='y';
+if(Y<Word.length())
+Repeat='y';
+if(Repeat!='y')
+{for(J=0;J<Words[I].length();J++)
+{if(Placement[X+J][Y-J]==' ')
+Five++;
+else
+{J=500;
+Repeat='y';}}
+if(Five==Words[I].length())
+for(J=0;J<Words[I].length();J++)
+Placement[X+J][Y-J]=Word[J];}
+break;}}
+while(Repeat=='y');}
+}
+void oth (apstring Other)
+{
+for(I=0	;I<Q;I++)
+{for(J=0;J<W;J++)
+if(Placement[I+1][J+1]==' ')
+Placement[I+1][J+1]=random(26)+97;
+}
+for(I=0;I<Q;I++)
+{for(J=0;J<W;J++)
+cout<<Placement[I+1][J+1]<<" ";
+cout<<endl;
+}
+for(I=0; I<Many; I++)
+{
+gotoxy(70,I+1);
+cout<<Words[I];
+}
+for(I=0; I<Many; I++)
+{
+gotoxy(58,I+1);
+cout<<"Word # "<<I+1<<" ";
+}
+}

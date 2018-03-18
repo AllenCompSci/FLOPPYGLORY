@@ -1,0 +1,33 @@
+//Michael Crookston
+//Program Name
+//Due Date
+//Period 6
+//Mr. Baker
+//Libraries Section
+#include<iostream.h>
+#include<iomanip.h>
+#include<conio.h>
+#include<apstring.h>
+//Constants
+//Variables
+int Num1;
+int Num2;
+int Num3;
+int Num4;
+//Program
+void main ()
+{
+clrscr();
+Num1=0;
+Num2=0;
+Num3=0;
+Num4=0;
+cout<<"Please input FOUR integers, and only four.  Then press return."<<endl;
+cin>>Num1;
+cin>>Num2;
+cin>>Num3;
+cin>>Num4;
+cout<<"First"<<setw(10)<<"Second"<<setw(10)<<"Third"<<setw(10);
+cout<<"Fourth"<<setw(10)<<endl;
+
+}

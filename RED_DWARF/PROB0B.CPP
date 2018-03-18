@@ -1,0 +1,113 @@
+//KRIS BICKHAM
+//PROBLEM 01B
+//DUE DATE
+//PERIOD 6
+//MR. BAKER
+//LIBRARIES
+#include <iostream.h>
+#include <iomanip.h>
+#include <conio.h>
+//CONSTANTS
+//VARIABLES
+double x=10;
+double a=2;
+double b=4;
+double c=6;
+double d=8;
+double e=22;
+double f=12;
+double g=14;
+double h=16;
+double i=18;
+double j=20;
+//MAIN
+
+void main ()
+{
+clrscr();
+cout<<"Addition:"<<endl;
+cout<<"10+10="<<x+x<<endl;
+cout<<"10+2="<<x+a<<endl;
+cout<<"10+4="<<x+b<<endl;
+cout<<"10+6="<<x+c<<endl;
+cout<<"10+8="<<x+d<<endl;
+cout<<"10+22="<<x+e<<endl;
+cout<<"10+12="<<x+f<<endl;
+cout<<"10+14="<<x+g<<endl;
+cout<<"10+16="<<x+h<<endl;
+cout<<"10+18="<<x+i<<endl;
+cout<<"10+20="<<x+j<<endl;
+getch ();
+clrscr();
+cout<<"Subtraction:"<<endl;
+cout<<"10-10="<<x-x<<endl;
+cout<<"10-2="<<x-a<<endl;
+cout<<"10-4="<<x-b<<endl;
+cout<<"10-6="<<x-c<<endl;
+cout<<"10-8="<<x-d<<endl;
+cout<<"10-22="<<x-e<<endl;
+cout<<"10-12="<<x-f<<endl;
+cout<<"10-14="<<x-g<<endl;
+cout<<"10-16="<<x-h<<endl;
+cout<<"10-18="<<x-i<<endl;
+cout<<"10-20="<<x-j<<endl;
+getch ();
+clrscr();
+cout<<"Multiplication:"<<endl;
+cout<<"10*10="<<x*x<<endl;
+cout<<"10*2="<<x*a<<endl;
+cout<<"10*4="<<x*b<<endl;
+cout<<"10*6="<<x*c<<endl;
+cout<<"10*8="<<x*d<<endl;
+cout<<"10*22="<<x*e<<endl;
+cout<<"10*12="<<x*f<<endl;
+cout<<"10*14="<<x*g<<endl;
+cout<<"10*16="<<x*h<<endl;
+cout<<"10*18="<<x*i<<endl;
+cout<<"10*20="<<x*j<<endl;
+getch ();
+clrscr();
+cout<<"Division:"<<endl;
+cout<<"1/1="<<x/x<<endl;
+cout<<"1/2="<<x/a<<endl;
+cout<<"1/4="<<x/b<<endl;
+cout<<"1/6="<<x/c<<endl;
+cout<<"1/8="<<x/d<<endl;
+cout<<"1/22="<<x/e<<endl;
+cout<<"1/12="<<x/f<<endl;
+cout<<"1/14="<<x/g<<endl;
+cout<<"1/16="<<x/h<<endl;
+cout<<"1/18="<<x/i<<endl;
+cout<<"1/20="<<x/j<<endl;
+getch ();
+clrscr();
+cout<<"Mod:"<<endl;
+cout<<"20%18="<<j%i<<endl;
+cout<<"20%16="<<j%h<<endl;
+cout<<"20%14="<<j%g<<endl;
+cout<<"20%12="<<j%f<<endl;
+cout<<"22%20="<<e%j<<endl;
+cout<<"20%6="<<j%c<<endl;
+cout<<"8%6="<<d%c<<endl;
+cout<<"22%14="<<e%g<<endl;
+cout<<"18%8="<<i%d<<endl;
+cout<<"16%14="<<h%g<<endl;
+cout<<"12%8="<<f%d<<endl;
+getch ();
+cout<<"You know it";
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+

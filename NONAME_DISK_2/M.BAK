@@ -1,0 +1,88 @@
+//Jeremy Higgins
+//Due Date
+//Mr. Baker
+//Block 1
+#include<iostream.h>
+#include<iomanip.h>
+#include<conio.h>
+#include<apstring.h>
+//const
+//var
+apstring Name;
+apstring Address;
+double Start;
+long End;
+double Total;
+double Bill;
+double Bill1;
+double Bill2;
+apstring Trash;
+char Choice;
+double Time;
+void main()
+{clrscr();
+do{
+	 cout<<"Enter Name ";
+	 getline(cin, Name);
+	 cout<<"Enter Address";
+	 getline(cin, Address);
+	 cout<<"What time did call start ";
+	 cin>>Start;
+	 cout<<"What time did call end ";
+	 cin>>End;
+	 Total=0;
+	 if(End<=2400)
+		{ Time=End-Start;
+			if(Time>1800)
+			 {Bill=Time-1800;
+				Time-=Bill;
+				Bill/=100;
+				Bill*=60;
+				Bill*=.18;
+				Total+=Bill;
+			 }
+			 if(Time>800)
+				 {Bill1=Time-800;
+				 Time-=Bill1;
+					Bill1/=100;
+					Bill1*=60;
+					Bill1*=.25;
+					Total+=Bill1;
+				 }
+				 if(Time<900)
+					 {Bill2=Time;
+						Bill2/=100;
+						Bill2*=60;
+						Bill2*=.18;
+						Total+=Bill2;
+					 }
+		}
+		cout<<Total;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	 cout<<"Would you like to run the program again";
+	 cin>>Choice;
+	 getline(cin, Trash);
+	}while(Choice=='y' || Choice=='Y');
+}

@@ -1,0 +1,67 @@
+// Mahmood Subhani
+// Period 6
+// Mr. Baker
+// Program: Prob#00 Name, Address, Phone
+
+
+#include<Iostream.h>
+#include<conio.h>n
+#include<apstring.h>
+#include<iomanip.h>
+#include<apvector.h>
+
+void movedisk(int, char, char, char);
+int Disk;
+
+char A = 'A';
+char B = 'B';
+char C = 'C';
+char Exit;
+
+void main ()  {
+
+do{
+clrscr();
+
+
+cout<<setw(49)<<"THE TOWERS OF HANOI"<<endl<<endl;
+
+
+
+cout<<"how many disks do you want?"<<endl<<endl;
+cin>>Disk;
+
+movedisk(Disk, A, B, C);
+
+
+
+
+
+getch();
+
+cout<<"Do you want to exit? (y/n)"<<endl;
+
+
+}
+while(getch()!='y');
+
+};
+
+
+
+void movedisk (int Disk, char A, char B, char C)
+{
+
+
+if (Disk==1)
+{
+
+cout<<"move from "<<A<<" to "<<B<<".   "<<Num<<endl;
+}
+else
+{
+
+movedisk (Disk-1, A, C, B);
+cout<<"move from "<<A<<" to "<<B<<".   "<<Num<<endl;
+movedisk (Disk-1, C, B, A);
+}}

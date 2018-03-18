@@ -1,0 +1,38 @@
+// Sean Murray
+// Due Date
+// Program
+// Mr. Baker - 3rd pd.
+
+// Libraries
+#include <conio.h>
+#include <iostream.h>
+#include <iomanip.h>
+#include <apstring.h>
+//Constants
+
+//Variables
+
+void main ()
+{
+clrscr();
+cout << setprecision(2);
+cout << setiosflags(ios::showpoint);
+cout <<"Sally wants..."<<endl<<endl;
+cout <<"Sweater:    $35.00"<<endl;
+cout <<"Skirt:      $28.50"<<endl;
+cout <<"Blouse:     $22.95"<<endl;
+cout <<"Bracelet:   $12.25"<<endl<<endl;
+cout <<"Total: $"<<35 + 28.5 + 22.95 + 12.25;
+getch();
+cout <<endl<<"Whoops...there's a sale today!";
+getch();
+clrscr();
+cout <<"Sally still wants..."<<endl<<endl;
+cout <<"Sweater:    $"<<35 * 0.85<<endl;
+cout <<"Skirt:      $"<<28.5 * 0.85<<endl;
+cout <<"Blouse:     $"<<22.95 * 0.85<<endl;
+cout <<"Bracelet:   $12.25"<<endl<<endl;
+cout <<"Total: $";
+cout <<(35 * 0.85) + (28.5 * 0.85) + (22.95 * 0.85) + 12.25;
+getch();
+}

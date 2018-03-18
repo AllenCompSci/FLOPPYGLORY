@@ -1,0 +1,30 @@
+//Rebecca Russell
+//6th
+//Mr.Baker
+//Program:
+#include<iostream.h>
+#include<conio.h>
+#include<apstring.h>
+#include<iomanip.h>
+#include<apvector.h>
+#include<fstream.h>
+#include<stdio.h>
+#include<stdlib.h>
+//Constant
+//Structs
+//Variable
+int I;
+ofstream Out_file;
+//Prototype
+apvector <int> Nums (10);
+void main ()
+{clrscr();
+cout<<"Enter Ten Numbers: "<<endl;
+Out_file.open("A:\\PROB#39.DAT");
+for(I=0; I<10; I++)
+{cin>>Nums[I];
+ Out_file<<Nums[I]<<" ";
+}
+Out_file.close();
+getch();
+};

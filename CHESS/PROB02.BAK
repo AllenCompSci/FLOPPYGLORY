@@ -1,0 +1,20 @@
+// Sean Murray
+// Due Date
+// Program
+// Mr. Baker - 3rd pd.
+
+// Libraries
+#include <conio.h>
+#include <iostream.h>
+#include <iomanip.h>
+#include <apstring.h>
+//Constants
+
+//Variables
+
+void main ()
+{
+clrscr();
+
+getch();
+}

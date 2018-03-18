@@ -1,0 +1,47 @@
+//KRIS BICKHAM
+//PROB#04
+//DUE MON
+//PERIOD 6
+//MR. BAKER
+//LIBRARIES------------
+#include <iostream.h>
+#include <iomanip.h>
+#include <conio.h>
+#include <apstring.h>
+//VARIABLES------------
+double Sleeping;
+double Jogging;
+double Sitting;
+
+//CONSTANTS------------
+//MAIN
+void main ()
+{
+Sleeping=2.3;
+Jogging=15.0;
+Sitting=1.7;
+cout<<setprecision(2);
+cout<<setiosflags(ios::showpoint);
+clrscr();
+cout<<setw(10)<<"Activity";
+cout<<setw(10)<<"15 Mins";
+cout<<setw(10)<<"30 Mins";
+cout<<setw(10)<<"60 Mins"<<endl;
+getch();
+cout<<setw(10)<<"Sleeping";
+cout<<setw(10)<<Sleeping*15;
+cout<<setw(10)<<Sleeping*30;
+cout<<setw(10)<<Sleeping*60<<endl;
+getch();
+cout<<setw(10)<<"Jogging";
+cout<<setw(10)<<Jogging*15;
+cout<<setw(10)<<Jogging*30;
+cout<<setw(10)<<Jogging*60<<endl;
+getch();
+cout<<setw(10)<<"Sitting";
+cout<<setw(10)<<Sitting*15;
+cout<<setw(10)<<Sitting*30;
+cout<<setw(10)<<Sitting*60;
+getch();
+}
+

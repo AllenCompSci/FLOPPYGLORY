@@ -1,0 +1,243 @@
+//Kris BIckham
+//Prob33
+//Tuesday
+//Period 6
+//Mr. Baker
+//Libary Section
+#include <conio.h>
+#include <iostream.h>
+#include <iomanip.h>
+#include <apstring.h>
+#include <apmatrix.h>
+#include <fstream.h>
+#include <apvector.h>
+//Const Section
+const int A=10;
+const int B=20;
+const int C=30;
+const int D=40;
+const int E=50;
+//Varible Section
+char Ans;
+ofstream Write;
+ifstream Load;
+apvector <apstring> Titles (5);
+apvector <apstring> Personal (6);
+apmatrix <long> Sectiona (25,25);
+apmatrix <long> Sectionb (25,25);
+apmatrix <long> Sectionc (25,25);
+apmatrix <long> Sectiond (25,25);
+apmatrix <long> Sectione (25,25);
+apstring Trash;
+apvector <apstring> Words(4);
+apvector <double> Numbers  (7);
+double I;
+double X;
+double Mult;
+double Row;
+double Package;
+char Section;
+double Seat;
+double T;
+double Tickets;
+double Price;
+
+//Protoypes
+void p_info ();
+void set_items ();
+
+//Main
+void main()
+{
+for (X=0;X<25;X+=1)
+ for (I=0;I<25;I+=1)
+ { Sectiona[X][I]=0;
+	 Sectionb[X][I]=0;
+	 Sectionc[X][I]=0;
+	 Sectiond[X][I]=0;
+	 Sectione[X][I]=0;
+ };
+
+clrscr ();
+do
+{
+
+p_info ();
+set_items ();
+cout<<setw(49)<<"---Select Package---"<<endl;
+cout<<setw(49)<<"--------------------"<<endl<<endl;
+for(I=0;I<5;I+=1)
+cout<<I+1<<".) "<<Titles[I]<<endl;
+gotoxy(1,24);
+cout<<"Selection:";
+gotoxy(12,24);
+cin>>Package;
+	switch (Package)
+{case 1 : Mult=1;
+					break;
+ case 2 : Mult=5;
+					break;
+ case 3 : Mult=20;
+					break;
+ case 4 : Mult=20;
+					break;
+ case 5 : Mult=40;
+					break;
+};
+clrscr ();
+
+//----------------------seating
+
+//do
+//{
+clrscr ();
+cout<<setw(49)<<"----Section Info----"<<endl;
+cout<<setw(49)<<"--------------------"<<endl<<endl;
+cout<<"A.) 10$ a game"<<endl;
+cout<<"B.) 20$ a game"<<endl;
+cout<<"C.) 30$ a game"<<endl;
+cout<<"D.) 40$ a game"<<endl;
+cout<<"E.) 50$ a game"<<endl;
+gotoxy(1,24);
+cout<<"Section: ";
+cin>>Section;
+clrscr ();
+
+cout<<setw(49)<<"------Row Info------ "<<endl;
+cout<<setw(49)<<"--------------------"<<endl<<endl;
+cout<<"Select Row 1-25"<<endl;
+gotoxy(1,24);
+cout<<"Row: ";
+cin>>Row;
+clrscr();
+
+cout<<setw(49)<<"---Seat Selection--- "<<endl;
+cout<<setw(49)<<"--------------------"<<endl<<endl;
+cout<<"Select Seat 1-25"<<endl;
+gotoxy(1,24);
+cout<<"Seat: ";
+cin>>Seat;
+clrscr ();
+
+cout<<setw(49)<<"----Ticket Info.----"<<endl;
+cout<<setw(49)<<"--------------------"<<endl<<endl;
+cout<<"How Many Tickets do you want to buy? "<<endl;
+gotoxy(1,24);
+cout<<"Tickets: ";
+
+cin>>Tickets;
+clrscr ();
+
+
+
+cout<<setw(49)<<"---Purchase Info.--- "<<endl;
+cout<<setw(49)<<"--------------------"<<endl<<endl;
+
+
+				switch (Section)
+{case 'A' :cout<<"Section A"<<endl;
+					 Price=A*Tickets;
+					 break;
+ case 'B' :cout<<"Section B"<<endl;
+					 Price=B*Tickets;
+					 break;
+ case 'C' :cout<<"Section C"<<endl;
+					 Price=C*Tickets;
+					 break;
+ case 'D' :cout<<"Section D"<<endl;
+					 Price=D*Tickets;
+					 break;
+ case 'E' :cout<<"Section E"<<endl;
+					 Price=E*Tickets;
+					 break;
+};
+
+
+
+
+cout<<"Row "<<Row<<endl;
+cout<<"Seat "<<Seat<<endl;
+cout<<Tickets<<" Tickets for each event"<<endl;
+cout<<"Package "<<Package<<" you will attend "<<Mult<<" games."<<endl;
+Price=Price*Mult;
+cout<<Price<<"$ is your total."<<endl;
+getch();
+
+
+//}while();
+
+gotoxy(1,24);
+cout<<"Do you wish to do another entry? ";
+cin>>Ans;
+getline(cin,Trash);
+clrscr ();
+}while(Ans=='Y'||Ans=='y');
+
+
+Write.open("Testdata.txt");
+Write<<Personal[0]<<endl;
+Write<<Personal[1]<<endl;
+Write<<Personal[2]<<endl;
+Write<<Personal[3]<<endl;
+Write<<Personal[4]<<endl;
+Write<<Personal[5]<<endl;
+Write<<Package<<endl;
+Write<<Row<<endl;
+Write.close ();
+
+};
+
+
+void p_info ()
+{
+cout<<setw(49)<<"Customer Information"<<endl;
+cout<<setw(49)<<"--------------------"<<endl<<endl;
+cout<<"First Name:"<<endl;
+cout<<"Last Name:"<<endl;
+cout<<"Phone Number:     ";
+gotoxy(40,4);
+cout<<"Address:";
+gotoxy(40,5);
+cout<<"City, State:";
+gotoxy(40,6);
+cout<<"Zip:";
+gotoxy(13,4);
+getline(cin,Personal[0]);
+gotoxy(12,5);
+getline(cin,Personal[1]);
+gotoxy(15,6);
+getline(cin,Personal[2]);
+gotoxy(49,4);
+getline(cin,Personal[3]);
+gotoxy(53,5);
+getline(cin,Personal[4]);
+gotoxy(45,6);
+getline(cin,Personal[5]);
+};
+
+void set_items ()
+{
+Titles[0]="Single Game (One Game)";
+Titles[1]="Team Rivals (Five Games)";
+Titles[2]="First Half of Season (20 Games)";
+Titles[3]="Second half of Season (20 Games)";
+Titles[4]="Full Season (40 Games)";
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

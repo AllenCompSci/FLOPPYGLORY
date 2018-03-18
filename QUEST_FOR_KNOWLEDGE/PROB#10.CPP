@@ -1,0 +1,57 @@
+//Michael Crookston
+//Prob#10
+//Due Date
+//Period 6
+//Mr. Baker
+//Libraries Section
+#include<iostream.h>
+#include<iomanip.h>
+#include<conio.h>
+#include<apstring.h>
+//Constants
+//Variables
+apstring FName;
+apstring LName;
+int Hours;
+char Resident;
+double Fees;
+apstring Social;
+//Program
+void main ()
+{
+clrscr();
+cout<<"First Name:  ";
+cin>>FName;
+cout<<"Last Name:  ";
+cin>>LName;
+cout<<"Social Security Number:  ";
+cin>>Social;
+cout<<"Number of Hours:  ";
+cin>>Hours;
+cout<<"Resident (Y/N):  ";
+cin>>Resident;
+clrscr();
+if((Resident=='Y')||(Resident=='y'))
+	if((Hours>=1)&&(Hours<=4))
+		Fees=Hours*80.00;
+	else if((Hours>4)&&(Hours<=12))
+				 Fees=Hours*70.00;
+			 else if(Hours>12)
+							Fees=900.00;
+						else
+							cout<<"You entered an invalid number.";
+else 	if((Hours>=1)&&(Hours<=4))
+				Fees=Hours*120.00;
+			else if((Hours>4)&&(Hours<=12))
+				 Fees=Hours*110.00;
+					 else if(Hours>12)
+							Fees=1400.00;
+								else
+									cout<<"You entered an invalid number.";
+cout<<"Bill for:  "<<FName<<" "<<LName<<endl;
+cout<<"Credit hours:  "<<Hours<<endl;
+cout<<"Resident:  "<<Resident<<endl;
+cout<<"Amount Owed:  "<<"$"<<Fees<<endl<<endl<<endl;
+cout<<"Press enter to exit the program.";
+getch();
+}

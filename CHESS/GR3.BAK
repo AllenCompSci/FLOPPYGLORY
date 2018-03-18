@@ -1,0 +1,91 @@
+// Sean Murray
+// Due Date
+// Program
+// Mr. Baker - 3rd pd.
+
+// Libraries
+#include <graphics.h>
+#include <conio.h>
+#include <iostream.h>
+#include <iomanip.h>
+#include <fstream.h>
+#include <stdlib.h>
+
+#include <apstring.h>
+#include <apvector.h>
+#include <apmatrix.h>
+
+//Structures
+	struct Data
+	{
+		apstring Name;
+		char Char_Name[50];
+		int Number;
+	};
+
+//Constants
+
+//Global Variables
+	int grdriver, grmode, errorcode;
+	int I, A, Array_Size;
+	apvector <Data> Trees;
+
+//Prototypes
+	void gr_start(int&, int&, int&);
+	void convert(apstring, int);
+	void get_data(int&);
+
+void main ()
+{
+	clrscr();
+	get_data(Array_Size);
+	//gr_start(grdriver, grmode, errorcode);
+	for (I = 0; I < Array_Size;I++)
+	{
+		for (A = 0; A < 50; A++)
+			cout << Trees[I].Char_Name[A];
+		cout << endl;
+	}
+	getch();
+}
+
+void get_data(int & I)
+{
+	ifstream In_File;
+	apstring Trash;
+	Trees.resize(1);
+	In_File.open("U:\\F123\\Trees.dat");
+	getline(In_File, Trees[I].Name);
+	while(In_File.eof())
+	{
+		In_File >> Trees[I].Number;
+		getline(In_File, Trash);
+		convert(Trees[I].Name, I);
+		I++;
+		Trees.resize(I+1);
+		getline(In_File, Trees[I].Name);
+	}
+	In_File.close();
+};
+
+void convert(apstring Sent_In, int Num)
+{
+	int I;
+	for (I = 0; I < Sent_In.length(); I++)
+		Trees[Num].Char_Name[I] = Sent_In[I];
+};
+
+void gr_start(int & grdriver, int & grmode, int & errorcode)
+{
+	grdriver = VGA;
+	grmode = VGAHI;
+	initgraph(&grdriver, &grmode, "C:\\TC\\BGI");
+	errorcode = graphresult();
+	if(errorcode != grOk)
+	{
+		clrscr();
+		cout << "Error: " << errorcode;
+		getch();
+		exit(1);
+	}
+};

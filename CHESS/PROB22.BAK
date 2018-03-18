@@ -1,0 +1,49 @@
+// Sean Murray
+// Due Date
+// Prob 22
+// Mr. Baker - 3rd pd.
+
+// Libraries
+#include <conio.h>
+#include <iostream.h>
+#include <iomanip.h>
+#include <apstring.h>
+#include <apvector.h>
+#include <apmatrix.h>
+#include <stdlib.h>
+
+//Constants
+
+//Variables
+	apvector <int> Students (10);
+	int DepNum, I, J;
+	char choice;
+void main ()
+{
+	do
+	{
+		clrscr();
+		cout << "Department Number (0-9):";
+		cin >> DepNum;
+		for (I = 0; I < 10;I++)
+		{
+			do
+			{
+				clrscr();
+				cout << "Number of Students in " << DepNum << "0" << I << ":";
+				cin >> Students[I];
+			} while (Students[I] < 41);
+		}
+		clrscr();
+		for (I = 0;I < 10;I++)
+		{
+			cout << endl << "Class " << DepNum<<"0"<<I<<": ";
+			for (J = 0; J < Students[I];J++)
+				cout << "*";
+			cout << setw(3) << Students[I];
+		}
+		cout << endl << endl;
+		cout << "Would you like to enter data for another Department (y/n)?";
+		cin >> choice;
+	} while(choice == 'y' || choice == 'Y');
+}

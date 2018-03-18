@@ -1,0 +1,58 @@
+//Chris Chapman
+//7th
+//prob#41
+//Mr. Baker
+
+//Library Section
+#include<iostream.h>
+#include<iomanip.h>
+#include<conio.h>
+#include<apstring.h>
+#include<apvector.h>
+#include<fstream.h>
+#include<graphics.h>
+#include<stdlib.h>
+
+//const.section
+
+//struct section
+
+//Prototype
+void grstart (int&, int&, int&);
+
+//global variable section
+int E,K;
+char Answer;
+
+
+void main ()
+{
+do{
+
+
+
+
+
+
+	 grstart (grdriver, grmode, errorcode);
+
+		cout<<"Run agian? (Y/N)";
+		cin>>Answer;
+	}while(Answer=='Y'||Answer=='y');
+}
+
+void grstart (int& grdriver, int& grmode, int& errorcode)
+	{
+	grdriver=VGA;
+	grmode=VGAHI;
+	initgraph (&grdriver, &grmode, "c:\\TC\\BGI");
+	errorcode=graphresult();
+	if(errorcode!=grOK)
+		{
+		clrscr();
+		cout<<"Error: "<<errorcode<<endl<<"Please resolve immediately."<<endl;
+		cout<<"Press enter to continue"<<endl;
+		getch();
+		exit(1);
+		}
+	};

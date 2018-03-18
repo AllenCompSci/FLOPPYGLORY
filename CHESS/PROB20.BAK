@@ -1,0 +1,50 @@
+// Sean Murray
+// Due Date
+// Program
+// Mr. Baker - 3rd pd.
+
+// Libraries
+#include <conio.h>
+#include <iostream.h>
+#include <iomanip.h>
+#include <apstring.h>
+#include <apvector.h>
+#include <apmatrix.h>
+#include <stdlib.h>
+
+//Constants
+
+//Variables
+int I, J, K;
+apvector <int> Numbers (20);
+apvector <int> Even (10);
+apvector <int> Odd (10);
+
+void main ()
+{
+	clrscr();
+
+	for (I = 0;I < 20;I++)
+		Numbers[I] = I + 1;
+	J = 0;
+	K = 0;
+
+	for (I = 0;I < 20;I++)
+
+		if (Numbers[I] % 2 == 0)
+		{
+			Even[J] = Numbers[I];
+			J++;
+		}
+
+		else
+		{
+			Odd[K] = Numbers[I];
+			K++;
+		}
+
+	cout << "Odd" << setw(7) << "Even"<<endl;
+	for (I = 0;I < 10;I++)
+		cout << setw(3) << Odd[I] << setw(7) << Even[I] <<endl;
+	getch();
+}

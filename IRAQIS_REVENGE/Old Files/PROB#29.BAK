@@ -1,0 +1,33 @@
+//Chris Chapman
+//7th
+//prob29
+//Mr. Baker
+
+//Library Section
+#include<iostream.h>
+#include<iomanip.h>
+#include<conio.h>
+#include<apstring.h>
+#include<apvector.h>
+
+//const.section
+
+//Prototype
+
+//variable section
+int E;
+char Answer;
+
+
+void main ()
+{
+do{
+	clrscr();
+	//Hello, there. How are we?
+
+		getch();
+		clrscr();
+		cout<<"Run agian? (Y/N)";
+		cin>>Answer;
+	}while(Answer=='Y'||Answer=='y');
+}

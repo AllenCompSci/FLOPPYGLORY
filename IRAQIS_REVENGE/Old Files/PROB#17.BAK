@@ -1,0 +1,183 @@
+//Inforation Section
+//Chris Chapman
+//Prob23
+//7th
+//Mr. Baker
+
+//Library Section
+#include<iostream.h>
+#include<iomanip.h>
+#include<conio.h>
+#include<apstring.h>
+#include<apmatrix.h>
+
+//Const Section
+
+//Variables Section
+char Answer;
+int Dep,C,E, Smallest, Temp, Class_num;
+apvector <int> Class (10);
+void main ()
+
+{
+do{
+	clrscr();
+	cout<<"Please enter your Department number! (0-9)"<<endl;
+	cin>>Dep;
+	cout<<"Please enter the number of students in each room!";
+	cout<<" (cannot be greater than 40!)"<<endl;
+	for (C=0;C<=9;C++)
+			{
+			cout<<"Class "<<Dep<<'0'<<C<<": ";
+			switch (C)
+			{
+			case 0 : do{
+							 (cin, Class[0]);
+							 if (Class[0]>40)
+									cout<<"Class "<<Dep<<'0'<<C<<": ";
+							 }while (Class[0]>40);
+							 break;
+			case 1 : do{
+							 (cin,Class[1]);
+							 if (Class[1]>40);
+									cout<<"Class "<<Dep<<'0'<<C<<": ";
+							 }while (Class[1]>40);
+							 break;
+			case 2 : do{
+							 (cin,Class[2]);
+							 if (Class[2]>40);
+									cout<<"Class "<<Dep<<'0'<<C<<": ";
+							 }while (Class[2]>40);
+							 break;
+			case 3 : do{
+							 (cin,Class[3]);
+							 if (Class[3]>40);
+									cout<<"Class "<<Dep<<'0'<<C<<": ";
+							 }while (Class[3]>40);
+							 break;
+			case 4 : do{
+							 (cin,Class[4]);
+							 if (Class[4]>40);
+									cout<<"Class "<<Dep<<'0'<<C<<": ";
+							 }while (Class[4]>40);
+							 break;
+			case 5 : do{
+							 (cin,Class[5]);
+							 if (Class[5]>40);
+									cout<<"Class "<<Dep<<'0'<<C<<": ";
+							 }while (Class[5]>40);
+							 break;
+			case 6 : do{
+							 (cin,Class[6]);
+							 if (Class[6]>40);
+									cout<<"Class "<<Dep<<'0'<<C<<": ";
+							 }while (Class[6]>40);
+							 break;
+			case 7 : do{
+							 (cin,Class[7]);
+							 if (Class[7]>40);
+									cout<<"Class "<<Dep<<'0'<<C<<": ";
+							 }while (Class[7]>40);
+							 break;
+			case 8 : do{
+							 (cin,Class[8]);
+							 if (Class[8]>40);
+									cout<<"Class "<<Dep<<'0'<<C<<": ";
+							 }while (Class[8]>40);
+							 break;
+			case 9 : do{
+							 (cin,Class[9]);
+							 if (Class[9]>40);
+									cout<<"Class "<<Dep<<'0'<<C<<": ";
+							 }while (Class[9]>40);
+			}
+			}
+
+	C=0;
+	E=0;
+	for (C=0;C<Class_num;C++)
+				{Smallest=Class[C].length();
+					for(E=C=1;E<Class_num;E++)
+						if (Class[E].length()<Smallest)
+						{Temp=Class[C];
+						Class[C]=Class[E];
+						Class[E]=Temp						}
+			gotoxy (1,C+1);
+			cout<<Dep<<'0'<<C;
+			switch (C)
+			{
+			case 0 : gotoxy (10+Class[0],C+1);
+							 cout<<Class[0];
+							 gotoxy (7,C+1);
+							 for (Class[0];Class[0]>0;Class[0]--)
+							 cout<<'*';
+							 cout<<endl;
+							 break;
+			case 1 : gotoxy (10+Class[1],C+1);
+							 cout<<Class[1];
+							 gotoxy (7,C+1);
+							 for (Class[1];Class[1]>0;Class[1]--)
+							 cout<<'*';
+							 cout<<endl;
+							 break;
+			case 2 : gotoxy (10+Class[2],C+1);
+							 cout<<K2;
+							 gotoxy (7,C+1);
+							 for (K2;K2>0;K2--)
+							 cout<<'*';
+							 cout<<endl;
+							 break;
+			case 3 : gotoxy (10+K3,C+1);
+							 cout<<K3;
+							 gotoxy (7,C+1);
+							 for (K3;K3>0;K3--)
+							 cout<<'*';
+							 cout<<endl;
+							 break;
+			case 4 : gotoxy (10+K4,C+1);
+							 cout<<K4;
+							 gotoxy (7,C+1);
+							 for (K4;K4>0;K4--)
+							 cout<<'*';
+							 cout<<endl;
+							 break;
+			case 5 : gotoxy (10+K5,C+1);
+							 cout<<K5;
+							 gotoxy (7,C+1);
+							 for (K5;K5>0;K5--)
+							 cout<<'*';
+							 cout<<endl;
+							 break;
+			case 6 : gotoxy (10+K6,C+1);
+							 cout<<K6;
+							 gotoxy (7,C+1);
+							 for (K6;K6>0;K6--)
+							 cout<<'*';
+							 cout<<endl;
+							 break;
+			case 7 : gotoxy (10+K7,C+1);
+							 cout<<K7;
+							 gotoxy (7,C+1);
+							 for (K7;K7>0;K7--)
+							 cout<<'*';
+							 cout<<endl;
+							 break;
+			case 8 : gotoxy (10+K8,C+1);
+							 cout<<K8;
+							 gotoxy (7,C+1);
+							 for (K8;K8>0;K8--)
+							 cout<<'*';
+							 cout<<endl;
+							 break;
+			case 9 : gotoxy (10+K9,C+1);
+							 cout<<K9;
+							 gotoxy (7,C+1);
+							 for (K9;K9>0;K9--)
+							 cout<<'*';
+							 cout<<endl;
+			}
+			}
+	cout<<endl<<"Run again? (Y/N)";
+	cin>>Answer;
+	}while(Answer=='Y'||Answer=='y');
+}

@@ -1,0 +1,25 @@
+                                     		QUEST FOR KNOWLEDGE
+			           by Michael Crookston and Jacob Tarver
+				           Instruction Manual
+
+Contents:
+1.  Getting Started
+2.  Playing the Game
+
+1.  GETTING STARTED
+	QUEST FOR KNOWLEDGE is a fun, easy game to play.  To get started, you need to:
+	1.  Insert floppy disk into your computer.
+	2.  Open up "My Computer" and find your A: drive.
+	3.  Open up your A: drive and find the file "GAME.EXE".
+	4.  Prepare to play QUEST FOR KNOWLEDGE.
+
+2.  PLAYING THE GAME
+	1.  To start with, decide what kind of questions you would like to use.
+		MATH:  These questions come from various fields of math, from simple addition to 		               algebra and geometry
+		HISTORY:  These questions are VERY hard, and concern dates and names
+		MIXED:  These combine both math and history questions
+	2.  After deciding which questions you want to use, decide how many people are playing (1-4) and 	     insert their names.  You can only put in ONE (1) NAME; NO SPACES please.
+	3.  When the questions appear, type in the letter next to the correct answer.  If you are right, a dice 	will roll and you will move a certain number of spaces.  If you are wrong, you will not move.
+	4.  The first person to the last space on the board wins!
+
+					GOOD LUCK!!!!!

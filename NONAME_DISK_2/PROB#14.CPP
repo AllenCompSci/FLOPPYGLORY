@@ -1,0 +1,41 @@
+//Jeremy Higgins
+//Due Date
+//Mr. Baker
+//Block 1
+#include<iostream.h>
+#include<iomanip.h>
+#include<conio.h>
+#include<apstring.h>
+//const
+//var
+int Day;
+double Amount;
+char Choice;
+double Give;
+double Total;
+double Amount2;
+double Amount3;
+double Amount4;
+void main()
+{clrscr();
+Amount=.01;
+Amount2=.01;
+Total=0;
+Amount4=.01;
+cout<<Amount<<"= ";
+do{
+	 for (Day=1; Day<20; Day++)
+			{if (Day>1)
+				{Amount3=Amount4*=2;
+				 cout<<Amount3;
+				}
+				Give=Amount;
+			 Amount=Amount2+Amount*2;
+			 cout<<"   "<<Day<<endl<<Amount<<"= ";
+			 Total+=Amount;
+			}
+	 cout<<Give<<"   20"<<endl;
+	 cout<<"Would you like to run the Program again";
+	 cin>>Choice;
+	}while (Choice=='Y' || Choice=='y');
+}

@@ -1,0 +1,50 @@
+//Jeff Stein
+//6th Period
+//Mr. Baker
+//Program: Cube, Odd/Even, Company Name and addy using functions
+#include <iostream.h>
+#include <conio.h>
+#include <apstring.h>
+#include <iomanip.h>
+#include <apvector.h>
+#include <apmatrix.h>
+#include <stdlib.h>
+double cube (double);
+double X;
+double Num;
+int A ;
+apstring Answer;
+apstring number (apstring);
+
+
+
+void main()
+{
+clrscr();
+
+cout<<"Enter a number you wish to cube."<<endl;
+cin>>Num;
+cout<<"Answer is:  "<<cube(X);
+cout<<endl;
+cout<<"Enter a number."<<endl;
+cin>>A;
+cout<<"Your number is " <<number(Answer);
+
+getch();
+};
+
+double cube (double X)
+{
+X=Num*Num*Num;
+return X;
+};
+
+apstring number (apstring Answer)
+{
+		if(A%2==0)
+			Answer="Even";
+		else
+			Answer="Odd";
+
+		return Answer;
+}

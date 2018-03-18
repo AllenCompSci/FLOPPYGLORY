@@ -1,0 +1,52 @@
+//Chris Chapman
+//7th
+//prob30
+//Mr. Baker
+
+//Library Section
+#include<iostream.h>
+#include<iomanip.h>
+#include<conio.h>
+#include<apstring.h>
+#include<apvector.h>
+
+//const.section
+
+//Prototype
+void get_data (int, int);
+int calc (int, int);
+
+//variable section
+int E, L, W;
+char Answer;
+
+
+void main ()
+{
+do{
+	clrscr();
+	//Hello, there. Im Hungry.
+	get_data (L, W);
+	cout<<"Area: ";
+	calc(L, W);
+		getch();
+		clrscr();
+		cout<<"Run agian? (Y/N)";
+		cin>>Answer;
+	}while(Answer=='Y'||Answer=='y');
+}
+
+void get_data (int L, int W)
+	{
+	cout<<"Please enter the width."<<endl;
+	cin>>W;
+	cout<<"Please enter the length."<<endl;
+	cin>>L;
+	};
+
+int calc (int L, int W)
+	{
+	return W*L;
+	}
+
+

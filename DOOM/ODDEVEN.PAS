@@ -1,0 +1,48 @@
+Program even_odd;
+(*El CHoDA
+Baker 6th, *)
+
+uses
+    Crt;
+type
+    EVEN = array [1..10] of integer;
+    ODD = array [1..10] of integer;
+var
+ even1:even;
+ odd1:odd;
+ x,y,b,event,oddt:integer;
+begin (*main*)
+clrscr;
+y:=1;
+for x:=1 to 20 do
+begin
+b:=x mod 2;
+if b=0 then
+begin
+even1[y]:=x;
+event:=event+even1[y];
+y:=y+1;
+end;
+end;
+y:=1;
+for x:=1 to 20 do
+begin
+b:=x mod 2;
+if b=1 then
+begin
+odd1[y]:=x;
+oddt:=oddt+odd1[y];
+y:=y+1;
+end;
+end;
+for y:=1 to 10 do
+begin
+if y<>5 then
+writeln (even1[y],odd1[y]:15)
+else
+writeln (even1[y],odd1[y]:14);
+end;
+writeln (event,oddt:15);
+readln;
+End. (*main*)
+

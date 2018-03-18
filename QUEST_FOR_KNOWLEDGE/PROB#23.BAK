@@ -1,0 +1,21 @@
+//Michael Crookston
+//Program Name
+//Due Date
+//Period 6
+//Mr. Baker
+//Libraries Section
+#include<iostream.h>
+#include<iomanip.h>
+#include<conio.h>
+#include<apstring.h>
+#include<stdlib.h>
+//Constants
+//Variables
+char Again;
+apvector<int>Numbers(15);
+//Program
+void main ()
+{
+do
+	{randomize();
+}

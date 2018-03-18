@@ -1,0 +1,27 @@
+// Sean Murray
+// Due Date
+// Stuff
+// Mr. Baker - 3rd pd.
+
+// Libraries
+#include <conio.h>
+#include <iostream.h>
+#include <iomanip.h>
+#include <apstring.h>
+
+//Constants
+
+//Variables
+apstring name = "Sean Murray";
+apstring address = "812 Carolyn";
+apstring number = "(972)727-0875";
+
+void main ()
+
+{
+	clrscr();
+	cout<<endl<<name<<endl;
+	cout<<address<<endl;
+	cout<<number<<endl;
+
+	cout<<endl<<"Pre

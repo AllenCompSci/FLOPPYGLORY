@@ -1,0 +1,103 @@
+//Michael Crookston
+//Program Name
+//Due Date
+//Period 6
+//Mr. Baker
+//Libraries Section
+#include<iostream.h>
+#include<iomanip.h>
+#include<conio.h>
+#include<apstring.h>
+//Constants
+//Variables
+char Late;
+int TodayD;
+int TodayM;
+int TodayY;
+int DueD;
+int DueM;
+int DueY;
+apstring FName;
+apstring LName;
+apstring NumberAdd;
+apstring Street;
+apstring City;
+apstring State;
+apstring Zip;
+apstring Ending;
+char Cable;
+char Cinema;
+char Cartoon;
+double Total;
+//Program
+void main ()
+{
+clrscr();
+Total=7.00;
+cout<<"This program will tell you what your bill will be."<<endl<<endl;
+cout<<"Name:  ";
+cin>>FName>>LName;
+cout<<endl<<"Full Address:  ";
+cin>>NumberAdd>>Street>>Ending>>City>>State>>Zip;
+clrscr();
+cout<<"Please enter what month it is (1-12):  ";
+cin>>TodayM;
+cout<<endl<<"Please enter what date it is (1-31):  ";
+cin>>TodayD;
+cout<<endl<<"Please enter what year it is (YYYY):  ";
+cin>>TodayY;
+cout<<endl<<endl<<"What month is/was your bill due (1-12):  ";
+cin>>DueM;
+cout<<endl<<"What date is/was your bill due (1-31):  ";
+cin>>DueD;
+cout<<endl<<"What year is/was your bill due (YYYY):  ";
+cin>>DueY;
+clrscr();
+cout<<"Do you have Cable Service (Y/N):  ";
+cin>>Cable;
+if((Cable=='y')||(Cable=='Y'))
+	{cout<<"Do you have the Home Cinema Channel (Y/N):  ";
+	cin>>Cinema;
+	cout<<"Do you have the Continual Cartoon Channel (Y/N):  ";
+	cin>>Cartoon;}
+clrscr();
+if(DueY<TodayY)
+	Late='y';
+else if(DueY>TodayY)
+			 Late='n';
+		 else if(DueM>TodayM)
+						Late='n';
+					else if(DueM<TodayM)
+								 Late='y';
+							 else if(DueD<TodayD)
+											Late='y';
+										else
+											Late='n';
+cout<<setw(50)<<"* * * * * * * * * * * *"<<endl;
+cout<<setw(50)<<"Stan's Television Corp."<<endl;
+cout<<setw(50)<<"* * * * * * * * * * * *"<<endl<<endl;
+cout<<"Name:  "<<FName<<" "<<LName<<endl;
+cout<<"Address:  "<<NumberAdd<<" "<<Street<<" "<<Ending<<" "<<City;
+cout<<" "<<State<<" "<<Zip<<endl;
+cout<<"Due Date:  "<<DueM<<"/"<<DueD<<"/"<<DueY<<endl<<endl;
+cout<<"Services:"<<endl<<endl;
+cout<<"Standard Service:"<<setw(20)<<"$7.00"<<endl;
+cout<<setprecision(2)<<setiosflags(ios::showpoint);
+if((Cable=='y')||(Cable=='Y'))
+	{cout<<"Cable Service:"<<setw(23)<<"$4.00"<<endl;
+	Total=Total+4.00;
+	if((Cinema=='y')||(Cinema=='Y'))
+		{cout<<"Home Cinema Channel:"<<setw(17)<<"$2.00"<<endl;
+		Total=Total+2.00;}
+	if((Cartoon=='y')||(Cartoon=='Y'))
+		{cout<<"Continual Cartoon Channel:"<<setw(11)<<"$2.00"<<endl;
+		Total=Total+2.00;}}
+if(Late=='y')
+	{Total=Total*1.05;
+	cout<<endl<<"Past Due Amount:"<<setw(16)<<"$"<<Total;}
+else
+	cout<<endl<<"Total Amount Due:"<<setw(15)<<"$"<<Total;
+cout<<endl<<endl<<endl<<"Press return to exit program.";
+getch();
+
+}

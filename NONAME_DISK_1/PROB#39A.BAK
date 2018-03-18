@@ -1,0 +1,38 @@
+//Jeff Stein
+//6th Period
+//Mr. Baker
+//Program:
+#include <iostream.h>
+#include <conio.h>
+#include <apstring.h>
+#include <iomanip.h>
+#include <apvector.h>
+#include <apmatrix.h>
+#include <stdlib.h>
+#include <fstream.h>
+
+ofstream out_file;
+
+int I;
+int Data;
+
+void main()
+{
+clrscr();
+out_file.open ("a:\\myfile.dat");
+for (I=0;I<=9;I++)
+{
+	cout<<"Enter 10 integers."<<endl;
+	cin>>Data;
+	out_file<<Data<<endl;
+}
+out_file.close();
+
+
+
+
+
+
+
+
+};

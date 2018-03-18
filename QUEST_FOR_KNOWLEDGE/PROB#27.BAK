@@ -1,0 +1,32 @@
+//Michael Crookston
+//Program Name
+//Due Date
+//Period 6
+//Mr. Baker
+//Libraries Section
+#include<iostream.h>
+#include<iomanip.h>
+#include<conio.h>
+#include<apstring.h>
+//Constants
+//Prototype
+void verse (int);
+void chorus ();
+//Variables
+char Again;
+int I;
+//Program
+void main ()
+{
+clrscr();
+cout<<"The Ants Go Marching";
+clrscr();
+for(I=0;I<10;I++)
+	{clrscr();
+	cout<<"Verse #"<<I<<endl<<endl;
+	verse(I);
+	cout<<endl;
+	if(I<9)
+		chorus();}
+}
+void verse (X)

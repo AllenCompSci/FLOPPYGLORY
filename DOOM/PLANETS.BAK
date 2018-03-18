@@ -1,0 +1,63 @@
+Program planets;
+(*El CHoDA
+Baker 6th, *)
+
+uses
+    Crt;
+type
+letters=array[1..9] of string;
+number=array[1..9] of string;
+var
+planets:letters;
+size,distance,length,moon:number;
+begin (*main*)
+clrscr;
+planets[1]:='mercury';
+planets[2]:='venus';
+planets[3]:='earth';
+planets[4]:='mars';
+planets[5]:='jupiter';
+planets[6]:='saturn';
+planets[7]:='uranus';
+planets[8]:='neptune';
+planets[9]:='pluto';
+size[1]:='4880';
+size[2]:='12100';
+size[3]:='12756';
+size[4]:='6794';
+size[5]:='142800';
+size[6]:='120660';
+size[7]:='51810';
+size[8]:='49528';
+size[9]:='2290';
+distance[1]:='57.9';
+distance[2]:='106.2';
+distance[3]:='149.6';
+distance[4]:='227.9';
+distance[5]:='778.3';
+distance[6]:='1427';
+distance[7]:='2870';
+distance[8]:='4497';
+distance[9]:='5900';
+length[1]:='88 days';
+length[2]:='224.7 days';
+length[3]:='365.2 days';
+length[4]:='141.71 days';
+length[5]:='11.86 yrs';
+length[6]:='29.46 yrs';
+length[7]:='84 yrs';
+length[8]:='165 yrs';
+length[9]:='248 yrs';
+moon[1]:='0';
+moon[2]:='1';
+moon[3]:='2';
+moon[4]:='2';
+moon[5]:='16';
+moon[6]:='18';
+moon[7]:='15';
+moon[8]:='8';
+moon[9]:='1';
+
+
+End. (*main*)
+

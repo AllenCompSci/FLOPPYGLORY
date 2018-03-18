@@ -1,0 +1,61 @@
+//Rebecca Russell
+//6th
+//Mr.Baker
+//Program:
+#include<iostream.h>
+#include<conio.h>
+#include<apstring.h>
+#include<iomanip.h>
+#include<apvector.h>
+#include<fstream.h>
+#include<stdio.h>
+#include<stdlib.h>
+#include<graphics.h>
+#include<dos.h>
+//Constant
+//Structs
+//Variable
+int Grdriver, Grmode, Errorcode, I, X, Y, R, D,C;
+ifstream Infile;
+apstring Trash;
+//Prototype
+apvector <apstring> Tree (11);
+apvector <int> Number (11);
+void grsetup (int&, int&, int&);
+void bars ();
+void main ()
+{clrscr();
+grsetup(Grdriver,Grmode, Errorcode);
+setbkcolor(0);
+
+Infile.open("A:\\TREES.DAT");
+	for(I=0; I<11; I++)
+	{getline(Infile, Tree[I]);
+	 Infile>>Number[I];
+	 getline(Infile, Trash);
+	}
+Infile.close();
+
+bars ();
+getch();
+};
+
+void grsetup (int& Grdriver, int& Grmode, int& Errorcode)
+{Grdriver=VGA;
+ Grmode=VGAHI;
+ initgraph(&Grdriver, &Grmode, "C:\\TC\\BGI");
+ Errorcode=graphresult();
+ if(Errorcode!=grOk)
+	{clrscr();
+	 cout<<"Error";
+	 getch();
+	 exit(1);
+	}
+};
+
+
+void bars ()
+{bar(5, (getmaxy()-Number[0]), 15, getmaxy());
+ gotoxy(6, get
+ cout<<"test";
+ }

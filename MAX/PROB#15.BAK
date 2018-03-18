@@ -1,0 +1,45 @@
+// Mahmood Subhani
+// Period 6
+// Mr. Baker
+// Program: Prob#00 Name, Address, Phone
+
+
+#include<Iostream.h>
+#include<conio.h>n
+#include<apstring.h>
+#include<iomanip.h>
+
+double Don;
+int Day;
+double X;
+double Y;
+
+void main ()
+{
+clrscr();
+cout<<setiosflags(ios::fixed);
+;
+
+
+Day=2;
+Don=0.01;
+
+cout<<"Day 1"<<"  "<<"  Donated total:  $"<<"0.01"<<endl;
+while(Day<=20)
+{
+cout<<"Day "<<Day<<"  ";
+Don = Don+Don;
+Day++;
+X=Don;
+
+cout<<"  Donated total:  $"<<Don<<endl;
+
+ }
+cout<<endl<<"Donated total after 20 days:  $"<<(Don*2)+1;
+getch();
+
+
+
+
+
+};

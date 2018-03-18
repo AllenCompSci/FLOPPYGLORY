@@ -1,0 +1,45 @@
+//Chris Chapman
+//7th
+//Prob32
+//Mr. Baker
+
+//Library Section
+#include<iostream.h>
+#include<iomanip.h>
+#include<conio.h>
+#include<apstring.h>
+#include<apvector.h>
+
+//const.section
+
+//Prototype
+long factorial (int);
+
+//global variable section
+long Ans;
+int E, Num;
+char Answer;
+
+
+void main ()
+{
+do{
+	clrscr();
+	//Hello, there. How are we?
+	cout<<"Enter any whole and positive number that you want the factoral of"<<endl;
+	cin>>Num;
+	cout<<Factorial(Ans);
+
+
+		getch();
+		clrscr();
+		cout<<"Run agian? (Y/N)";
+		cin>>Answer;
+	}while(Answer=='Y'||Answer=='y');
+}
+
+long factorial (int Num)
+
+	if (Num==1)
+		Ans=1;
+	else if (Num==

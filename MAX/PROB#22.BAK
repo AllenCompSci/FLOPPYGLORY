@@ -1,0 +1,60 @@
+// Mahmood Subhani
+// Period 6
+// Mr. Baker
+// Program: Enter names until ZZZ
+
+#include<Iostream.h>
+#include<conio.h>n
+#include<apstring.h>
+#include<iomanip.h>
+#include<apvector.h>
+
+
+
+
+apstring Name;
+apvector <apstring> Names (20);
+apvector <long> Length (20);
+int I;
+int J;
+int K;
+void main()
+{
+clrscr();
+
+
+
+
+I=0;
+
+do {
+cin>>Names[I];
+if (Names[I]!="ZZZ"){
+Length[I]=Names[I].length();
+I++;}}
+while((Names[I]!="ZZZ")&&(I<20));
+
+
+J=I;
+cout<<"Press a key to see the names"<<endl;
+getch();
+clrscr();
+
+
+for(K=0; K<=J; K++)
+{
+
+for(I=0; I<J; I++){
+if (K=Length[I])
+{
+cout<<Names[I];
+
+}}}}
+
+
+
+getch();
+
+};
+
+

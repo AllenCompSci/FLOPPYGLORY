@@ -1,0 +1,70 @@
+//Kris BIckham
+//Prob31
+//Tuesday
+//Period 6
+//Mr. Baker
+
+//Libary Section
+#include <conio.h>
+#include <iostream.h>
+#include <iomanip.h>
+#include <apstring.h>
+#include <apmatrix.h>
+//Const Section
+const char A='A';
+const char B='B';
+const char C='C';
+//e Section
+int Discs;
+char Ans;
+int I;
+//Protoypes
+void hanoi (int, char, char, char, int&);
+//Main
+
+void main ()
+{
+do
+{
+clrscr ();
+gotoxy(30,1);
+I=0;
+cout<<"Towers of Hanoi";
+gotoxy(30,2);
+cout<<"***************";
+cout<<endl;
+getch();
+cout<<"Enter number of Disc(s): - Discs"<<endl;
+gotoxy(26,3);
+cin>>Discs;
+hanoi (Discs, A,C,B,I);
+cout<<endl;
+cout<<I<<" Moves";
+getch ();
+cout<<endl;
+
+cout<<"Do you wish to run again? ";
+cin>>Ans;
+}while(Ans=='Y'||Ans=='y');
+
+getch ();
+};
+
+
+void hanoi (int D, char Origin, char End , char Empty,int& I)
+{
+if (D<=1)
+ {
+ I++;
+ cout<<I<<".) Move a disc from "<<Origin<<" to "<<End<<endl;
+ }
+else
+ {hanoi(D-1, Origin, Empty, End,    I);
+	hanoi(1  , Origin, End,   Empty,  I );
+	hanoi(D-1, Empty,  End   ,Origin, I);
+ }
+
+};
+
+
+

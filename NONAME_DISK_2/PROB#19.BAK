@@ -1,0 +1,46 @@
+//Jeremy Higgins
+//Due Date
+//Mr. Baker
+//Block 1
+#include<iostream.h>
+#include<iomanip.h>
+#include<conio.h>
+#include<apstring.h>
+#include<apvector.h>
+//const
+//var
+apvector<int> N (21);
+apvector<int> Even (11);
+apvector<int> Odd (11);
+char Choice;
+int A;
+int B;
+int C;
+int D;
+int Time;
+void main()
+{clrscr();
+do{
+	 for(A=0; A<20; A++)
+	 N[A]=A+1;
+
+	 B=0;
+	 Time=0;
+	 C=0;
+	 D=0;
+	 for(Time; Time<20; Time++)
+			 {if(N[B]%2<=1)
+				 Even[C]=N[B];
+				else
+				 Odd[D]=N[B];
+				B++;
+				if(C<10 && D<10)
+					C++, D++;
+			 }
+	 cout<<Odd[5];
+
+	 cout<<"Would you like to run the Program again";
+		cin>>Choice;
+	}while (Choice=='Y' || Choice=='y');
+	getch();
+}

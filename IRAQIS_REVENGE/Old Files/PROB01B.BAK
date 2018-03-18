@@ -1,0 +1,33 @@
+//Toni Whipple
+//shell
+//7th
+//Mr. Baker
+
+//Library Section
+#include<iostream.h>
+#include<iomanip.h>
+#include<conio.h>
+#include<apstring.h>
+//const.section
+
+//variable section
+int Add=10;
+int Sub=10;
+int Mult=10;
+int Div=10;
+int Mod=10;
+void main ()
+{
+
+cout<<"1+10"<<1+Add<<endl;
+cout<<"2+10"<<2+Add<<endl;
+cout<<"3+10"<<3+Add<<endl;
+cout<<"4+10"<<4+Add<<endl;
+cout<<"5+10"<<5+Add<<endl;
+cout<<"6+10"<<6+Add<<endl;
+cout<<"7+10"<<7+Add<<endl;
+cout<<"8+10"<<8+Add<<endl;
+cout<<"9+10"<<9+Add<<endl;
+cout<<"10+10"<<10+Add<<endl;
+
+}

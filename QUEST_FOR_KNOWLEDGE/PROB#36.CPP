@@ -1,0 +1,219 @@
+//Michael Crookston
+//Problem #36
+//Due Date
+//Period 6
+//Mr. Baker
+//Libraries Section
+#include<iostream.h>
+#include<iomanip.h>
+#include<conio.h>
+#include<apstring.h>
+#include<fstream.h>
+#include<apvector.h>
+//Structures
+struct Ticket_Info
+{int Package,Section,TickAmt;};
+//Constants
+//Prototypes
+long Cost (int,int,long);
+//Global Variables
+ofstream Info;
+ifstream Info2;
+int Mode,Ticket_Number,TypeA,TypeB,TypeC,TypeD,Valid,I,Temp;
+char Correct;
+apstring Name,Address,Number,Trash;
+apvector<Ticket_Info>Tickets(8);
+//Program
+void main ()
+{Info.open("info.txt");
+do
+{do
+{clrscr();
+cout<<"The City Brethren Ticket Machine"<<endl;
+cout<<"1. Salesperson Mode"<<endl;
+cout<<"2. Manager Mode"<<endl;
+cin>>Mode;}
+while(Mode!=1 && Mode!=2);
+//Salesperson Mode
+if(Mode==1)
+	{Ticket_Number=0;
+	do
+		{clrscr();
+		cout<<"Please enter the following information:  "<<endl<<endl;
+		cout<<"Name (first, last):  "<<endl;
+		getline(cin,Trash);
+		getline(cin, Name);
+		cout<<"Address:  "<<endl;
+		getline(cin, Address);
+		cout<<"Phone Number:  "<<endl;
+		getline(cin, Number);
+		clrscr();
+		cout<<Name<<endl<<Address<<endl<<Number<<endl<<endl;
+		cout<<"Is this correct (Y/N):  ";
+		cin>>Correct;}
+	while(Correct!='Y' && Correct!='y');
+	do
+	{do
+		{clrscr();
+		cout<<"1. Single Game Ticket"<<endl;
+		cout<<"2. Pre-Season Ticket"<<endl;
+		cout<<"3. Post-Season Ticket"<<endl;
+		cout<<"4. Full-Season Ticket"<<endl;
+		cout<<"5. Team Rival Tickets"<<endl<<endl;
+		cout<<"Package wanted:  ";
+		cin>>Tickets[Ticket_Number].Package;}
+	while(Tickets[Ticket_Number].Package>5 || Tickets[Ticket_Number].Package<1);
+	do
+		{clrscr();
+		cout<<"1. Lower Section"<<endl;
+		cout<<"2. Upper Deck"<<endl;
+		cout<<"3. Value Section"<<endl;
+		cout<<"4. Stadium Box"<<endl<<endl;
+		cout<<"Section wanted:  ";
+		cin>>Tickets[Ticket_Number].Section;}
+	while(Tickets[Ticket_Number].Section>4 || Tickets[Ticket_Number].Section<1);
+	if(Tickets[Ticket_Number].Section==1)
+		{do
+		{clrscr();
+		cout<<"Number of Tickets Wanted (1-1000):  ";
+		cin>>Tickets[Ticket_Number].TickAmt;}
+		while(Tickets[Ticket_Number].TickAmt>1000 || Tickets[Ticket_Number].TickAmt<1);
+		if(Tickets[Ticket_Number].TickAmt>1000-TypeA)
+			{clrscr();
+			cout<<"Seats not available.  Please try another section.";
+			getch();}
+		else
+			{clrscr();
+			cout<<"The seats are available."<<endl;
+			cout<<"This will cost you:  $";
+			cout<<Cost(Tickets[Ticket_Number].Package,Tickets[Ticket_Number].Section,Tickets[Ticket_Number].TickAmt)<<endl<<endl;
+			cout<<"Do you wish to purchase the tickets (Y/N):  ";
+			cin>>Correct;
+			if(Correct=='y' || Correct=='Y')
+			{TypeA+=Tickets[Ticket_Number].TickAmt;
+			Ticket_Number++;}}}
+	else if(Tickets[Ticket_Number].Section==2)
+		{do
+		{clrscr();
+		cout<<"Number of Tickets Wanted (1-1000):  ";
+		cin>>Tickets[Ticket_Number].TickAmt;}
+		while(Tickets[Ticket_Number].TickAmt>1000 || Tickets[Ticket_Number].TickAmt<1);
+		if(Tickets[Ticket_Number].TickAmt>1000-TypeB)
+			{clrscr();
+			cout<<"Seats not available.  Please try another section.";
+			getch();}
+		else
+			{clrscr();
+			cout<<"The seats are available."<<endl;
+			cout<<"This will cost you:  $";
+			cout<<Cost(Tickets[Ticket_Number].Package,Tickets[Ticket_Number].Section,Tickets[Ticket_Number].TickAmt)<<endl<<endl;
+			cout<<"Do you wish to purchase the tickets (Y/N):  ";
+			cin>>Correct;
+			if(Correct=='y' || Correct=='Y')
+			{TypeB+=Tickets[Ticket_Number].TickAmt;
+			Ticket_Number++;}}}
+	else if(Tickets[Ticket_Number].Section==3)
+		{do
+		{clrscr();
+		cout<<"Number of Tickets Wanted (1-1000):  ";
+		cin>>Tickets[Ticket_Number].TickAmt;}
+		while(Tickets[Ticket_Number].TickAmt>1000 || Tickets[Ticket_Number].TickAmt<1);
+		if(Tickets[Ticket_Number].TickAmt>1000-TypeC)
+			{clrscr();
+			cout<<"Seats not available.  Please try another section.";
+			getch();}
+		else
+			{clrscr();
+			cout<<"The seats are available."<<endl;
+			cout<<"This will cost you:  $";
+			cout<<Cost(Tickets[Ticket_Number].Package,Tickets[Ticket_Number].Section,Tickets[Ticket_Number].TickAmt)<<endl<<endl;
+			cout<<"Do you wish to purchase the tickets (Y/N):  ";
+			cin>>Correct;
+			if(Correct=='y' || Correct=='Y')
+			{TypeC+=Tickets[Ticket_Number].TickAmt;
+			Ticket_Number++;}}}
+	else
+		{do
+		{clrscr();
+		cout<<"Number of Boxes Wanted (1-"<<10-TypeD<<"):  ";
+		cin>>Tickets[Ticket_Number].TickAmt;}
+		while(Tickets[Ticket_Number].TickAmt>10-TypeD || Tickets[Ticket_Number].TickAmt<1);
+		clrscr();
+		cout<<"This will cost you:  $";
+		cout<<Cost(Tickets[Ticket_Number].Package,Tickets[Ticket_Number].Section,Tickets[Ticket_Number].TickAmt)<<endl<<endl;
+		cout<<"Do you wish to purchase the tickets (Y/N):  ";
+		cin>>Correct;
+		if(Correct=='y' || Correct=='Y')
+		{TypeD+=Tickets[Ticket_Number].TickAmt;
+		Ticket_Number++;}}
+	if(Ticket_Number>8)
+		{cout<<"Thank you for all of your ticket purchases.";
+		Correct='n';}
+	else
+		{clrscr();
+		cout<<"Would you like to make more ticket purchases (Y/N):  ";
+		cin>>Correct;}}
+	while(Correct=='y' || Correct=='Y');}
+	Info<<Name<<endl<<Address<<endl<<Number<<endl;
+	for(I=0;I<Ticket_Number;I++)
+		{Info<<I<<endl<<"--"<<endl<<Tickets[I].Package<<endl<<Tickets[I].Section<<endl;
+		Info<<Tickets[I].TickAmt;}}
+	while(Correct!='y' && Correct!='Y');
+if(Mode==2)
+	{clrscr();
+	Info.close();
+	Info2.open("info.txt");
+	Info2<<Temp;
+	if(Temp!="--")
+		cout<<Temp<<endl;
+	else
+		Info
+}
+long Cost(int Package, int SeatType, long TickNum)
+{long Answer;
+if(Package==1)
+	if(SeatType==1)
+		Answer=40*TickNum;
+	else if(SeatType==2)
+		Answer=20*TickNum;
+			 else if(SeatType==3)
+						Answer=10*TickNum;
+						else
+							Answer=100;
+else if(Package==2)
+			if(SeatType==1)
+				Answer=50*TickNum;
+			else if(SeatType==2)
+						Answer=30*TickNum;
+					 else if(SeatType==3)
+									Answer=20*TickNum;
+								else
+									Answer=110;
+else if(Package==3)
+			if(SeatType==1)
+				Answer=60*TickNum;
+			else if(SeatType==2)
+						Answer=40*TickNum;
+					 else if(SeatType==3)
+									Answer=30*TickNum;
+								else
+									Answer=120;
+else if(Package==4)
+			if(SeatType==1)
+				Answer=2500*TickNum;
+			else if(SeatType==2)
+						Answer=1125*TickNum;
+					 else if(SeatType==3)
+									Answer=500*TickNum;
+								else
+									Answer=7000;
+else if(Package==5)
+			if(SeatType==1)
+				Answer=400*TickNum;
+			else if(SeatType==2)
+						Answer=200*TickNum;
+					 else if(SeatType==3)
+									Answer=75*TickNum;
+								else
+									Answer=1000;
+return Answer;}

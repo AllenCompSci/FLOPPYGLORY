@@ -1,0 +1,68 @@
+//Michael Crookston
+//PROB#18A
+//Due Date
+//Period 6
+//Mr. Baker
+//Libraries Section
+#include<iostream.h>
+#include<iomanip.h>
+#include<conio.h>
+//Constants
+//Variables
+int Dollars, Quarters, Dimes, Pennies, Nickels;
+long double Cost, Decimal, Change;
+char Again;
+//Program
+void main ()
+{
+do
+{
+do
+{clrscr();
+cout<<"Please enter the amount of money:  ";
+cin>>Cost;}
+while(Cost<0 || Cost>10);
+clrscr();
+Change=10-Cost;
+Dollars=Change;
+Decimal=Change-Dollars;
+if(Decimal>=.25)
+	{Quarters=Decimal/.25;
+	Decimal=Decimal-(Quarters*.25);}
+if(Decimal>=.10)
+	{Dimes=Decimal/.1;
+	Decimal=Decimal-(Dimes*.1);}
+if(Decimal>=.05)
+	{Nickels=Decimal/.05;
+	Decimal=Decimal-(Nickels*.05);}
+if(Decimal>=.01)
+	{Pennies=Decimal/.01;}
+cout<<setprecision(2)<<setiosflags(ios::showpoint);
+cout<<"Dollar";
+if(Dollars>1)
+	cout<<"s";
+cout<<":  "<<Dollars<<endl;
+cout<<"Quarter";
+if(Quarters>1)
+	cout<<"s";
+cout<<":  "<<Quarters<<endl;
+cout<<"Dime";
+if(Dimes>1)
+	cout<<"s";
+cout<<":  "<<Dimes<<endl;
+cout<<"Nickel";
+if(Nickels>1)
+	cout<<"s";
+cout<<":  "<<Nickels<<endl;
+if(Pennies>1)
+	cout<<"Pennies:  "<<Pennies<<endl;
+else
+	cout<<"Penny:  "<<Pennies<<endl;
+cout<<"Total:  $"<<Change;
+getch();
+clrscr();
+cout<<"Do you want to run the program again (Y/N):  ";
+cin>>Again;
+}
+while(Again=='Y' || Again=='y');
+}

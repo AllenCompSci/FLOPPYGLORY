@@ -1,0 +1,29 @@
+/*********************************************************************
+Proposed amendment to gmouse.h
+Set limits takes in the value of the lower and upper bound of the
+mouse coordinates and stores them in the appropriate register.  Either
+the minimum or maximum value to negative or transposing the minimum
+and maximum values could cause a serious system error.  It is
+important that you reset the minimum and maximum to 0 and
+getmaxx()/getmaxy() respectively.  Failure to do so will cause the
+mouse to continue to follow those settings when the compiler returns
+to the edit window, possibly causing an inability to get to the menu
+and save your file.
+*********************************************************************/
+
+void SetXLimits(int MinX,int MaxX)
+{
+	union REGS inregs,outregs;
+	inregs.x.cx=MinX;
+	inregs.x.dx=MaxX;
+	inregs.x.ax=0x07;
+	int86(0x33,&inregs,&outregs);
+}
+void SetYLimits(int MinY,int MaxY)
+{
+	union REGS inregs,outregs;
+	inregs.x.cx=MinY;
+	inregs.x.dx=MaxY;
+	inregs.x.ax=0x08;
+	int86(0x33,&inregs,&outregs);
+}

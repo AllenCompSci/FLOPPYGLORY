@@ -1,0 +1,58 @@
+// Sean Murray
+// Due Date
+// Prob #26
+// Mr. Baker - 3rd pd.
+
+// Libraries
+#include <conio.h>
+#include <iostream.h>
+#include <iomanip.h>
+#include <stdlib.h>
+
+#include <apstring.h>
+#include <apvector.h>
+#include <apmatrix.h>
+
+//Constants
+
+//Global Variables
+	int X, Y;
+
+//Prototype Section
+	void pass_wrong (int, int);
+	void pass_right (int &, int &);
+
+void main ()
+{
+	clrscr();
+	cout << "Number 1: ";
+	cin >> X;
+	cout << "Number 2: ";
+	cin >> Y;
+	clrscr();
+
+	cout << "pass_wrong Example"<<endl;
+	cout << "Before: "<<X<<" and "<<Y<<endl;
+	pass_wrong(X, Y);
+	cout << "After: "<<X<<" and "<<Y<<endl<<endl;
+
+	cout << "pass_right Example"<<endl;
+	cout << "Before: "<<X<<" and "<<Y<<endl;
+	pass_right(X, Y);
+	cout << "After: "<<X<<" and "<<Y;
+	getch();
+}
+
+void pass_wrong (int X, int Y)
+{
+	X *= 2;
+	Y *= 2;
+	cout << "During: "<<X<<" and "<<Y<<endl;
+};
+
+void pass_right(int & X, int & Y)
+{
+	X *= 2;
+	Y *= 2;
+	cout << "During: "<<X<<" and "<<Y<<endl;
+};

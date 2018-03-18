@@ -1,0 +1,48 @@
+//Jeremy Higgins
+//Due Date
+//Mr. Baker
+//Block 1
+#include<iostream.h>
+#include<iomanip.h>
+#include<conio.h>
+#include<apstring.h>
+#include<apvector.h>
+//struct
+struct info
+{apstring Name;
+ long Point;
+ apstring Date;
+};
+//const
+//var
+apstring Trash;
+int A, B, C, D;
+apvector <info> Rank (10);
+char Choice;
+//proto
+void main()
+{clrscr();
+do{
+for(A=0; A<10; A++)
+{cout<<"Enter Name";
+ getline(cin, Rank[A].Name);
+ cout<<"Enter Point Total (range 1-10)";
+ cin>>Rank[A].Point;
+ getline(cin, Trash);
+ cout<<"Enter Date";
+ getline(cin, Rank[A].Date);
+}
+A=9;
+D=11;
+for(C=0; C<10; C++)
+ {for(B=0; B<10; B++)
+	{if(Rank[B].Point>A && Rank[B].Point<D)
+	 cout<<Rank[B].Point<<" "<<Rank[B].Name<<" "<<Rank[B].Date<<endl;
+	}
+	 A--;
+	 D--;
+ }
+	cout<<"Would you like to run the Program again";
+		cin>>Choice;
+	}while (Choice=='Y' || Choice=='y');
+}

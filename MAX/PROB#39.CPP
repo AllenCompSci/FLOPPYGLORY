@@ -1,0 +1,50 @@
+// Mahmood Subhani
+// Period 6
+// Mr. Baker
+// Program: Prob#00 Name, Address, Phone
+
+
+#include<Iostream.h>
+#include<conio.h>n
+#include<apstring.h>
+#include<iomanip.h>
+#include<apvector.h>
+#include<fstream.h>
+//constants
+
+
+
+//structure
+
+
+
+//variables
+int I;
+
+ofstream file;
+
+//prototypes
+apvector <int> Numbers(10);
+
+
+
+void main ()  {
+
+clrscr();
+for(I=0;I<10;I++)
+{
+cout<<"Type in a number.  ";
+cin>>Numbers[I];
+cout<<endl;
+}
+file.open("myfile");
+
+for(I=0;I<10;I++)
+{
+file<<I<<endl;
+}
+
+
+getch();
+
+};

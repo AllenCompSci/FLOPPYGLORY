@@ -1,0 +1,31 @@
+//Michael Crookston
+//Problem #05
+//Due Date
+//Period 6
+//Mr. Baker
+//Libraries Section
+#include<iostream.h>
+#include<iomanip.h>
+#include<conio.h>
+#include<apstring.h>
+//Constants
+const double CITY=.15;
+const double STATE=.35;
+const double EAST=.55;
+const double MID=.42;
+const double SOUTH=.38;
+const double WEST=.615;
+const double SEAS=1.07;
+//Variables
+apstrin Packlbs;
+//Program
+void main ()
+{
+clrscr();
+cout<<"This program will tell you how much a package will cost."<<endl;
+cout<<"Please enter the number of whole pounds the package is:  ";
+cin>>Packlbs;
+cout<<endl;
+cout<<"Now enter how many ounces there are:  ";
+cin>>Packoz;
+}

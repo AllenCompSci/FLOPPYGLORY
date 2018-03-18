@@ -1,0 +1,99 @@
+// Mahmood Subhani
+// Period 6
+// Mr. Baker
+// Program: Prob#00 Name, Address, Phone
+
+
+#include<Iostream.h>
+#include<conio.h>n
+#include<apstring.h>
+#include<iomanip.h>
+#include<apvector.h>
+
+apvector <apstring> Cards(17);
+//apvector <int> Id(
+void assign();
+void deal(int, int, int);
+int X;
+int I;
+int J;
+int Card;
+int Suit;
+
+
+void main ()  {
+
+randomize();
+
+clrscr();
+
+assign();
+
+X=1;
+
+
+
+for(J=4;J>0;J--)
+{
+deal(I, Card, Suit);
+
+cout<<endl<<endl;
+}
+
+
+
+
+};
+
+void deal (int I, int Card, int Suit)
+{
+
+
+for(I=7;I>0;I--)
+{
+Card=random(13)+1;
+
+Card--;
+
+Suit=random(4)+1;
+Suit=Suit+12;
+
+cout<<Cards[Card]<<Cards[Suit]<<"  ";
+}
+
+getch();
+
+
+}
+
+
+
+
+
+
+
+
+
+void assign()
+{
+Cards[0] ="Ace";
+Cards[1] ="2";
+Cards[2] ="3";
+Cards[3] ="4";
+Cards[4] ="5";
+Cards[5] ="6";
+Cards[6] ="7";
+Cards[7] ="8";
+Cards[8] ="9";
+Cards[9] ="10";
+Cards[10]="Jack";
+Cards[11]="Queen";
+Cards[12]="King";
+
+Cards[13]=" Spades";
+Cards[14]=" Diamonds";
+Cards[15]=" Clubs";
+Cards[16]=" Hearts";
+
+
+}

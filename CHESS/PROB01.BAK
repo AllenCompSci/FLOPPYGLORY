@@ -1,0 +1,44 @@
+// Sean Murray
+// Due Date
+// Program
+// Mr. Baker - 3rd pd.
+
+// Libraries
+#include <conio.h>
+#include <iostream.h>
+#include <iomanip.h>
+#include <apstring.h>
+//Constants
+
+//Variables
+
+void main ()
+{
+clrscr();
+
+cout << "4 + 5 = "<<4 + 5<<endl;
+cout << "10 + 10 ="<<10 + 10<<endl;
+cout << "2 + 2 = "<<2 + 2<<endl;
+cout << "5 + 5 = "<<5 + 5<<endl;
+cout << "1 + 1 = "<<1 + 1<<endl;
+cout << "8 + 8 = "<<8 +8<<endl;
+cout << "25 + 25 = "<<25 + 25<<endl;
+cout << "50 + 50 = "<<50 + 50<<endl;
+cout << "60 + 30 = "<<60 + 30<<endl;
+cout << "30 + 30 = "<<30 + 30<<endl;
+getch();
+clrscr();
+
+cout <<"9 - 7 = "<<9 - 7<<endl;
+cout <<"5 - 4 = "<<5 - 4<<endl;
+cout <<"3 - 4 = "<<3 - 4<<endl;
+cout <<"2 - 1 = "<<2 - 1<<endl;
+cout <<"10 - 9 = "<<10 - 9<<endl;
+cout <<"25 - 30 = "<<25 - 30<<endl;
+cout <<"12 - 6 = "<<12 - 6<<endl;
+cout <<"4 - 18 = "<<4 - 18<<endl;
+cout <<"15 - 5 = "<<15 - 5<<endl;
+cout <<"22 - 11 = "<<22 - 11<<endl;
+
+getch();
+}

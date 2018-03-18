@@ -1,0 +1,37 @@
+// Mahmood Subhani
+// Period 6
+// Mr. Baker
+// Program: Prob#00 Name, Address, Phone
+
+
+#include<Iostream.h>
+#include<conio.h>n
+#include<apstring.h>
+#include<iomanip.h>
+
+double a;
+
+
+
+
+void main ()  {
+clrscr();
+
+cout<<"How heavy is your package (in ounces)?  ";
+cin>>a;
+
+clrscr();
+
+cout<<setw(10)<<"In city"<<setw(12)<<a*15<<" cents"<<endl<<endl;
+cout<<setw(10)<<"In state"<<setw(12)<<a*35<<" cents"<<endl<<endl;
+cout<<setw(10)<<"East Coast"<<setw(12)<<a*55<<" cents"<<endl<<endl;
+cout<<setw(10)<<"Mid West"<<setw(12)<<a*42<<" cents"<<endl<<endl;
+cout<<setw(10)<<"South"<<setw(12)<<a*38<<" cents"<<endl<<endl;
+cout<<setw(10)<<"West Coast"<<setw(12)<<a*61.5<<" cents"<<endl<<endl;
+cout<<setw(10)<<"Overseas"<<setw(8)<<"$"<<a*1.07<<endl<<endl<<endl<<endl<<endl;
+
+
+
+cout<<"Please press return to continue.";
+getch();
+};

@@ -1,0 +1,38 @@
+// Sean Murray
+// Due Date
+// Program
+// Mr. Baker - 3rd pd.
+
+// Libraries
+#include <conio.h>
+#include <iostream.h>
+#include <iomanip.h>
+#include <fstream.h>
+#include <stdlib.h>
+
+#include <apstring.h>
+#include <apvector.h>
+#include <apmatrix.h>
+
+//Constants
+
+//Global Variables
+	int I;
+	ofstream out_file;
+
+//Prototypes
+
+void main ()
+{
+	clrscr();
+	randomize();
+	cout << "Writing to file01.fil";
+	out_file.open("file01.fil");
+
+	for (I = 0;I < 10;I++)
+		out_file << random(101) + 1 << endl;
+
+	out_file.close();
+	cout << endl<<"done.";
+	getch();
+}

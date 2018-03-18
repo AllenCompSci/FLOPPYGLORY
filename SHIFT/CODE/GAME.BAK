@@ -1,0 +1,498 @@
+//Comment Section
+//Nick Harrison & Jessica Landreth
+//Game.cpp - SHIFT
+//Baker Block 4
+
+//Library Section
+//==================
+#include<iostream.h>
+#include<iomanip.h>
+#include<conio.h>
+#include<apstring.h>
+#include<apvector.h>
+#include<apmatrix.h>
+#include<assert.h>
+#include<math.h>
+#include<math2.h>
+#include<fstream.h>
+#include<graphics.h>
+#include<dos.h>
+#include<alloc.h>
+#include<bitmap.h>
+
+//Const Section
+//=================
+
+//Structs
+//==========
+
+//Global Var Section
+//=======================
+char Repeat,Key;
+apstring Trash;
+int I,J,K,X,Y,GrDriver,GrMode,ErrorCode,G,Lvl,Base,Wall,Pick;
+unsigned long Size;
+void far *P;
+bool Break,Shift,Dir,Dead,Win,Reset,Flag;
+image Pic;
+ImgData PicData;
+
+/*
+Flag = bool that breaks out of main menu loop
+*P = player character
+Key = holds val of key pressed by user
+Repeat = Used for the main do while
+Trash = placeholder variable with getline()
+I,J,K = basic workhorse/LCV's
+X,Y = x and y coords for realtime location of user's character (*P)
+GrDriver,GrMode,ErrorCode = Vars used to induce graphics mode
+G = unique LCV for the gravity function
+Lvl = holds value representing the current level
+Base = holds the background color
+Wall = holds the color of the "ground", what the character cannot move thru
+Size = used for importing *.bmp's
+Break = termination condition for main do while
+Shift = true or false depending on if the level is "shifted"
+Dir = the last direction the user moved, used for the "broad jump"
+Pic = the player's image
+PicData = basic details on the player image
+Dead = keeps track if player is dead or not
+Win = keeps track if player has won the lvl (reached the door)
+Reset = makes sure the player is not reset to starting position in the setlvl() func when it was a shift
+Pick = main menu choice
+*/
+
+//Prototype Section
+//=====================
+void gr_start(int&,int&,int&);
+//graphics mode
+void grav(int,int&,int,void far*);
+//simulates constant gravity
+void move(char&,int&,int&,void far *,int&,int&,int&,bool&,bool&,bool&,bool&,bool);
+//holds the switch case for movement, based on the key the user presses
+void setlvl(int,bool,int&,int&,int&,int&,void far*,bool);
+//inits the new lvl
+bool hittest(int,int,int,int,bool&,bool&);
+//basic hittest function against the specified color and direction
+
+
+//Main Section
+//======================
+void main()
+{
+//Initial setup of variables///////////////////
+gr_start(GrDriver,GrMode,ErrorCode);
+Shift=false; //means that the screen has not been shifted yet, ergo defaults
+Lvl=1; //starts at level 1
+G=0; //sets initial gravity constant
+//Flag=false; //so the menu loop doesn't immediately terminate
+///////////////////////////////////////////////////
+//sets up *P as the user character
+Pic.open("\\graphics\\player.bmp");
+PicData=Pic.data();
+Pic.draw(100,100);
+Size=imagesize(100,100,125,125);
+P=farmalloc(Size);
+getimage(100,100,125,125,P);
+
+
+
+//MENU//
+do{
+settextstyle(10,0,7);
+outtextxy(130,0,"SHIFT");
+setcolor(0);
+floodfill(0,0,15);
+settextstyle(10,1,7);
+outtextxy(90,120,"SHIFT");
+
+setcolor(5);
+settextstyle(7,0,5);
+outtextxy(250,150,"PLAY");
+settextstyle(9,0,3);
+outtextxy(250,250,"EXIT");
+settextstyle(6,0,5);
+outtextxy(250,350,"Instructions");
+
+line(245,200,275,200);
+line(245,300,270,300);
+line(245,400,260,400);
+
+if(kbhit())
+	Pick=getch();
+
+switch (Pick)
+	{
+	//Play
+	case 112:
+	case 80:				 
+				 cleardevice();
+				 Flag=true;
+				 break;
+
+	//Exit from main menu
+	case 69:
+	case 101:				 
+				 cleardevice();
+				 Flag=true;
+				 Key=27;
+				 settextstyle(9,0,4);
+				 outtextxy(150,200,"GAME OVER");
+				 delay(1200);				 
+				 break;
+
+	//Instructions
+	case 73:
+	case 105:				 
+				 cleardevice();
+				 cout<<"Try to get to the door by walking, jumping, and shifting. ";
+				 cout<<"To walk, use the right and left arrows."<<endl;
+				 cout<<"To broad jump, use the space bar."<<endl;
+				 cout<<"To shift (flip) the screen, press the up arrow."<<endl;
+				 cout<<"To return to main menu now, press any key"<<endl;
+				 getch();
+				 clrscr();				 
+				 break;
+	}
+	Pick=0;
+}while(Flag==false);
+///////////GAME START/////////////////
+//sets up lvl
+Reset=true;
+if(Key!=27)
+	setlvl(Lvl,Shift,Base,Wall,X,Y,P,Reset);
+
+do{
+Reset=true;
+Dead=false;
+Win=false;
+G++;
+if(G>2000)
+ {
+	grav(X,Y,Wall,P);
+	G=0;
+ }
+if(kbhit())
+ {
+	Key=getch();
+	move(Key,X,Y,P,Wall,Lvl,Base,Shift,Dir,Dead,Win,Reset);
+ }
+
+if(Dead==true)
+ {
+	Reset=true;
+	Shift=false;
+	Dead=false;
+	setlvl(Lvl,Shift,Base,Wall,X,Y,P,Reset);
+ }
+if(Win==true)
+ {
+	Lvl++;
+	Shift=false;
+	setlvl(Lvl,Shift,Base,Wall,X,Y,P,Reset);
+ }
+
+	}while(Key!=27);
+} //end main
+//============================================
+
+void setlvl(int Lvl,bool Shift,int&Base,int&Wall,int&X,int&Y,void far*P,bool Reset)
+ {
+	image Bkg; //the bgk
+	ImgData BkgData;  //basic data on the bkg
+	apstring Loc; //location that the bitmap will be loaded from
+	int Flip; //either 0 or 1, denoting which version of the lvl to load.
+
+	cleardevice();
+	if(Shift==false)
+	 {
+		Base=15;
+		Wall=0;
+		Flip=0;
+	 }
+	else
+	 {
+		Base=0;
+		Wall=15;
+		Flip=1;
+	 }
+	//Loc="E:\\game\\newlvls\\lvl";
+	Loc="\\graphics\\lvl";
+	Loc+=itos(Lvl);
+	Loc+="_";
+	Loc+=itos(Flip);
+	Loc+=".bmp";
+	Bkg.open(Loc.c_str());
+	BkgData=Bkg.data();
+	Bkg.draw(0,0);
+	//borders
+	setcolor(Wall);
+	line(0,0,0,480);
+	line(0,0,640,0);
+	line(640,0,640,480);
+	line(0,480,640,480);
+	//sets up starting points, unique for each lvl
+	switch(Lvl)
+	 {
+		case 1:X=2;
+					 Y=214;
+					 break;
+		case 2:X=2;
+					 Y=215;
+					 break;
+		case 3:X=2;
+					 Y=215;
+					 break;
+		case 4:X=310;
+					 Y=180;
+					 break;
+		case 5:X=600;
+					 Y=350;
+					 break;
+		case 6:X=3;
+					 Y=115;
+					 break;
+		case 7:X=3;
+					 Y=215;
+					 break;
+		case 8:X=5;
+					 Y=67;
+					 break;
+		case 9:X=232;
+					 Y=163;
+					 break;
+		case 10:X=640;
+						Y=480;
+	 }
+	if(Reset==true)
+	 {
+		putimage(X,Y,P,COPY_PUT);   //draws player character for the first time
+		Dead=false;
+	 }
+ }
+
+void gr_start(int&GrDriver,int&GrMode,int&ErrorCode)
+ {
+	GrDriver=VGA; //VGA is a const, best graphics mode available
+	GrMode=VGAHI; //best resolution for VGA
+	initgraph(&GrDriver,&GrMode,"C:\\TC\\BGI");
+	ErrorCode=graphresult();
+	if(ErrorCode!=grOk)
+	 {
+		clrscr();
+		cout<<"ErrorCode: "<<ErrorCode;
+		getch();
+		exit(1);
+	 }
+ }//end function
+
+void grav(int X,int&Y,int Wall,void far*P)
+ {
+	if(hittest(X,Y,Wall,1,Dead,Win)==false)
+	{
+	//putimage(X,Y,P,XOR_PUT);
+	setfillstyle(1,Base);
+	setcolor(Base);
+	bar(X,Y,X+25,Y+25);
+	Y++;
+	putimage(X,Y,P,COPY_PUT);
+	}
+ }
+
+bool hittest(int _X,int _Y,int Test,int Dir,bool&Dead,bool&Win)
+ {
+	bool Arg;
+	int I,J,Color,X,Y;
+
+	Arg=false;
+	X=_X;
+	Y=_Y;
+
+	Color=13; //pink (nxt lvl)
+	switch(Dir)
+	 {
+		case 1://bottom
+					 Y+=26;
+					 for(I=0;I<26;I++)
+						 if(getpixel(X+I,Y)==Color)
+							 Arg=true;
+					 break;
+		case 2://left
+					 X--;
+					 for(I=0;I<26;I++)
+						 if(getpixel(X,Y+I)==Color)
+							 Arg=true;
+					 break;
+		case 3://right
+					 X+=26;
+					 for(I=0;I<26;I++)
+						 if(getpixel(X,Y+I)==Color)
+							 Arg=true;
+					 break;
+		case 4://up
+					 Y--;
+					 for(I=0;I<26;I++)
+						 if(getpixel(X+I,Y)==Color)
+							 Arg=true;
+	 }
+	if(Arg==true)
+		Win=true;
+	Arg=false;
+	X=_X;
+	Y=_Y;
+
+	Color=11; //yellow (death)
+	switch(Dir)
+	 {
+		case 1://bottom
+					 Y+=26;
+					 for(I=0;I<26;I++)
+						 if(getpixel(X+I,Y)==Color)
+							 Arg=true;
+					 break;
+		case 2://left
+					 X--;
+					 for(I=0;I<26;I++)
+						 if(getpixel(X,Y+I)==Color)
+							 Arg=true;
+					 break;
+		case 3://right
+					 X+=26;
+					 for(I=0;I<26;I++)
+						 if(getpixel(X,Y+I)==Color)
+							 Arg=true;
+					 break;
+		case 4://up
+					 Y--;
+					 for(I=0;I<26;I++)
+						 if(getpixel(X+I,Y)==Color)
+							 Arg=true;
+	 }
+	if(Arg==true)
+		Dead=true;
+	Arg=false;
+	X=_X;
+	Y=_Y;
+
+	Color=Test;
+	switch(Dir)
+	 {
+		case 1://bottom
+					 Y+=26;
+					 for(I=0;I<26;I++)
+						 if(getpixel(X+I,Y)==Color)
+							 Arg=true;
+					 break;
+		case 2://left
+					 X--;
+					 for(I=0;I<26;I++)
+						 if(getpixel(X,Y+I)==Color)
+							 Arg=true;
+					 break;
+		case 3://right
+					 X+=26;
+					 for(I=0;I<26;I++)
+						 if(getpixel(X,Y+I)==Color)
+							 Arg=true;
+					 break;
+		case 4://up
+					 Y--;
+					 for(I=0;I<26;I++)
+						 if(getpixel(X+I,Y)==Color)
+							 Arg=true;
+	 }
+	return Arg;
+
+
+ }
+
+
+
+
+void move(char&Key,int&X,int&Y,void far*P,int&Wall,int&Lvl,int&Base,bool&Shift,bool&Dir,bool&Dead,bool&Win,bool Reset)
+ {
+	int N; //amount to be moved
+	int J,I; //LCVs
+	int TempY,TempX; //used for shifting player
+
+switch(Key)
+{
+ case 75://left
+				 N=6;
+				 for(I=6;I>=0;I--)
+					 if(hittest(X-I,Y,Wall,2,Dead,Win)==true)
+						 N=I;
+				 if(N!=0)
+					{
+					 setfillstyle(1,Base);
+					 setcolor(Base);
+					 bar(X,Y,X+25,Y+25);
+					 X-=N;
+					 putimage(X,Y,P,COPY_PUT);
+					}
+				 Key='0';
+				 Dir=0;    //last direction moved is left
+				 break;
+ case 77://right
+				 N=6;
+				 for(I=6;I>=0;I--)
+					 if(hittest(X+I,Y,Wall,3,Dead,Win)==true)
+						 N=I;
+				 if(N!=0)
+					{
+					 setfillstyle(1,Base);
+					 setcolor(Base);
+					 bar(X,Y,X+25,Y+25);
+					 X+=N;
+					 putimage(X,Y,P,COPY_PUT);
+					}
+				 Key='0';
+				 Dir=1;   //last direction moved is right
+				 break;
+ case 32://space (up)
+				 if(hittest(X,Y,Wall,1,Dead,Win)==true)
+					{
+					 for(J=0;J<13;J++)
+						{
+						 N=4;
+						 for(I=4;I>=0;I--)
+							 if(hittest(X,Y-I,Wall,4,Dead,Win)==true)
+								 N=I;
+						 setfillstyle(1,Base);
+						 setcolor(Base);
+						 bar(X,Y,X+25,Y+25);
+						 Y-=N;
+						 if(Dir==0)
+							 Key=75;
+						 else if(Dir==1)
+							 Key=77;
+						 move(Key,X,Y,P,Wall,Lvl,Base,Shift,Dir,Dead,Win,Reset);
+						 Key='0';
+						 putimage(X,Y,P,COPY_PUT);
+						 delay(20);
+						}
+					}
+					break;
+
+ case 72:if(hittest(X,Y,Wall,1,Dead,Win)==true)
+					{
+					 if(Shift==false)
+						 Shift=true;
+					 else
+						 Shift=false;
+					 TempY=Y;
+					 TempX=X;
+					 Reset=false;
+					 setlvl(Lvl,Shift,Base,Wall,X,Y,P,Reset);
+					 Y=TempY;
+					 X=TempX;
+					 if(214-Y!=0)
+						 Y=428-Y;
+					 putimage(X,Y,P,COPY_PUT);
+					}
+				 break;
+ //case 'n':Lvl++;
+ case 'r':Shift=false;
+					setlvl(Lvl,Shift,Base,Wall,X,Y,P,Reset);
+}
+ }

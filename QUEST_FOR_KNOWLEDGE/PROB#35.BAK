@@ -1,0 +1,151 @@
+//Michael Crookston
+//Problem #35
+//Due Date
+//Period 6
+//Mr. Baker
+//Libraries Section
+#include<iostream.h>
+#include<iomanip.h>
+#include<conio.h>
+#include<apstring.h>
+#include<fstream.h>
+//Structures
+struct Planet_Info
+	{apstring Name,Revol,Rotation,Atmosphere;
+	double Distance1,Distance2,Axis,Incli_Orbit,Eccen_Orbit,Diameter2;
+	int Diameter1,Satellite,Rings;};
+//Constants
+//Prototypes
+void info ();
+//Global Variables
+apvector <Planet_Info> Planets;
+int Pick;
+char Again;
+//Program
+void main ()
+{clrscr();
+info();
+cout<<"PLANET INFO"<<endl<<endl<<"1. Mercury"<<endl<<"2. Venus"<<endl;
+cout<<"3. Earth"<<endl<<"4. Mars"<<endl<<"5. Jupiter"<<endl;
+cout<<"6. Saturn"<<endl<<"7. Uranus"<<endl<<"8. Neptune"<<endl<<"9. Pluto";
+cout<<endl<<endl<<endl<<"Pick a planet:  ";
+cin>>Pick;
+}
+void info ()
+	{Planets[0].Name="Mercury";
+	Planets[0].Distance1=57.9;
+	Planets[0].Distance2=36.0;
+	Planets[0].Revol="88 Days";
+	Planets[0].Rotation="59 Days";
+	Planets[0].Axis=0.0;
+	Planets[0].Incli_Orbit=7;
+	Planets[0].Eccen_Orbit=.206;
+	Planets[0].Diameter1=4880;
+	Planets[0].Diameter2=3032.4;
+	Planets[0].Atmosphere="Virtually None";
+	Planets[0].Satellite=0;
+	Planets[0].Rings=0;
+	Planets[1].Name=
+	Planets[1].Distance1=
+	Planets[1].Distance2=
+	Planets[1].Revol=
+	Planets[1].Rotation=
+	Planets[1].Axis=
+	Planets[1].Incli_Orbit=
+	Planets[1].Eccen_Orbit=
+	Planets[1].Diameter1=
+	Planets[1].Diameter2=
+	Planets[1].Atmosphere=
+	Planets[1].Satellite=
+	Planets[1].Rings=
+	Planets[2].Name=
+	Planets[2].Distance1=
+	Planets[2].Distance2=
+	Planets[2].Revol=
+	Planets[2].Rotation=
+	Planets[2].Axis=
+	Planets[2].Incli_Orbit=
+	Planets[2].Eccen_Orbit=
+	Planets[2].Diameter1=
+	Planets[2].Diameter2=
+	Planets[2].Atmosphere=
+	Planets[2].Satellite=
+	Planets[2].Rings=
+	Planets[3].Name=
+	Planets[3].Distance1=
+	Planets[3].Distance2=
+	Planets[3].Revol=
+	Planets[3].Rotation=
+	Planets[3].Axis=
+	Planets[3].Incli_Orbit=
+	Planets[3].Eccen_Orbit=
+	Planets[3].Diameter1=
+	Planets[3].Diameter2=
+	Planets[3].Atmosphere=
+	Planets[3].Satellite=
+	Planets[3].Rings=
+	Planets[4].Name=
+	Planets[4].Distance1=
+	Planets[4].Distance2=
+	Planets[4].Revol=
+	Planets[4].Rotation=
+	Planets[4].Axis=
+	Planets[4].Incli_Orbit=
+	Planets[4].Eccen_Orbit=
+	Planets[4].Diameter1=
+	Planets[4].Diameter2=
+	Planets[4].Atmosphere=
+	Planets[4].Satellite=
+	Planets[4].Rings=
+	Planets[5].Name=
+	Planets[5].Distance1=
+	Planets[5].Distance2=
+	Planets[5].Revol=
+	Planets[5].Rotation=
+	Planets[5].Axis=
+	Planets[5].Incli_Orbit=
+	Planets[5].Eccen_Orbit=
+	Planets[5].Diameter1=
+	Planets[5].Diameter2=
+	Planets[5].Atmosphere=
+	Planets[5].Satellite=
+	Planets[5].Rings=
+	Planets[6].Name=
+	Planets[6].Distance1=
+	Planets[6].Distance2=
+	Planets[6].Revol=
+	Planets[6].Rotation=
+	Planets[6].Axis=
+	Planets[6].Incli_Orbit=
+	Planets[6].Eccen_Orbit=
+	Planets[6].Diameter1=
+	Planets[6].Diameter2=
+	Planets[6].Atmosphere=
+	Planets[6].Satellite=
+	Planets[6].Rings=
+	Planets[7].Name=
+	Planets[7].Distance1=
+	Planets[7].Distance2=
+	Planets[7].Revol=
+	Planets[7].Rotation=
+	Planets[7].Axis=
+	Planets[7].Incli_Orbit=
+	Planets[7].Eccen_Orbit=
+	Planets[7].Diameter1=
+	Planets[7].Diameter2=
+	Planets[7].Atmosphere=
+	Planets[7].Satellite=
+	Planets[7].Rings=
+	Planets[8].Name=
+	Planets[8].Distance1=
+	Planets[8].Distance2=
+	Planets[8].Revol=
+	Planets[8].Rotation=
+	Planets[8].Axis=
+	Planets[8].Incli_Orbit=
+	Planets[8].Eccen_Orbit=
+	Planets[8].Diameter1=
+	Planets[8].Diameter2=
+	Planets[8].Atmosphere=
+	Planets[8].Satellite=
+	Planets[8].Rings=

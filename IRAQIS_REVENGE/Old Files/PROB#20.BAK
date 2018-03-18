@@ -1,0 +1,38 @@
+//Chris Chapman
+//prob20
+//7th
+//Mr. Baker
+
+//Library Section
+#include<iostream.h>
+#include<iomanip.h>
+#include<conio.h>
+#include<apstring.h>
+#include<apvector.h>
+
+//const.section
+
+//variable section
+int E;
+char Answer;
+apvector <int> Numbers (5);
+
+
+void main ()
+{
+do{
+	clrscr();
+	cout<<"Enter five whole numbers with spaces in between each one."<<endl;
+	for (E=0;E<5;E++)
+		cin>>Numbers[E];
+	clrscr();
+	for (E=0;E<5;E++)
+		cout<<Numbers[E]<<endl;
+		getch();
+	clrscr();
+	for (E=5;E>0;E--)
+		cout<<Numbers[E]<<endl;
+		cout<<"Run agian? (Y/N)";
+		cin>>Answer;
+	}while(Answer=='Y'||Answer=='y');
+}

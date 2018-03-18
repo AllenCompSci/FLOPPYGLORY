@@ -1,0 +1,92 @@
+//KRIS BICKHAM
+//PROB#18
+//DUE MON
+//PERIOD 6
+//MR. BAKER
+//LIBRARIES------------
+#include <iostream.h>
+#include <iomanip.h>
+#include <conio.h>
+#include <apstring.h>
+//VARIABLES------------
+apstring Name;
+apstring Address;
+int Timeh;
+int Timem;
+int Time;
+int Starth;
+int Startm;
+int Endh;
+int Endm;
+apstring Trash;
+int Diff;
+int Temp1;
+int Temp2;
+double Cost;
+int Stime;
+int Etime;
+int Zone1;
+int Zone2;
+//CONSTANTS------------
+//MAIN
+void main ()
+{
+clrscr ();
+cout<<"Please enter your name: ";
+getline(cin,Name);
+endl;
+cout<<"Please enter your street adress: ";
+getline(cin,Address);
+endl;
+cout<<"Enter the starting time of the call (ie 12 37):  ";
+cin>>Starth>>Startm;
+endl;
+cout<<"Enter the end time (ie 14 12): ";
+cin>>Endh>>Endm;
+Stime=Starth*60+Startm;
+Etime=Endh*60+Endh;
+Time=Etime-Stime;
+//Time
+//Without Loops
+
+if (Stime>1080&&Stime<1440)
+{Cost=Time*.18;   //Starts in 2nd .18 zone and ends there
+ Zone1=Time;}
+
+if (Stime<480&&Etime<480)                    //Start time in 1st zone
+ {Cost=Time*.18;                         //Ends in 1st time zone
+	 Zone1=Time;}
+else if (Stime<480&&Etime>480)               //End in 2nd zone
+	{Cost=(Etime-480*.25)+(480-Stime)*.18;}
+
+if (Stime>480&&Etime<1080)                        //Start time in 2nd zone
+ {
+	if (Etime<1080&&Etime>480)                          //Ends in 2st zone
+	Cost=Time*.25;                              //
+
+	else if (Etime<1440&&Etime>=1080&&Stime<1080)       //Ends in other 1nd zone
+	Cost=(Etime-1080)*.18+(1080-Stime)*.25;}
+
+if (Stime<480&&Etime<1440&Etime>1080);   //Starts in 1st goes completely throuygh 2
+	Cost=149.75+(480-Stime)*.18+(Etime-1080)*.18;
+//With Loops
+
+
+getch ();
+cout<<"Time:"<<Time;
+endl;
+cout<<"$"<<Cost;
+
+
+getch ();
+
+}
+//if ((Starth*60+Startm)>(Endh*60+Endm))  //Loops around whole clock
+//Cost=((599*.25)+(359*.18)+(420*.18))-(((Timeh*60)*.18)+(Timem*.18));
+
+
+
+
+
+
+

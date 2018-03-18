@@ -1,0 +1,17 @@
+//Michael Crookston
+//Program Name
+//Due Date
+//Period 6
+//Mr. Baker
+//Libraries Section
+#include<iostream.h>
+#include<iomanip.h>
+#include<conio.h>
+#include<apstring.h>
+//Constants
+//Variables
+//Program
+void main ()
+{
+
+}
